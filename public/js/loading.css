@@ -1,0 +1,56 @@
+.automind-loading {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  background: #ffffff;
+  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.automind-loading.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.automind-loading-logo {
+  position: relative;
+  display: block;
+  width: min(220px, 55vw);
+}
+
+.automind-loading-logo-base,
+.automind-loading-logo-fill {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.automind-loading-logo-base {
+  filter: grayscale(1) brightness(0.8) contrast(0.9);
+  opacity: 0.28;
+}
+
+.automind-loading-logo-fill {
+  position: absolute;
+  inset: 0;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-image: linear-gradient(to right, #000 0%, transparent 0%);
+  mask-image: linear-gradient(to right, #000 0%, transparent 0%);
+}
+
+.automind-loading-percent {
+  margin: 0;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+  color: #6b7280;
+}

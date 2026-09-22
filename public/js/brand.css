@@ -1,0 +1,71 @@
+/* ---------- Sticky header ---------- */
+.framer-1bobvvz-container[data-framer-name="Navber"] {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+}
+
+.framer-1bobvvz-container[data-framer-name="Navber"]::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #008fb1, #24d3ef);
+  opacity: 0;
+  transform: scaleX(0.85);
+  transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+
+.framer-1bobvvz-container[data-framer-name="Navber"].automind-nav-scrolled::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.framer-1bobvvz-container[data-framer-name="Navber"] nav[name="Navber"] {
+  transition: box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+.framer-1bobvvz-container[data-framer-name="Navber"].automind-nav-scrolled nav[name="Navber"] {
+  box-shadow: 0 12px 32px -14px rgba(0, 143, 177, 0.45);
+  background-color: rgba(252, 252, 252, 0.86) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+/* ---------- Brand accents ---------- */
+.framer-8g6fkf {
+  background-color: #008fb1 !important;
+}
+
+.framer-c60hpo,
+.framer-4uv8s8 {
+  background-color: #008fb1 !important;
+}
+
+/* ---------- Infinite ticker ---------- */
+.automind-ticker-track.automind-ticker-animate {
+  animation: automind-ticker-scroll 22s linear infinite;
+}
+
+.automind-ticker-track.automind-ticker-animate:hover {
+  animation-play-state: paused;
+}
+
+@keyframes automind-ticker-scroll {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: -50% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .automind-ticker-track.automind-ticker-animate {
+    animation: none;
+  }
+}
+
