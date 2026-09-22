@@ -1,0 +1,40 @@
+/* reveal.js already tags every element named "Card Wrap"/"Card N" with
+   .reveal-on-scroll (a generic fade+slide-up+blur), since its selector
+   matches anything starting with "Card ". That would fight our own
+   center-to-grid opening transform on the very same elements — both rules
+   set `transform`, so only one can win. Override it with !important; its
+   own rule has none, so this wins regardless of load order. */
+[data-framer-name="Card Wrap"].reveal-on-scroll {
+  opacity: 1 !important;
+  transform: none !important;
+  filter: none !important;
+  transition: none !important;
+}
+
+/* .automind-usecase-card tripled (not a typo): this export's "Unframe
+   Interactivity Helper" fallback CSS lives in a <style> block placed AFTER
+   our stylesheet <link>s, with a rule `.framer-motion-fallback [style*=
+   "transform"] { transform: none !important }` — specificity (0,2,0) —
+   matching any element whose inline style text contains "transform". Some
+   of these cards already carry a leftover inline transform from Framer, so
+   that rule applies to them too; same !important, and later in source
+   order, so it wins any specificity tie. Three classes = (0,3,0), clearly
+   ahead, so we win outright instead of depending on cascade order. */
+.automind-usecase-card.automind-usecase-card.automind-usecase-card {
+  --uc-tx: 0px;
+  --uc-ty: 0px;
+  --uc-scale: 1;
+  --uc-fade: 1;
+  --uc-delay: 0ms;
+  opacity: var(--uc-fade) !important;
+  transform: translate(var(--uc-tx), var(--uc-ty)) scale(var(--uc-scale)) !important;
+  filter: none !important;
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) var(--uc-delay),
+    opacity 0.6s ease var(--uc-delay) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .automind-usecase-card.automind-usecase-card.automind-usecase-card {
+    transition: none !important;
+  }
+}

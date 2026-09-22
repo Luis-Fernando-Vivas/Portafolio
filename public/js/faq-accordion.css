@@ -64,6 +64,58 @@
   transform: translateY(0);
 }
 
+/* The left column only had a title + one-line subtitle, leaving a lot of
+   empty space next to the accordion list — a short note plus a contact
+   link fills it without competing with the questions on the right. */
+.automind-faq-extra {
+  margin-top: 28px;
+  max-width: 380px;
+}
+
+.automind-faq-extra-text {
+  margin: 0 0 14px;
+  font-family: 'Space Grotesk', 'Suse', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgb(107, 114, 128);
+}
+
+.automind-faq-extra-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'Space Grotesk', 'Suse', sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  color: #008fb1;
+  text-decoration: none;
+}
+
+.automind-faq-extra-link span {
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.automind-faq-extra-link:hover span {
+  transform: translateX(3px);
+}
+
+/* Tighter list: the accordion rows already have their own 1px border on all
+   sides, so a 14px gap on top of that reads as extra bottom whitespace on
+   every item. Flush borders (0 gap) is the tighter, more typical accordion
+   look the request is asking for. */
+.framer-1sw91bk {
+  gap: 0 !important;
+}
+
+.framer-kKgxV {
+  border-top-width: 0 !important;
+}
+
+.framer-1sw91bk > *:first-child .framer-kKgxV {
+  border-top-width: 1px !important;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .framer-kKgxV,
   .automind-faq-icon,
