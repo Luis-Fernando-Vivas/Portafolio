@@ -1,0 +1,87 @@
+/* Stack the four tab-mockup images on top of each other; the active one
+   lifts into place and sits in front, the rest wait below/behind it.
+   They're position: absolute, so they no longer contribute to the wrap's
+   flow-based height like the original single in-flow image did — pin the
+   same aspect ratio directly on the wrap so it doesn't collapse to zero. */
+[data-framer-name="Images"] {
+  position: relative;
+  aspect-ratio: 1.28;
+  overflow: visible !important;
+}
+
+/* Pre-existing bug, unrelated to the tabs feature: this decorative corner-
+   bracket graphic (aria-hidden, purely visual) and its wrapper have no
+   pointer-events: none, so they silently swallow clicks on whatever sits
+   underneath — including these cards. Disable events on the wrapper too
+   (its own class name is a Framer-generated hash, unstable to target). */
+[data-framer-name="Cornner"],
+*:has(> [data-framer-name="Cornner"]) {
+  pointer-events: none;
+}
+
+/* Each layer's stack position (front, or one of the grayed-out layers behind
+   it) is driven by tab-images.js through the --automind-tab-* custom
+   properties below, NOT by setting transform inline directly — this
+   export's "Unframe Interactivity Helper" fallback CSS force-resets any
+   inline style whose text contains "transform" (plain substring match)
+   back to transform: none. Custom property names don't match that text,
+   so they're left alone. All layers stay fully opaque — it's the filter
+   (color vs. grayscale/washed-out) that marks a layer as "not active", not
+   transparency. */
+.automind-tab-image {
+  --automind-tab-tx: 0px;
+  --automind-tab-ty: 0px;
+  --automind-tab-hover: 0px;
+  --automind-tab-filter: none;
+  position: absolute !important;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  transform: translate(var(--automind-tab-tx), calc(var(--automind-tab-ty) + var(--automind-tab-hover)));
+  filter: var(--automind-tab-filter);
+  pointer-events: none;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
+}
+
+[data-framer-name="Cards"] .framer-cZR4n {
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* The active card's white background is the same as the page background, so
+   without a shadow it doesn't read as a raised card at all — it just looks
+   like plain text. */
+[data-framer-name="Cards"] .framer-cZR4n[data-framer-name="Active"] {
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, 0.14), 0 2px 8px -2px rgba(0, 0, 0, 0.06);
+}
+
+/* Autoplay progress bar, one per card. It sits inside the card's own bottom
+   padding, so it reads as "attached" to that item without adding height. */
+.automind-progress-track {
+  position: absolute;
+  left: 18px;
+  right: 18px;
+  bottom: 8px;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.automind-progress-fill {
+  height: 100%;
+  width: 0%;
+  border-radius: inherit;
+  background: rgba(0, 143, 177, 0.45);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .automind-tab-image {
+    transition: none;
+  }
+
+  .automind-progress-track {
+    display: none;
+  }
+}

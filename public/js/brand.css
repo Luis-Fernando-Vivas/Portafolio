@@ -45,6 +45,11 @@
   background-color: #008fb1 !important;
 }
 
+/* ---------- Use cases heading: balance into two even lines ---------- */
+.framer-1982u8h-container p {
+  text-wrap: balance;
+}
+
 /* ---------- Infinite ticker ---------- */
 .automind-ticker-track.automind-ticker-animate {
   animation: automind-ticker-scroll 22s linear infinite;

@@ -1,0 +1,87 @@
+.hbr-word {
+  display: inline-block;
+  opacity: 0;
+  filter: blur(14px);
+  will-change: opacity, filter;
+  transition: opacity 0.38s ease-out, filter 0.38s ease-out;
+}
+
+.hbr-ready .hbr-word {
+  opacity: 1;
+  filter: blur(0);
+}
+
+.hbr-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+}
+
+/* Buttons wrapper uses Framer's "ssr-variant" (display: contents), which never
+   paints its own opacity/transform, so we animate the actual boxed elements
+   (the link and the button) directly instead of their wrapper. */
+header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] a[data-framer-name="Variant 1"],
+header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] > button[data-framer-name="Main Button"] {
+  opacity: 0 !important;
+  transform: translateY(12px) !important;
+  transition: opacity 0.32s ease-out, transform 0.32s ease-out !important;
+}
+
+html.hbr-buttons-ready header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] a[data-framer-name="Variant 1"],
+html.hbr-buttons-ready header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] > button[data-framer-name="Main Button"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+html.hbr-buttons-ready header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] > button[data-framer-name="Main Button"] {
+  transition-delay: 90ms !important;
+}
+
+header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] {
+  opacity: 0 !important;
+  transform: translateY(16px) !important;
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out !important;
+}
+
+html.hbr-image-active header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] {
+  opacity: 1 !important;
+  transform: none !important;
+}
+
+/* The real <img> is hidden while the pixel-mosaic canvas plays over it. A
+   quick fade instead of a hard cut so it doesn't visibly "pop" out when it
+   leaves the screen. */
+.hpr-hidden-img {
+  opacity: 0 !important;
+  transition: opacity 0.18s ease-out !important;
+}
+
+.hpr-canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Same backdrop pattern used behind the "Conecta las herramientas..." image,
+   now behind the hero illustration too. It shows through the hero PNG's
+   transparent areas and through the pixel-reveal canvas' unpainted gaps. */
+header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] > div > div {
+  background-image: url('/images/img-14-6vpejmr5msvqv6ncvhhqm3rcvo.png');
+  background-size: cover;
+  background-position: center;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] a[data-framer-name="Variant 1"],
+  header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] > button[data-framer-name="Main Button"],
+  header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}

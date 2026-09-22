@@ -1,7 +1,7 @@
 (function () {
-  var FROM = [107, 114, 128] // muted gray, matches the resting #6B7280
+  var FROM = [26, 26, 26] // brand black, matches the resting button color
   var TO = [0, 143, 177] // brand dark teal/blue #008FB1
-  var BAND = 0.4 // fraction of the scroll range each letter takes to change color
+  var BAND = 0.12 // fraction of the scroll range each letter takes to change color
 
   var paragraphs = Array.prototype.slice.call(
     document.querySelectorAll('p[style*="font-family:Space Grotesk"]')
@@ -122,8 +122,8 @@
 
   function update() {
     var vh = window.innerHeight
-    var start = vh * 0.85
-    var end = vh * 0.35
+    var start = vh * 0.5
+    var end = vh * 0.3
     titles.forEach(function (title) {
       var n = title.animateLetters.length
       if (!n) return

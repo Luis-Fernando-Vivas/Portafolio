@@ -7,12 +7,27 @@
     if (children.length < 2) return
     var answer = children[1]
 
+    answer.classList.add('automind-faq-answer')
     answer.style.overflow = 'hidden'
-    answer.style.transition = 'max-height 0.35s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease'
     answer.style.maxHeight = '0px'
     answer.style.opacity = '0'
     row.setAttribute('aria-expanded', 'false')
     row.style.cursor = 'pointer'
+
+    // Framer's native plus/minus icon relies on its editor runtime to swap
+    // variants; in this static export one of its bars is stuck at opacity:0,
+    // so it never animates. Replace it with a small icon we fully control.
+    var iconContainer = row.querySelector('.framer-1pnbkcm-container')
+    if (iconContainer) {
+      iconContainer.innerHTML = ''
+      var iconWrap = document.createElement('div')
+      iconWrap.className = 'automind-faq-icon-wrap'
+      var icon = document.createElement('span')
+      icon.className = 'automind-faq-icon'
+      icon.setAttribute('aria-hidden', 'true')
+      iconWrap.appendChild(icon)
+      iconContainer.appendChild(iconWrap)
+    }
 
     row.addEventListener('click', function (e) {
       e.stopPropagation()
