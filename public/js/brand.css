@@ -75,32 +75,40 @@
   max-width: none !important;
 }
 
+/* Cal.com's inline embed needs real width before it switches from a
+   stacked (details on top of the date grid) layout to its wide,
+   short layout (details | dates | time slots side by side) — testing
+   showed ~680px still stacks. Stop trying to squeeze it next to the
+   headline at that width and instead give it the row almost entirely:
+   headline on top, full-width calendar below. */
 .framer-160c3k8 {
-  flex-direction: row !important;
-  align-items: flex-start !important;
-  max-width: 1040px !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  max-width: 1120px !important;
   width: 100% !important;
-  gap: 48px !important;
+  gap: 40px !important;
+  padding: 72px 24px !important;
   margin: 0 auto !important;
 }
 
 .framer-13egh6p-container {
-  flex: 1 1 380px !important;
-  max-width: 460px !important;
+  flex: none !important;
+  width: 100% !important;
+  max-width: 720px !important;
+}
+
+.framer-13egh6p-container p {
+  text-align: center !important;
 }
 
 .automind-cta-calendar {
-  flex: 1 1 420px;
+  flex: none;
   width: 100%;
-  max-width: 460px;
+  max-width: 1120px;
   margin-top: 0;
 }
 
-@media (max-width: 809px) {
-  .framer-160c3k8 {
-    flex-direction: column !important;
-  }
-
+@media (max-width: 1023px) {
   .framer-13egh6p-container,
   .automind-cta-calendar {
     max-width: 100% !important;
@@ -109,11 +117,20 @@
 
 .automind-cal-inline {
   width: 100%;
-  min-height: 640px;
+  min-height: 480px;
   border-radius: 12px;
   overflow: hidden;
   background-color: #ffffff;
   box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.35);
+}
+
+/* Below ~1024px the embed itself isn't wide enough to switch to its
+   side-by-side layout (see note above), so it stacks internally and
+   needs the taller box again. */
+@media (max-width: 1023px) {
+  .automind-cal-inline {
+    min-height: 640px;
+  }
 }
 
 @media (max-width: 809px) {
