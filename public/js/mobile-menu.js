@@ -32,6 +32,9 @@
   })
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth >= 1440) close()
+    // Hamburger + overlay only apply in the 810-1439px tablet range now
+    // (mobile uses the sticky bottom icon bar instead) -- close on either
+    // side so it can't be left open while CSS hides the trigger button.
+    if (window.innerWidth >= 1440 || window.innerWidth < 810) close()
   })
 })()

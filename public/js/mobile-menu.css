@@ -81,13 +81,10 @@
   font-weight: 600;
 }
 
-/* Hamburger covers mobile AND tablet (up to the 1440px desktop breakpoint):
-   the full desktop nav row is too cramped at tablet widths (810-1439px) to
-   stay as inline links, so it collapses to the same menu as mobile. */
+/* Desktop nav row (inline links) doesn't fit below the 1440px breakpoint,
+   in either mobile or tablet -- hidden in favor of the hamburger (tablet)
+   or the sticky bottom icon bar (mobile, see bottom-nav.css). */
 @media (max-width: 1439.98px) {
-  .automind-hamburger {
-    display: flex;
-  }
   nav[name='Navber'] .framer-cyi9ch {
     display: none !important;
   }
@@ -96,7 +93,17 @@
   }
 }
 
-@media (min-width: 1440px) {
+/* Hamburger + slide-down menu: tablet only (810-1439px). There's enough
+   width there for a full-menu overlay; true mobile (<=809px) uses the
+   sticky bottom icon bar instead, which stays reachable without covering
+   the page with a full-screen menu. */
+@media (min-width: 810px) and (max-width: 1439.98px) {
+  .automind-hamburger {
+    display: flex;
+  }
+}
+
+@media (max-width: 809.98px), (min-width: 1440px) {
   .automind-mobile-menu {
     display: none !important;
   }
