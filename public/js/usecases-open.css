@@ -11,9 +11,9 @@
   transition: none !important;
 }
 
-/* .automind-usecase-card tripled (not a typo): this export's "Unframe
-   Interactivity Helper" fallback CSS lives in a <style> block placed AFTER
-   our stylesheet <link>s, with a rule `.framer-motion-fallback [style*=
+/* .automind-usecase-card tripled (not a typo): the static interactivity
+   helper's fallback CSS lives in a <style> block placed AFTER our
+   stylesheet <link>s, with a rule `.static-fallback [style*=
    "transform"] { transform: none !important }` — specificity (0,2,0) —
    matching any element whose inline style text contains "transform". Some
    of these cards already carry a leftover inline transform from Framer, so
