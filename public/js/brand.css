@@ -5,6 +5,17 @@
   z-index: 500;
 }
 
+/* Anchor nav targets (#feature, #works, #results, #faq, #contact): the sticky
+   header is a constant 73px tall at every breakpoint, so without this the
+   header covers the top of whichever section a nav link scrolls to. */
+#feature,
+#works,
+#results,
+#faq,
+#contact {
+  scroll-margin-top: 89px;
+}
+
 .framer-1bobvvz-container[data-framer-name="Navber"]::after {
   content: '';
   position: absolute;
