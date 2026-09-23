@@ -109,4 +109,30 @@
   if (overlay) {
     window.addEventListener('automind:loaded', measure, { once: true })
   }
+
+  // The card images are loading="lazy", so on an uncached visit they can
+  // still be downloading (or not yet requested at all, if their row starts
+  // below the browser's lazy-load threshold) well after the measurements
+  // above ran -- every one of those events fires at/near initial page load,
+  // none of them tied to when a *lazy* image actually finishes. Once such an
+  // image loads, its row's height/position changes and the previously
+  // captured dx/dy deltas go stale, so the open/close effect plays from the
+  // wrong starting point (this is the "works after a reload" bug: a reload
+  // serves the images from cache, fast enough that the race never shows).
+  // A ResizeObserver on each row catches that shift (and any other future
+  // cause of reflow) directly, instead of trying to enumerate every image.
+  if (window.ResizeObserver) {
+    var roTimer = null
+    var ro = new ResizeObserver(function () {
+      clearTimeout(roTimer)
+      roTimer = setTimeout(measure, 100)
+    })
+    rows.forEach(function (row) {
+      ro.observe(row.el)
+    })
+  } else {
+    cardWrap.querySelectorAll('img[loading="lazy"]').forEach(function (img) {
+      if (!img.complete) img.addEventListener('load', onResize, { once: true })
+    })
+  }
 })()
