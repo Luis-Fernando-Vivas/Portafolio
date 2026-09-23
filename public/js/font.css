@@ -1,0 +1,25 @@
+/* ---------- Site-wide typeface: Clash Display ---------- */
+/* Variable font (weights 200-700), self-hosted from /fonts. */
+@font-face {
+  font-family: 'Clash Display';
+  src: url(/fonts/ClashDisplay-Variable.ttf) format('truetype');
+  font-weight: 200 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Framer sets font-family per element -- through its text-preset classes,
+   the --framer-font-family custom property, and plain inline style=""
+   attributes -- so a normal body rule never reaches most of the text.
+   A universal !important rule beats all of those (inline styles without
+   !important included). The Cal.com widget lives in its own iframe and is
+   unaffected. */
+:root {
+  --framer-font-family: 'Clash Display', sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  font-family: 'Clash Display', sans-serif !important;
+}
