@@ -44,16 +44,29 @@
     }
   }
 
+  // CTA buttons that open the Cal.com booking popup keep href="#contact" as
+  // a plain fallback, but Cal's own embed script (cal-embed.js) binds its
+  // own click listener directly on data-cal-link elements to open the
+  // modal. That listener sits closer to the target than this one (which is
+  // on document, bubble phase) and can call stopPropagation before our
+  // listener ever runs -- so relying on a bubble-phase check here to block
+  // the native href jump is a race: whenever Cal's own preventDefault call
+  // doesn't win that race, the browser still falls through to the native
+  // anchor jump. Block it in the capture phase instead, which always runs
+  // before any bubble-phase (or same-target capture-less) listener on the
+  // element itself, so the native jump can never fire regardless of what
+  // Cal's script does downstream. This only calls preventDefault, so it
+  // doesn't stop Cal's own listener from still opening the modal.
+  document.addEventListener('click', function (e) {
+    var calTrigger = e.target.closest && e.target.closest('[data-cal-link]')
+    if (calTrigger) e.preventDefault()
+  }, true)
+
   // Every in-page nav link (header, mobile menu, footer) uses a bare
   // "#id" href — intercept those so they glide there instead of relying on
   // the browser's instant hash jump, and so href="#contact" etc. never
   // triggers a real navigation/reload.
   document.addEventListener('click', function (e) {
-    // CTA buttons that open the Cal.com booking popup keep href="#contact"
-    // as a plain fallback, but Cal's own embed script (cal-embed.js) binds
-    // its own click listener to data-cal-link elements to open the modal.
-    // Don't also hijack them here, or the page would both scroll AND pop
-    // the calendar open.
     var calTrigger = e.target.closest && e.target.closest('[data-cal-link]')
     if (calTrigger) return
 
