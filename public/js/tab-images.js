@@ -55,12 +55,20 @@
     { x: 90, y: -74, filter: 'grayscale(1) brightness(1.65) contrast(0.5)', z: 7 },
   ]
 
+  // Below the 1440px desktop breakpoint the "Images" box clips its own
+  // overflow (see tab-images.css) to avoid horizontal page scroll on tablet
+  // and mobile, so the peek offsets are scaled down to stay mostly inside
+  // the box instead of being cropped away entirely.
+  var isMobileStack = window.matchMedia('(max-width: 1439.98px)').matches
+  var STACK_SCALE = isMobileStack ? 0.35 : 1
+
   function applyStack() {
     var order = [activeIndex].concat(
       images.map(function (_, i) { return i }).filter(function (i) { return i !== activeIndex })
     )
     order.forEach(function (imgIndex, depth) {
-      var s = STACK[depth] || STACK[STACK.length - 1]
+      var base = STACK[depth] || STACK[STACK.length - 1]
+      var s = { x: base.x * STACK_SCALE, y: base.y * STACK_SCALE, filter: base.filter, z: base.z }
       var el = images[imgIndex]
       // Set via custom properties, not the transform property directly:
       // this export's "Unframe Interactivity Helper" fallback CSS
@@ -100,7 +108,12 @@
   var resizeTimer = null
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer)
-    resizeTimer = setTimeout(equalizeCardHeights, 150)
+    resizeTimer = setTimeout(function () {
+      isMobileStack = window.matchMedia('(max-width: 1439.98px)').matches
+      STACK_SCALE = isMobileStack ? 0.35 : 1
+      applyStack()
+      equalizeCardHeights()
+    }, 150)
   })
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(equalizeCardHeights)

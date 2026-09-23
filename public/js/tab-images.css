@@ -9,6 +9,26 @@
   overflow: visible !important;
 }
 
+/* The stacked-deck peek effect (see tab-images.js STACK offsets) needs open
+   overflow to show layers poking past the front card's edge. On mobile the
+   card is too narrow for that peek to fit on screen without causing
+   horizontal scroll, so the box clips it instead; tab-images.js also scales
+   the offsets down for this breakpoint so the clipped peek still reads. */
+@media (max-width: 1439.98px) {
+  [data-framer-name="Images"] {
+    overflow: hidden !important;
+    /* Below 1440px this element is a flex-basis:0 flex-grow:1 item inside a
+       column-direction flex parent with no explicit height, so its main-axis
+       size (height) resolves to a definite 0 instead of "auto" -- and
+       aspect-ratio only computes a size from the other definite axis (width)
+       when the axis being solved for is auto. Overriding flex-basis to auto
+       makes height auto again so aspect-ratio can apply, which is how the
+       entire product mockup image was collapsing to zero height and
+       disappearing on tablet/mobile. */
+    flex-basis: auto !important;
+  }
+}
+
 /* Pre-existing bug, unrelated to the tabs feature: this decorative corner-
    bracket graphic (aria-hidden, purely visual) and its wrapper have no
    pointer-events: none, so they silently swallow clicks on whatever sits
