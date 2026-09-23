@@ -32,6 +32,6 @@
   })
 
   window.addEventListener('resize', function () {
-    if (window.innerWidth >= 810) close()
+    if (window.innerWidth >= 1440) close()
   })
 })()

@@ -81,7 +81,10 @@
   font-weight: 600;
 }
 
-@media (max-width: 809px) {
+/* Hamburger covers mobile AND tablet (up to the 1440px desktop breakpoint):
+   the full desktop nav row is too cramped at tablet widths (810-1439px) to
+   stay as inline links, so it collapses to the same menu as mobile. */
+@media (max-width: 1439.98px) {
   .automind-hamburger {
     display: flex;
   }
@@ -93,7 +96,7 @@
   }
 }
 
-@media (min-width: 810px) {
+@media (min-width: 1440px) {
   .automind-mobile-menu {
     display: none !important;
   }
