@@ -234,6 +234,14 @@
     max-width: 100% !important;
   }
 
+  /* The "Text" block (heading + intro paragraph) and "Cards" sit in a
+     column with a base gap of 70px, sized for the roomy desktop layout --
+     on mobile that alone pushed the card list almost a full screen below
+     the intro paragraph. */
+  .framer-riffr9 {
+    gap: 20px !important;
+  }
+
   /* "Un solo sistema" tab cards (Sitios a medida / Integraciones /
      Automatización / Visibilidad en tiempo real): frozen in Framer's
      desktop 2x2 grid (see the flex/column variant rules above this file's
@@ -263,14 +271,54 @@
     min-height: 0 !important;
     padding: 14px 16px !important;
     gap: 6px !important;
+    align-items: center !important;
+  }
+
+  [data-framer-name="Cards"] .framer-186wxjb {
+    align-items: center !important;
+  }
+
+  [data-framer-name="Cards"] .framer-1orppa9,
+  [data-framer-name="Cards"] .framer-1orppa9 p,
+  [data-framer-name="Cards"] .framer-1n19wfh,
+  [data-framer-name="Cards"] .framer-1n19wfh p {
+    text-align: center !important;
   }
 
   [data-framer-name="Cards"] .framer-1n19wfh {
     max-width: 100% !important;
   }
 
-  [data-framer-name="Cards"] .framer-cZR4n[data-framer-name="Non Active"] .framer-1n19wfh {
-    display: none !important;
+  /* Expand/collapse the description with an animated reveal instead of a
+     flat display:none/block cut -- height (via grid-template-rows, the
+     standard trick for animating to/from an intrinsic "auto" height) plus
+     a fade and a slight upward settle so switching cards feels like a
+     deliberate reveal, not a jump cut. The row wrapper drives the height
+     animation; the inner element (grid's 1fr child, needs min-height:0 to
+     actually shrink to 0 instead of clamping to its content) drives the
+     fade/slide so text doesn't get squashed while collapsing. */
+  [data-framer-name="Cards"] .framer-1n19wfh {
+    display: grid !important;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-framer-name="Cards"] .framer-cZR4n[data-framer-name="Active"] .framer-1n19wfh {
+    grid-template-rows: 1fr;
+  }
+
+  [data-framer-name="Cards"] .framer-1n19wfh > p {
+    min-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  [data-framer-name="Cards"] .framer-cZR4n[data-framer-name="Active"] .framer-1n19wfh > p {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.35s ease 0.15s, transform 0.4s cubic-bezier(0.22, 1, 0.36, 1) 0.15s;
   }
 
   /* FAQ questions are uppercase at 18px, sized for the desktop-width card —
