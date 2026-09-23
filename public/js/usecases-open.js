@@ -46,7 +46,25 @@
       var centerX = rowRect.left + rowRect.width / 2
       var centerY = rowRect.top + rowRect.height / 2
       row.deltas = row.cards.map(function (card) {
+        // getBoundingClientRect() reflects the card's current *painted*
+        // position, which already includes whatever --uc-tx/--uc-ty this
+        // same effect applied on an earlier frame. Measuring while mid-
+        // animation (the ResizeObserver below can fire well after scroll
+        // has started, e.g. once a late lazy image finishes loading) would
+        // read that already-offset position as if it were the card's rest
+        // position, permanently corrupting the delta for that card. Zero
+        // the transform out for the instant of the read, then restore it --
+        // this all happens synchronously before the browser paints, so
+        // there's nothing to see.
+        var prevTx = card.style.getPropertyValue('--uc-tx')
+        var prevTy = card.style.getPropertyValue('--uc-ty')
+        card.style.setProperty('--uc-tx', '0px')
+        card.style.setProperty('--uc-ty', '0px')
         var r = card.getBoundingClientRect()
+        if (prevTx) card.style.setProperty('--uc-tx', prevTx)
+        else card.style.removeProperty('--uc-tx')
+        if (prevTy) card.style.setProperty('--uc-ty', prevTy)
+        else card.style.removeProperty('--uc-ty')
         return {
           dx: centerX - (r.left + r.width / 2),
           dy: centerY - (r.top + r.height / 2),
