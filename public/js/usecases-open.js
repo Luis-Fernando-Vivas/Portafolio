@@ -53,10 +53,17 @@
       return acc.concat(row.cards)
     }, [])
     var SLIDE = 48
+    // Each card's own entrance side is fixed by its index (alternating),
+    // not re-randomized -- hide() needs to know which sign to go back to
+    // every time the card scrolls back out, on either the desktop-like
+    // "loop every time it crosses into/out of view" behavior requested
+    // here, not just a one-shot reveal.
+    var offsetFor = allCards.map(function (_, i) {
+      return i % 2 === 0 ? SLIDE : -SLIDE
+    })
 
-    allCards.forEach(function (card, i) {
-      var fromRight = i % 2 === 0
-      card.style.setProperty('--uc-tx', (fromRight ? SLIDE : -SLIDE) + 'px')
+    function hide(card, offset) {
+      card.style.setProperty('--uc-tx', offset + 'px')
       card.style.setProperty('--uc-ty', '0px')
       // Not card.style.opacity: the static interactivity helper's fallback
       // stylesheet force-resets any inline style whose text contains
@@ -65,24 +72,32 @@
       // route it through the --uc-op custom property instead, which
       // usecases-open.css reads into the real opacity.
       card.style.setProperty('--uc-op', '0')
-    })
+    }
 
     function reveal(card) {
       card.style.setProperty('--uc-tx', '0px')
       card.style.setProperty('--uc-op', '1')
     }
 
+    allCards.forEach(function (card, i) {
+      hide(card, offsetFor[i])
+    })
+
     if (!window.IntersectionObserver) {
       allCards.forEach(reveal)
       return
     }
 
+    // Toggles both ways (not a one-shot unobserve-after-first-reveal), so
+    // scrolling a card out of view and back in replays the same slide+fade
+    // every time -- matching how the desktop row-converge effect is always
+    // tied live to scroll position, in either direction.
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
-          if (!entry.isIntersecting) return
-          reveal(entry.target)
-          io.unobserve(entry.target)
+          var index = allCards.indexOf(entry.target)
+          if (entry.isIntersecting) reveal(entry.target)
+          else hide(entry.target, offsetFor[index])
         })
       },
       { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
