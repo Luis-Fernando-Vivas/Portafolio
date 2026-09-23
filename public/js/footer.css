@@ -1,0 +1,272 @@
+/* ---------- Footer (custom, replaces the Framer template export) ---------- */
+.automind-footer {
+  /* The page's top-level sections are children of a flex column and are
+     positioned purely via CSS `order` (see .framer-FmuLY rules), not DOM
+     order — without an explicit order this defaults to 0 and the footer
+     floats in the middle of the page instead of at the end. Also needs an
+     explicit full width: that flex container centers items and sizes them
+     to content otherwise. */
+  order: 9999;
+  width: 100%;
+  position: relative;
+  background-color: #0a0a0a;
+  color: #d6d6d6;
+  padding: 72px 24px 32px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Brand accent glow, echoes the gradient used on the nav's scroll indicator
+   and the CTA headline, so the footer reads as part of the same system
+   instead of a plain dark box tacked on the end. */
+.automind-footer::before {
+  content: '';
+  position: absolute;
+  top: -160px;
+  left: 50%;
+  width: 640px;
+  height: 320px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(0, 143, 177, 0.28), transparent);
+  pointer-events: none;
+}
+
+.automind-footer__inner {
+  position: relative;
+  max-width: 1160px;
+  margin: 0 auto;
+}
+
+.automind-footer__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 56px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.automind-footer__brand {
+  flex: 1 1 300px;
+  max-width: 380px;
+}
+
+.automind-footer__logo {
+  display: inline-block;
+}
+
+.automind-footer__logo img {
+  display: block;
+  width: 140px;
+  height: auto;
+}
+
+.automind-footer__tagline {
+  margin: 20px 0 0;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #9a9a9a;
+}
+
+.automind-footer__nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin: 24px 0 0;
+}
+
+/* Same animated gradient-underline hover as the header nav links (see
+   brand.css "Header nav link hover") so the footer menu reads as the same
+   component, not a lookalike built a different way. */
+.automind-footer__nav a {
+  position: relative;
+  padding-bottom: 3px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #d6d6d6;
+  text-decoration: none;
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+.automind-footer__nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0%;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #008fb1, #24d3ef);
+  box-shadow: 0 0 10px rgba(36, 211, 239, 0.7);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.automind-footer__nav a:hover,
+.automind-footer__nav a:focus-visible {
+  color: #24d3ef;
+  transform: translateY(-1px);
+}
+
+.automind-footer__nav a:hover::after,
+.automind-footer__nav a:focus-visible::after {
+  width: 100%;
+}
+
+.automind-footer__social {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+/* App-icon style buttons: a rounded "squircle" with a solid brand gradient
+   per network, echoing how the icons look on gifted-cake-179308.framer.app
+   (an original glyph and gradient here, not that reference's actual logo
+   artwork) — plus a bouncy lift on hover instead of a flat opacity/color
+   swap, using an overshoot easing curve so it visibly "jumps". */
+.automind-footer__social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  color: #ffffff;
+  box-shadow: 0 8px 16px -8px rgba(0, 0, 0, 0.55);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+.automind-footer__social a:hover,
+.automind-footer__social a:focus-visible {
+  transform: translateY(-6px) scale(1.06);
+  filter: brightness(1.08) saturate(0.9);
+  box-shadow: 0 16px 26px -10px rgba(0, 0, 0, 0.6);
+}
+
+.automind-footer__social a[aria-label="Instagram"] {
+  background: linear-gradient(135deg, #6a3bd0 0%, #d0368a 45%, #f5a623 100%);
+}
+
+.automind-footer__social a[aria-label="WhatsApp"] {
+  background: linear-gradient(135deg, #2bd66b, #12a85a);
+}
+
+.automind-footer__social svg {
+  width: 21px;
+  height: 21px;
+}
+
+/* Icons are inlined by hand (not the Framer-exported sprite, whose paths
+   hardcode a washed-out `fill="#008FB1" fill-opacity="0.6"` that ignored
+   button state entirely) specifically so they can inherit currentColor and
+   react to hover/focus like real buttons. .automind-icon-stroke draws an
+   outline glyph (Instagram); a CSS `fill` rule on <svg> beats a `fill`
+   presentation attribute on the same element even from an external
+   stylesheet, so fill/stroke must be set here rather than as SVG attributes
+   for it to stick. automind-icon-fill is a solid glyph (WhatsApp), which
+   only needs currentColor. */
+.automind-icon-stroke {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.automind-icon-stroke .automind-icon-dot {
+  fill: currentColor;
+  stroke: none;
+}
+
+.automind-icon-fill {
+  fill: currentColor;
+}
+
+.automind-footer__instagram {
+  flex: 1 1 320px;
+  max-width: 400px;
+}
+
+.automind-footer__heading {
+  margin: 0 0 16px;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: #ffffff;
+}
+
+.automind-footer__ig-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.automind-footer__ig-item {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 8px 20px -12px rgba(0, 0, 0, 0.6);
+}
+
+.automind-footer__ig-item img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.35s ease, filter 0.35s ease;
+}
+
+.automind-footer__ig-item:hover img {
+  transform: scale(1.1);
+  filter: brightness(0.75);
+}
+
+.automind-footer__ig-link {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #24d3ef;
+  text-decoration: none;
+}
+
+.automind-footer__ig-link:hover {
+  text-decoration: underline;
+}
+
+.automind-footer__bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 24px;
+}
+
+.automind-footer__bottom p {
+  margin: 0;
+  font-size: 13px;
+  color: #6b6b6b;
+}
+
+@media (max-width: 809px) {
+  .automind-footer {
+    padding: 56px 20px 24px;
+  }
+
+  .automind-footer__top {
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .automind-footer__brand,
+  .automind-footer__instagram {
+    max-width: 100%;
+  }
+
+  .automind-footer__ig-grid {
+    max-width: 320px;
+  }
+}

@@ -56,12 +56,30 @@
 }
 
 .automind-faq-answer {
-  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  /* Text Wrap's flex "gap" reserves its 16px between the question and the
+     answer even while the answer is collapsed to 0 height, so the bottom of
+     a closed row always had 16px more breathing room than the top. Kill the
+     gap by default and only bring it back (as margin-top on the answer,
+     which flex gap doesn't add when there's nothing after it) once open. */
+  margin-top: 0;
+  transition: max-height 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.3s ease, transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+    margin-top 0.35s cubic-bezier(0.22, 1, 0.36, 1);
   transform: translateY(-6px);
 }
 
 .automind-faq-open .automind-faq-answer {
+  margin-top: 16px;
   transform: translateY(0);
+}
+
+/* A handful of these paragraphs came from the export centered instead of
+   left-aligned like the rest. */
+.automind-faq-answer p {
+  text-align: left !important;
+}
+
+.framer-cpl5hy {
+  gap: 0 !important;
 }
 
 /* The left column only had a title + one-line subtitle, leaving a lot of

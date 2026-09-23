@@ -1,0 +1,89 @@
+(function () {
+  // A few sections (Resultados, Preguntas frecuentes, the closing CTA) never
+  // got a stable id in the export, and some live inside multiple
+  // responsive-variant copies — so instead of guessing at a specific class
+  // name in the static markup, find each one by its heading text at runtime
+  // and walk up to the nearest element that looks like a real section
+  // (matches the same "*Section" / "Content" naming reveal.js already
+  // relies on), then tag that with the id.
+  function findSectionFor(headingText) {
+    var heading = Array.prototype.slice.call(document.querySelectorAll('p')).find(function (p) {
+      return p.textContent.indexOf(headingText) !== -1
+    })
+    if (!heading) return null
+    var el = heading
+    for (var i = 0; i < 14 && el; i++) {
+      var name = el.getAttribute && el.getAttribute('data-framer-name')
+      if (name && (/Section$/.test(name) || name === 'Content')) return el
+      el = el.parentElement
+    }
+    return null
+  }
+
+  var idMap = {
+    results: 'Resultados que se notan',
+    faq: 'Preguntas frecuentes',
+    contact: '¿Listo para que tu negocio trabaje',
+  }
+  Object.keys(idMap).forEach(function (id) {
+    if (document.getElementById(id)) return
+    var el = findSectionFor(idMap[id])
+    if (el) el.id = id
+  })
+
+  function getHeaderOffset() {
+    var nav = document.querySelector('[data-framer-name="Navber"]')
+    return (nav ? nav.offsetHeight : 0) + 16
+  }
+
+  function scrollToTarget(top) {
+    if (window.lenis) {
+      window.lenis.scrollTo(top, { duration: 1.2 })
+    } else {
+      window.scrollTo({ top: top, behavior: 'smooth' })
+    }
+  }
+
+  // Every in-page nav link (header, mobile menu, footer) uses a bare
+  // "#id" href — intercept those so they glide there instead of relying on
+  // the browser's instant hash jump, and so href="#contact" etc. never
+  // triggers a real navigation/reload.
+  document.addEventListener('click', function (e) {
+    // CTA buttons that open the Cal.com booking popup keep href="#contact"
+    // as a plain fallback, but Cal's own embed script (cal-embed.js) binds
+    // its own click listener to data-cal-link elements to open the modal.
+    // Don't also hijack them here, or the page would both scroll AND pop
+    // the calendar open.
+    var calTrigger = e.target.closest && e.target.closest('[data-cal-link]')
+    if (calTrigger) return
+
+    var scrollButton = e.target.closest && e.target.closest('[data-scroll-target]')
+    if (scrollButton) {
+      e.preventDefault()
+      var scrollHash = scrollButton.getAttribute('data-scroll-target').slice(1)
+      var scrollTargetEl = document.getElementById(scrollHash)
+      if (!scrollTargetEl) return
+      var scrollTop = scrollTargetEl.getBoundingClientRect().top + window.pageYOffset - getHeaderOffset()
+      scrollToTarget(Math.max(0, scrollTop))
+      history.pushState(null, '', '#' + scrollHash)
+      return
+    }
+
+    var link = e.target.closest && e.target.closest('a[href^="#"]')
+    if (!link) return
+    var hash = link.getAttribute('href').slice(1)
+    e.preventDefault()
+
+    var top
+    if (!hash) {
+      top = 0
+    } else {
+      var target = document.getElementById(hash)
+      if (!target) return
+      top = target.getBoundingClientRect().top + window.pageYOffset - getHeaderOffset()
+    }
+    scrollToTarget(Math.max(0, top))
+    if (hash) history.pushState(null, '', '#' + hash)
+    else history.pushState(null, '', location.pathname + location.search)
+  })
+})()

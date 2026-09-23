@@ -9,6 +9,8 @@
         return Math.min(1, 1.001 - Math.pow(2, -10 * t))
       }
     })
+    window.lenis = lenis
+    document.dispatchEvent(new CustomEvent('automind:lenis-ready'))
 
     function raf(time) {
       lenis.raf(time)

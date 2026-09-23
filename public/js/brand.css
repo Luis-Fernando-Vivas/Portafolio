@@ -26,23 +26,138 @@
 
 .framer-1bobvvz-container[data-framer-name="Navber"] nav[name="Navber"] {
   transition: box-shadow 0.4s ease, background-color 0.4s ease;
+  background-color: #0a0a0a !important;
+  --border-color: rgba(255, 255, 255, 0.1) !important;
 }
 
 .framer-1bobvvz-container[data-framer-name="Navber"].automind-nav-scrolled nav[name="Navber"] {
-  box-shadow: 0 12px 32px -14px rgba(0, 143, 177, 0.45);
-  background-color: rgba(252, 252, 252, 0.86) !important;
+  box-shadow: 0 12px 32px -14px rgba(0, 143, 177, 0.55);
+  background-color: rgba(10, 10, 10, 0.86) !important;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
 }
 
-/* ---------- Brand accents ---------- */
-.framer-8g6fkf {
-  background-color: #008fb1 !important;
+/* Header text/button contrast against the new black bar. */
+[data-framer-name="Navber"] [data-framer-name="Nav Link Group"] p {
+  color: rgb(214, 214, 214) !important;
 }
 
+[data-framer-name="Navber"] #automind-cta {
+  background-color: #ffffff !important;
+}
+
+[data-framer-name="Navber"] #automind-cta p {
+  color: #0a0a0a !important;
+}
+
+/* ---------- Closing CTA: Cal.com inline calendar ---------- */
+/* Replaces the old "Empezar / Ver servicios" buttons in the final
+   "¿Listo para que tu negocio..." section — the wrapper keeps the original
+   data-framer-name="Buttons" element but drops the framer-mgzzui class (its
+   flex-row/min-content sizing was built for two small buttons, not a full
+   calendar), so this fully controls its own layout instead. */
+/* This column used to stack a headline above two small buttons, next to a
+   separate decorative filler image column (removed above — a calendar and
+   a stock photo side by side made no sense). Turn it into the two-column
+   layout instead: headline on the left, calendar on the right, each given
+   their own flex-basis so they share the row evenly. */
+/* The row's grandparent (data-framer-name="Text wrap") still carries
+   Framer's old max-width:768px/place-content:flex-start, sized for the
+   narrower headline-only column that used to sit beside the (now removed)
+   filler image. That capped this wider text+calendar row and stuck it to
+   the left edge, leaving a dead gap on the right — lift the cap and center
+   the row in the full section width instead. */
+.framer-17z5g5a {
+  place-content: center !important;
+}
+
+.framer-gfp89s {
+  max-width: none !important;
+}
+
+.framer-160c3k8 {
+  flex-direction: row !important;
+  align-items: flex-start !important;
+  max-width: 1040px !important;
+  width: 100% !important;
+  gap: 48px !important;
+  margin: 0 auto !important;
+}
+
+.framer-13egh6p-container {
+  flex: 1 1 380px !important;
+  max-width: 460px !important;
+}
+
+.automind-cta-calendar {
+  flex: 1 1 420px;
+  width: 100%;
+  max-width: 460px;
+  margin-top: 0;
+}
+
+@media (max-width: 809px) {
+  .framer-160c3k8 {
+    flex-direction: column !important;
+  }
+
+  .framer-13egh6p-container,
+  .automind-cta-calendar {
+    max-width: 100% !important;
+  }
+}
+
+.automind-cal-inline {
+  width: 100%;
+  min-height: 640px;
+  border-radius: 12px;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 0 20px 50px -24px rgba(0, 0, 0, 0.35);
+}
+
+@media (max-width: 809px) {
+  .automind-cal-inline {
+    min-height: 560px;
+  }
+}
+
+/* ---------- Brand accents ---------- */
 .framer-c60hpo,
 .framer-4uv8s8 {
   background-color: #008fb1 !important;
+}
+
+/* ---------- Header nav link hover ---------- */
+/* Each nav link ships with a "Line decoration" bar meant to grow from 0 to
+   100% width on hover — but that only ever happens through a `.hover` class
+   Framer's own runtime JS used to toggle on mouseenter, which this static
+   export doesn't have, so the animation never fired. Drive it with a real
+   :hover/:focus-visible rule instead, and turn it into a glowing brand-
+   gradient underline plus a matching text color shift so the header menu
+   gets a proper, on-brand hover effect. */
+[data-framer-name="Navber"] .framer-8g6fkf {
+  height: 2px !important;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #008fb1, #24d3ef) !important;
+  box-shadow: 0 0 10px rgba(36, 211, 239, 0.7);
+  transition: width 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-framer-name="Navber"] [data-framer-name="Nav Link"] p {
+  transition: color 0.25s ease, transform 0.25s ease;
+  display: inline-block;
+}
+
+[data-framer-name="Navber"] [data-framer-name="Nav Link"]:hover p,
+[data-framer-name="Navber"] [data-framer-name="Nav Link"]:focus-visible p {
+  color: #24d3ef !important;
+  transform: translateY(-1px);
+}
+
+[data-framer-name="Navber"] [data-framer-name="Nav Link"]:hover .framer-8g6fkf,
+[data-framer-name="Navber"] [data-framer-name="Nav Link"]:focus-visible .framer-8g6fkf {
+  width: 100% !important;
 }
 
 /* ---------- Use cases heading: balance into two even lines ---------- */
@@ -71,6 +186,45 @@
 @media (prefers-reduced-motion: reduce) {
   .automind-ticker-track.automind-ticker-animate {
     animation: none;
+  }
+}
+
+/* ---------- Responsive fixes ---------- */
+@media (max-width: 809px) {
+  /* "Un solo sistema" (Servicios/Integraciones/... tabs) side-by-side with
+     its image stack: Framer normally swaps this to a stacked layout via a
+     JS-driven variant class at narrow widths, which this static export
+     can't do — it froze in the desktop row variant. Force the stack. */
+  .framer-ZmtpW.framer-187vptf {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 40px !important;
+  }
+
+  .framer-ZmtpW.framer-187vptf > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* FAQ questions are uppercase at 18px, sized for the desktop-width card —
+     on a narrow phone card that's wide enough to force ugly mid-word line
+     breaks. Shrink it so it wraps on word boundaries instead. */
+  .framer-kKgxV .framer-styles-preset-10zronu {
+    font-size: 15px !important;
+  }
+
+  /* Same frozen-desktop-row issue as the sections above: the FAQ intro
+     column and the question list were stuck side by side, squeezing both
+     into unusably narrow slivers. */
+  .framer-shwzx1 {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 32px !important;
+  }
+
+  .framer-shwzx1 > div {
+    width: 100% !important;
+    max-width: 100% !important;
   }
 }
 
