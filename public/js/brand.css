@@ -280,5 +280,54 @@
     padding: 24px 16px !important;
     box-sizing: border-box !important;
   }
+
+  /* Section titles ("Un solo sistema...", "Automatiza cada...", "Resultados
+     que se notan", "Preguntas frecuentes", the closing CTA heading): unlike
+     the hero <h1>, which uses Framer's responsive text-preset class and
+     correctly scales down (56px -> 30px here), these five are built as a
+     plain <p style="font-size:56px..."> with no responsive variant at all
+     -- scroll-fill-headings.js targets that exact inline-style signature to
+     wrap them for its letter-color animation, which is how this selector
+     stays scoped to just these titles. Match the hero's mobile size. */
+  p[style*="font-family:Space Grotesk"] {
+    font-size: 30px !important;
+    line-height: 1.05 !important;
+    letter-spacing: -0.04em !important;
+  }
+
+  /* Hero buttons ("Empezar" / "Ver servicios"): stack of an auto-width pill
+     next to a near-full-width bar looked lopsided. Put them side by side,
+     evenly split. flex-grow alone doesn't split these two evenly -- they
+     sit in different points of the ssr-variant/display:contents chain, so
+     explicit calc() widths are used instead of relying on flex-basis math. */
+  .framer-1lirvy4 {
+    flex-direction: row !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  .framer-1lirvy4 .framer-5bbrmb-container {
+    flex: 0 0 calc(50% - 5px) !important;
+    width: calc(50% - 5px) !important;
+    max-width: calc(50% - 5px) !important;
+    min-width: 0 !important;
+  }
+
+  .framer-1lirvy4 .framer-5bbrmb-container a {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .framer-1lirvy4 > button.framer-13n76yv {
+    flex: 0 0 calc(50% - 5px) !important;
+    width: calc(50% - 5px) !important;
+    max-width: calc(50% - 5px) !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .framer-1lirvy4 p {
+    font-size: 16px !important;
+  }
 }
 
