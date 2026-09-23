@@ -23,10 +23,36 @@
 .automind-usecase-card.automind-usecase-card.automind-usecase-card {
   --uc-tx: 0px;
   --uc-ty: 0px;
+  --uc-op: 1;
   transform: translate(var(--uc-tx), var(--uc-ty)) !important;
+  /* The mobile reveal (initMobileReveal in usecases-open.js) also needs to
+     start these cards invisible, but setting `opacity: 0` inline doesn't
+     work here: the static interactivity helper's fallback stylesheet (see
+     the transform note below) has a matching rule for any element whose
+     style attribute text contains "opacity: 0", forcing it back to 1
+     permanently. Route it through a custom property instead -- same dodge
+     as --uc-tx/--uc-ty, since custom property names don't match that
+     substring check. */
+  opacity: var(--uc-op) !important;
   filter: none !important;
   /* Scroll-scrubbed: usecases-open.js recomputes these vars on every scroll
      frame, so the position should track the scroll 1:1 with no transition —
      adding one here would make the cards visibly lag behind the scroll. */
   transition: none !important;
+}
+
+/* Mobile takes a different path in usecases-open.js (initMobileReveal): one
+   IntersectionObserver-triggered reveal per card instead of a continuous
+   scroll-scrubbed position, so unlike the desktop rule above it wants an
+   actual eased transition to animate the slide-in + fade. */
+@media (max-width: 809.98px) {
+  .automind-usecase-card.automind-usecase-card.automind-usecase-card {
+    transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s ease !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .automind-usecase-card.automind-usecase-card.automind-usecase-card {
+    transition: none !important;
+  }
 }

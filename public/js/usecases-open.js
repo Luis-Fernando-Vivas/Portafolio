@@ -33,6 +33,65 @@
     })
   if (!rows.length) return
 
+  // On mobile the cards stack into a single column (see brand.css), so the
+  // "rows close in toward their own center" effect above -- built for the
+  // desktop/tablet 2-and-3-per-row grid -- has nothing to converge: a lone
+  // card in a "row" is already at its row's center, so dx/dy always came
+  // out ~0 and it never visibly moved. Framer's original design (still
+  // sitting unused in each card's own inline transform, see below) instead
+  // slides each card in individually from alternating sides as it scrolls
+  // into view -- closer to the source design's intent, and one that
+  // actually reads as motion with only one card per row.
+  var isMobile = window.matchMedia('(max-width: 809.98px)').matches
+  if (isMobile) {
+    initMobileReveal()
+    return
+  }
+
+  function initMobileReveal() {
+    var allCards = rows.reduce(function (acc, row) {
+      return acc.concat(row.cards)
+    }, [])
+    var SLIDE = 48
+
+    allCards.forEach(function (card, i) {
+      var fromRight = i % 2 === 0
+      card.style.setProperty('--uc-tx', (fromRight ? SLIDE : -SLIDE) + 'px')
+      card.style.setProperty('--uc-ty', '0px')
+      // Not card.style.opacity: the static interactivity helper's fallback
+      // stylesheet force-resets any inline style whose text contains
+      // "opacity: 0" back to 1 (same substring-match issue as --uc-tx vs.
+      // a literal `transform:` inline style elsewhere in this file) --
+      // route it through the --uc-op custom property instead, which
+      // usecases-open.css reads into the real opacity.
+      card.style.setProperty('--uc-op', '0')
+    })
+
+    function reveal(card) {
+      card.style.setProperty('--uc-tx', '0px')
+      card.style.setProperty('--uc-op', '1')
+    }
+
+    if (!window.IntersectionObserver) {
+      allCards.forEach(reveal)
+      return
+    }
+
+    var io = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return
+          reveal(entry.target)
+          io.unobserve(entry.target)
+        })
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -10% 0px' }
+    )
+    allCards.forEach(function (card) {
+      io.observe(card)
+    })
+  }
+
   function clamp(v, a, b) {
     return Math.max(a, Math.min(b, v))
   }
