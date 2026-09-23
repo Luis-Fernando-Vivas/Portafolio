@@ -242,6 +242,16 @@
     gap: 20px !important;
   }
 
+  /* Center the section heading + intro paragraph (not the card content --
+     the cards themselves stay left-aligned list items). */
+  .framer-1b3l8tz {
+    align-items: center !important;
+  }
+
+  .framer-1b3l8tz p {
+    text-align: center !important;
+  }
+
   /* "Un solo sistema" tab cards (Sitios a medida / Integraciones /
      Automatización / Visibilidad en tiempo real): frozen in Framer's
      desktop 2x2 grid (see the flex/column variant rules above this file's
@@ -271,18 +281,6 @@
     min-height: 0 !important;
     padding: 14px 16px !important;
     gap: 6px !important;
-    align-items: center !important;
-  }
-
-  [data-framer-name="Cards"] .framer-186wxjb {
-    align-items: center !important;
-  }
-
-  [data-framer-name="Cards"] .framer-1orppa9,
-  [data-framer-name="Cards"] .framer-1orppa9 p,
-  [data-framer-name="Cards"] .framer-1n19wfh,
-  [data-framer-name="Cards"] .framer-1n19wfh p {
-    text-align: center !important;
   }
 
   [data-framer-name="Cards"] .framer-1n19wfh {

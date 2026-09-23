@@ -58,9 +58,19 @@
   // Below the 1440px desktop breakpoint the "Images" box clips its own
   // overflow (see tab-images.css) to avoid horizontal page scroll on tablet
   // and mobile, so the peek offsets are scaled down to stay mostly inside
-  // the box instead of being cropped away entirely.
-  var isMobileStack = window.matchMedia('(max-width: 1439.98px)').matches
-  var STACK_SCALE = isMobileStack ? 0.35 : 1
+  // the box instead of being cropped away entirely. The active (front)
+  // layer never moves (STACK[0] is {x:0,y:0}), so this only affects the
+  // grayed-out layers behind it -- but on true mobile the box itself is
+  // much narrower than on tablet, with almost no slack around the
+  // object-fit:contain image before it touches the box edges, so even the
+  // 0.35 tablet scale pushed the back layer's corner past the clip
+  // boundary as a hard, flat-looking cut. Mobile gets its own smaller scale.
+  function getStackScale() {
+    if (window.matchMedia('(max-width: 809.98px)').matches) return 0.16
+    if (window.matchMedia('(max-width: 1439.98px)').matches) return 0.35
+    return 1
+  }
+  var STACK_SCALE = getStackScale()
 
   function applyStack() {
     var order = [activeIndex].concat(
@@ -109,8 +119,7 @@
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer)
     resizeTimer = setTimeout(function () {
-      isMobileStack = window.matchMedia('(max-width: 1439.98px)').matches
-      STACK_SCALE = isMobileStack ? 0.35 : 1
+      STACK_SCALE = getStackScale()
       applyStack()
       equalizeCardHeights()
     }, 150)
@@ -216,14 +225,19 @@
     // sits in the stack — a little preview nudge, independent of the stack
     // ordering itself. It also pauses the autoplay clock so it doesn't
     // advance out from under someone who's looking at a specific card.
-    card.addEventListener('mouseenter', function () {
-      images[index].style.setProperty('--automind-tab-hover', '-14px')
-      pauseCycle()
-    })
-    card.addEventListener('mouseleave', function () {
-      images[index].style.setProperty('--automind-tab-hover', '0px')
-      resumeCycle()
-    })
+    // Touch devices fire mouseenter on tap but never a matching mouseleave
+    // (there's no pointer to "leave" with), so the image was getting stuck
+    // lifted after every tap -- only wire this up where real hover exists.
+    if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+      card.addEventListener('mouseenter', function () {
+        images[index].style.setProperty('--automind-tab-hover', '-14px')
+        pauseCycle()
+      })
+      card.addEventListener('mouseleave', function () {
+        images[index].style.setProperty('--automind-tab-hover', '0px')
+        resumeCycle()
+      })
+    }
   })
 
   startCycle()
