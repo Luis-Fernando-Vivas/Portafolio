@@ -234,6 +234,45 @@
     max-width: 100% !important;
   }
 
+  /* "Un solo sistema" tab cards (Sitios a medida / Integraciones /
+     Automatización / Visibilidad en tiempo real): frozen in Framer's
+     desktop 2x2 grid (see the flex/column variant rules above this file's
+     class-hash system never activates on this static export), which
+     squeezed each card into a ~140px-wide cell and wrapped every
+     description into an unreadable ladder of single words. Turn it into a
+     single-column accordion instead -- full-width rows, description
+     hidden unless the row is the active one (tab-images.js already toggles
+     data-framer-name="Active"/"Non Active" per card on click/autoplay, so
+     this only needs to key off that same attribute). */
+  [data-framer-name="Cards"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  /* tab-images.js's equalizeCardHeights() pins every card's inline
+     min-height to the tallest one, so all 4 read as the same size in the
+     desktop grid regardless of description length -- on this mobile
+     single-column layout that tallest card is always the expanded active
+     one, so every collapsed card was left with dead blank space below its
+     title to match. !important here beats that inline style (the one
+     inline-vs-stylesheet case where !important always wins), letting each
+     collapsed card size to just its own title. */
+  [data-framer-name="Cards"] .framer-cZR4n {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 14px 16px !important;
+    gap: 6px !important;
+  }
+
+  [data-framer-name="Cards"] .framer-1n19wfh {
+    max-width: 100% !important;
+  }
+
+  [data-framer-name="Cards"] .framer-cZR4n[data-framer-name="Non Active"] .framer-1n19wfh {
+    display: none !important;
+  }
+
   /* FAQ questions are uppercase at 18px, sized for the desktop-width card —
      on a narrow phone card that's wide enough to force ugly mid-word line
      breaks. Shrink it so it wraps on word boundaries instead. */
