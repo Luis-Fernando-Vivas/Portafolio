@@ -203,6 +203,25 @@
   }
 }
 
+/* ---------- Hero "Ver servicios" button ---------- */
+/* Drop the play icon and give the button a solid black border + label
+   instead of the template's light-gray ones. The label color also has to
+   beat rolling-button.js, which copies the original (gray) computed color
+   inline onto its .automind-roll-line spans. */
+.framer-1lirvy4 .framer-13n76yv .framer-duyxcd {
+  display: none !important;
+}
+
+.framer-1lirvy4 .framer-13n76yv {
+  --border-color: rgb(26, 26, 26) !important;
+}
+
+.framer-1lirvy4 .framer-13n76yv p,
+.framer-1lirvy4 .framer-13n76yv .automind-roll-line {
+  color: rgb(26, 26, 26) !important;
+  --framer-text-color: rgb(26, 26, 26) !important;
+}
+
 /* ---------- Brand accents ---------- */
 .framer-c60hpo,
 .framer-4uv8s8 {

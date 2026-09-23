@@ -23,3 +23,14 @@
 *::after {
   font-family: 'Clash Display', sans-serif !important;
 }
+
+/* The hero <h1>'s mobile text preset uses letter-spacing: -0.07em (tuned
+   for Space Grotesk); with Clash Display's tighter default spacing that
+   mashes the letters together. hero-blur-reveal.js wraps each word in its
+   own span, which inherits this from the h1. */
+@media (max-width: 809px) {
+  h1.framer-styles-preset-1hexgp2 {
+    --framer-letter-spacing: -0.01em !important;
+    letter-spacing: -0.01em !important;
+  }
+}
