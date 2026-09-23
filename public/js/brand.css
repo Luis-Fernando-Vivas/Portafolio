@@ -243,5 +243,31 @@
     width: 100% !important;
     max-width: 100% !important;
   }
+
+  /* Results counters ("40+ / 12 / 98% / 3x"): Framer's own mobile variant
+     stacks the four stat cards in a single column with large gaps, pushing
+     the section across several screens of scroll. Force a 2x2 grid instead. */
+  [data-framer-name="Card Content"] {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    height: auto !important;
+    row-gap: 8px !important;
+  }
+
+  /* .framer-kMeGG.framer-1ez813n (each stat card) carries a desktop-only
+     fixed size (width: 308px; padding: 52px 60px) with no responsive
+     override of its own -- the single-column flex layout happened to
+     stretch it back to 100% via cross-axis stretch, but a grid item with an
+     explicit (non-auto) width isn't stretched the same way, so under the
+     2x2 grid above each card kept trying to lay out at ~308px inside a
+     ~165px column. That mismatch was also what made the label text below
+     each number measure inconsistently and break mid-word. Give the card an
+     explicit mobile-appropriate size instead of relying on stretch. */
+  [data-framer-name="Card Content"] .framer-kMeGG.framer-1ez813n {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 24px 16px !important;
+    box-sizing: border-box !important;
+  }
 }
 
