@@ -64,9 +64,11 @@
   // much narrower than on tablet, with almost no slack around the
   // object-fit:contain image before it touches the box edges, so even the
   // 0.35 tablet scale pushed the back layer's corner past the clip
-  // boundary as a hard, flat-looking cut. Mobile gets its own smaller scale.
+  // boundary as a hard, flat-looking cut. On mobile tab-images.css insets
+  // every layer away from the box's top/right edges to make room, so the
+  // peek can spread out close to the desktop look without being clipped.
   function getStackScale() {
-    if (window.matchMedia('(max-width: 809.98px)').matches) return 0.16
+    if (window.matchMedia('(max-width: 809.98px)').matches) return 0.45
     if (window.matchMedia('(max-width: 1439.98px)').matches) return 0.35
     return 1
   }

@@ -63,6 +63,22 @@
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
 }
 
+/* Mobile: the back layers fan out up and to the right (tab-images.js), and
+   the Images box clips its overflow here. Pull every layer in from the
+   top/right edges so they have room to sit visibly apart, like on desktop,
+   instead of being squeezed into a tight pile to dodge the clip. Framer's
+   own class on these layers pins width:100% + aspect-ratio, which would
+   ignore the inset and just shove the layer down past the bottom edge --
+   reset both so the inset actually shrinks it. */
+@media (max-width: 809.98px) {
+  .automind-tab-image {
+    inset: 13% 11% 2% 2%;
+    width: auto !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+  }
+}
+
 [data-framer-name="Cards"] .framer-cZR4n {
   cursor: pointer;
   transition: background-color 0.3s ease, box-shadow 0.3s ease;

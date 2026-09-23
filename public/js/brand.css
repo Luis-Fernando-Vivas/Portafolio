@@ -144,9 +144,62 @@
   }
 }
 
+/* Closing CTA on mobile: the inline calendar is swapped for two buttons --
+   "Empezar" opens the Cal.com booking popup (data-cal-link, bound by
+   cal-embed.js), "Escríbenos" goes to WhatsApp. Desktop/tablet keep the
+   inline calendar and never show these. */
+.automind-cta-buttons {
+  display: none;
+}
+
 @media (max-width: 809px) {
-  .automind-cal-inline {
-    min-height: 560px;
+  .automind-cta-calendar {
+    display: none;
+  }
+
+  .automind-cta-buttons {
+    flex: none;
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .automind-cta-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px 16px;
+    border-radius: 4px;
+    border: 1px solid transparent;
+    font-family: "Inter", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-decoration: none;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+  }
+
+  .automind-cta-btn p {
+    margin: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  .automind-cta-btn--primary {
+    background-color: var(--token-1ddb4bb9-0587-4a22-ae5e-8270ca6cbf35, rgb(26, 26, 26));
+    color: #ffffff;
+  }
+
+  .automind-cta-btn--secondary {
+    background-color: transparent;
+    border-color: rgba(0, 0, 0, 0.15);
+    color: rgb(26, 26, 26);
+  }
+
+  .automind-cta-btn--secondary:hover {
+    border-color: #008fb1;
   }
 }
 

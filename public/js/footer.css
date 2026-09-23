@@ -253,20 +253,69 @@
 
 @media (max-width: 809px) {
   .automind-footer {
-    padding: 56px 20px 24px;
+    padding: 44px 20px 20px;
   }
 
+  /* Centered, single-column stack: brand + tagline, links, social icons,
+     then the Instagram strip. */
   .automind-footer__top {
     flex-direction: column;
-    gap: 40px;
+    align-items: center;
+    gap: 32px;
+    padding-bottom: 28px;
+    text-align: center;
   }
 
+  /* flex: 1 1 300px/320px is sized for the desktop row -- in this column
+     layout that basis turns into a minimum *height*, leaving a big blank
+     gap under each block. Size them to their content instead. */
   .automind-footer__brand,
   .automind-footer__instagram {
+    flex: none;
+    width: 100%;
     max-width: 100%;
   }
 
+  .automind-footer__logo img {
+    margin: 0 auto;
+  }
+
+  .automind-footer__tagline {
+    margin-top: 16px;
+    max-width: 340px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .automind-footer__nav {
+    justify-content: center;
+    gap: 10px 20px;
+    margin-top: 20px;
+  }
+
+  .automind-footer__social {
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+  .automind-footer__heading {
+    margin-bottom: 12px;
+  }
+
   .automind-footer__ig-grid {
-    max-width: 320px;
+    gap: 8px;
+  }
+
+  .automind-footer__ig-link {
+    margin-top: 12px;
+  }
+
+  .automind-footer__bottom {
+    padding-top: 20px;
+  }
+
+  .automind-footer__bottom p {
+    font-size: 12px;
+    text-align: center;
   }
 }
