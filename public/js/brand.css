@@ -449,7 +449,7 @@
   p[style*="font-family:Space Grotesk"] {
     font-size: 30px !important;
     line-height: 1.05 !important;
-    letter-spacing: -0.04em !important;
+    letter-spacing: 0 !important;
   }
 
   /* Hero buttons ("Empezar" / "Ver servicios"): stack of an auto-width pill
@@ -488,3 +488,129 @@
   }
 }
 
+
+/* ---------- Header logo ---------- */
+/* The logo image is 2142x625, but Framer's box used a 5.1:1 ratio, so with
+   object-fit:contain the logo only filled part of its box and looked small. */
+nav[name='Navber'] .framer-1xvzq2z {
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+nav[name='Navber'] .framer-f63uq9 {
+  aspect-ratio: 2142 / 625;
+  width: 190px;
+}
+
+/* Tablet/laptop (810-1439px): the page content sits 28px from the screen
+   edges here (it only centers at 1224px wide from 1440px up), but the nav
+   kept its desktop 0 108px padding, so its side lines didn't line up with
+   the content's. Match the content inset. */
+@media (min-width: 810px) and (max-width: 1439.98px) {
+  nav[name='Navber'].framer-ikz2fj {
+    padding: 0 28px !important;
+  }
+}
+
+/* Laptops (1024-1439px, e.g. MacBooks at ~1280-1470px wide) fall into
+   Framer's "tablet" breakpoint (810-1439px), whose frozen variant rules
+   are sized for an 810px canvas. Undo the two that break the layout on a
+   laptop screen, restoring their desktop (>=1440px) values: */
+@media (min-width: 1024px) and (max-width: 1439.98px) {
+  /* "Automatiza cada parte de tu negocio": tablet pins the second card row
+     to height: 368px, which cut off the card descriptions. */
+  .framer-0f049 .framer-22eg6u {
+    height: min-content !important;
+  }
+
+  .framer-0f049 .framer-1xvxyoq-container,
+  .framer-0f049 .framer-wsah3r-container,
+  .framer-0f049 .framer-u43mty-container {
+    height: auto !important;
+  }
+
+  /* "Resultados que se notan": tablet turns the four stat cards into a
+     2x2 grid; desktop keeps them in a single row. */
+  .framer-0f049 .framer-1tb2cvz {
+    display: flex !important;
+    flex-direction: row !important;
+  }
+
+  .framer-0f049 .framer-xm6ywf-container,
+  .framer-0f049 .framer-qrj6ni-container,
+  .framer-0f049 .framer-woz3ti-container,
+  .framer-0f049 .framer-iplq5x-container {
+    flex: 1 0 0 !important;
+    width: 1px !important;
+    height: auto !important;
+    place-self: auto !important;
+  }
+}
+
+/* "Un solo sistema, procesos infinitos" on tablets (810-1199px): side by
+   side, the text column is only ~half the width, so the 56px title broke
+   into four lines and the 2x2 tab cards split words mid-way. Stack it like
+   mobile does instead: heading + cards full width, image centered below. */
+@media (min-width: 810px) and (max-width: 1199.98px) {
+  .framer-ZmtpW.framer-187vptf {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 48px !important;
+  }
+
+  .framer-ZmtpW.framer-187vptf > div {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .framer-ZmtpW.framer-187vptf [data-framer-name="Images"] {
+    width: 100% !important;
+    max-width: 560px !important;
+    margin: 0 auto !important;
+  }
+}
+
+/* Mobile: the nav kept its desktop 0 108px padding, which on small phones
+   left the logo no room and pushed it off-center. The logo is the only
+   item in the bar here (links live in the bottom icon bar), so center it
+   and let it scale with the screen. */
+@media (max-width: 809.98px) {
+  /* Same 20px side inset as the page content, so the header container's
+     side border lines continue the content's vertical frame lines. */
+  nav[name='Navber'].framer-ikz2fj {
+    padding: 0 20px !important;
+  }
+
+  nav[name='Navber'] .framer-1xvzq2z {
+    justify-content: center !important;
+    max-width: none;
+    padding: 12px 16px;
+  }
+
+  nav[name='Navber'] .framer-1py07w0 {
+    width: 100%;
+    justify-content: center;
+  }
+
+  nav[name='Navber'] .framer-f63uq9 {
+    width: clamp(140px, 46vw, 200px);
+    max-width: 100%;
+  }
+}
+
+/* ---------- "Automatiza cada parte de tu negocio" cards ---------- */
+/* On mobile every card stacks full width, but Card 1 and Card 2 variants
+   use different image-box ratios (1.89 vs 1.21) and paddings, so the
+   images rendered at different sizes. Give them all the same box. */
+@media (max-width: 809.98px) {
+  .framer-Yv9B2 .framer-w4kekp,
+  .framer-Yv9B2.framer-v-1hbj4lw .framer-w4kekp {
+    aspect-ratio: 1.45 !important;
+  }
+
+  .framer-Yv9B2.framer-uttal7,
+  .framer-Yv9B2.framer-v-1hbj4lw.framer-uttal7 {
+    padding: 25px 30px !important;
+  }
+}

@@ -76,6 +76,16 @@ header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] > div > 
   background-position: center;
 }
 
+/* The hero video has an opaque white background (unlike the old
+   transparent hero image), which would cover the backdrop pattern above
+   with a flat rectangle. Multiply makes white drop out, so the pattern
+   shows through around the illustration just like before. Same for the
+   pixel-reveal canvas, which paints video frames while it plays. */
+.automind-hero-video,
+header[data-framer-name="Hero Section"] .hpr-canvas {
+  mix-blend-mode: multiply;
+}
+
 @media (prefers-reduced-motion: reduce) {
   header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] a[data-framer-name="Variant 1"],
   header[data-framer-name="Hero Section"] [data-framer-name="Buttons"] > button[data-framer-name="Main Button"],

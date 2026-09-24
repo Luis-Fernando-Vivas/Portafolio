@@ -69,7 +69,11 @@
   // peek can spread out close to the desktop look without being clipped.
   function getStackScale() {
     if (window.matchMedia('(max-width: 809.98px)').matches) return 0.45
-    if (window.matchMedia('(max-width: 1439.98px)').matches) return 0.35
+    // Tablet/laptop: tab-images.css insets the layers 15% from the box's
+    // top/right edges here too, which leaves room for 0.65 of the desktop
+    // offsets without the back layers hitting the clip (0.35 without the
+    // inset looked like one glued-together pile).
+    if (window.matchMedia('(max-width: 1439.98px)').matches) return 0.65
     return 1
   }
   var STACK_SCALE = getStackScale()

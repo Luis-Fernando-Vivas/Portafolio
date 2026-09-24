@@ -1,5 +1,5 @@
 /* Sticky bottom icon bar: replaces the hamburger menu on true mobile
-   (<=809px) only. Tablet (810-1439px) keeps the hamburger + slide-down
+   (<=809px) only. Tablet (810-1023px) keeps the hamburger + slide-down
    menu, since there's enough width there for the full top-bar treatment.
    Styled after the iOS Instagram tab bar: icon-only, thin strokes, in a
    floating, rounded, frosted container. */

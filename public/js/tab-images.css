@@ -63,6 +63,19 @@
   transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), filter 0.4s ease;
 }
 
+/* Tablet/laptop (810-1439px): same idea as the mobile rule below -- the
+   Images box clips its overflow here, so inset every layer from the
+   top/right edges to give the back layers (0.65 of the desktop offsets, see
+   tab-images.js) room to fan out visibly instead of piling up. */
+@media (min-width: 810px) and (max-width: 1439.98px) {
+  .automind-tab-image {
+    inset: 15% 15% 2% 2%;
+    width: auto !important;
+    height: auto !important;
+    aspect-ratio: auto !important;
+  }
+}
+
 /* Mobile: the back layers fan out up and to the right (tab-images.js), and
    the Images box clips its overflow here. Pull every layer in from the
    top/right edges so they have room to sit visibly apart, like on desktop,

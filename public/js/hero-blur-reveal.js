@@ -12,6 +12,14 @@
 
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+  // The hero video autoplays on a loop; with reduced motion keep it still
+  // on its poster frame instead.
+  var heroVideo = document.querySelector('header[data-framer-name="Hero Section"] video.automind-hero-video')
+  if (heroVideo && reduceMotion) {
+    heroVideo.removeAttribute('autoplay')
+    heroVideo.pause()
+  }
+
   function splitIntoWords(el) {
     var text = el.textContent
     var chunks = text.split(/(\s+)/)
@@ -67,11 +75,15 @@
   // "sweeps" end up overlapping almost entirely, one chasing the other.
   function pixelRevealImage(callback) {
     var wrap = document.querySelector('header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"]')
-    var img = wrap && wrap.querySelector('img')
+    // The hero media is a looping <video> (an <img> works too). drawImage()
+    // takes either; with the video it paints whatever frame is current, so
+    // the reveal shows the animation already playing underneath.
+    var img = wrap && wrap.querySelector('video, img')
     if (!img) {
       callback()
       return
     }
+    var isVideo = img.tagName === 'VIDEO'
 
     var container = img.parentElement
     var priorPosition = container.style.position
@@ -142,8 +154,8 @@
       // here so a block's canvas-space rect maps to the same source pixels
       // the real <img> shows; otherwise the canvas render subtly stretches
       // the image and it visibly "snaps" when swapped back to the real <img>.
-      var nW = img.naturalWidth
-      var nH = img.naturalHeight
+      var nW = isVideo ? img.videoWidth : img.naturalWidth
+      var nH = isVideo ? img.videoHeight : img.naturalHeight
       var boxRatio = w / h
       var imgRatio = nW / nH
       var dispW, dispH, offX, offY
@@ -230,10 +242,10 @@
       requestAnimationFrame(frame)
     }
 
-    if (img.complete && img.naturalWidth) {
+    if (isVideo ? img.readyState >= 2 : img.complete && img.naturalWidth) {
       start()
     } else {
-      img.addEventListener('load', start, { once: true })
+      img.addEventListener(isVideo ? 'loadeddata' : 'load', start, { once: true })
     }
   }
 
@@ -270,7 +282,7 @@
   function watchReentry() {
     if (reduceMotion || !('IntersectionObserver' in window)) return
     var wrap = document.querySelector('header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"]')
-    var img = wrap && wrap.querySelector('img')
+    var img = wrap && wrap.querySelector('video, img')
     if (!img) return
 
     var hasLeftView = false

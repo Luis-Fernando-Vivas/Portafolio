@@ -81,10 +81,11 @@
   font-weight: 600;
 }
 
-/* Desktop nav row (inline links) doesn't fit below the 1440px breakpoint,
-   in either mobile or tablet -- hidden in favor of the hamburger (tablet)
-   or the sticky bottom icon bar (mobile, see bottom-nav.css). */
-@media (max-width: 1439.98px) {
+/* Desktop nav row (inline links + CTA) needs ~660px, so it fits on any
+   laptop (MacBooks render at ~1280-1512px wide). Below 1024px it's hidden
+   in favor of the hamburger (tablet) or the sticky bottom icon bar
+   (mobile, see bottom-nav.css). */
+@media (max-width: 1023.98px) {
   nav[name='Navber'] .framer-cyi9ch {
     display: none !important;
   }
@@ -93,17 +94,17 @@
   }
 }
 
-/* Hamburger + slide-down menu: tablet only (810-1439px). There's enough
+/* Hamburger + slide-down menu: tablet only (810-1023px). There's enough
    width there for a full-menu overlay; true mobile (<=809px) uses the
    sticky bottom icon bar instead, which stays reachable without covering
    the page with a full-screen menu. */
-@media (min-width: 810px) and (max-width: 1439.98px) {
+@media (min-width: 810px) and (max-width: 1023.98px) {
   .automind-hamburger {
     display: flex;
   }
 }
 
-@media (max-width: 809.98px), (min-width: 1440px) {
+@media (max-width: 809.98px), (min-width: 1024px) {
   .automind-mobile-menu {
     display: none !important;
   }

@@ -24,13 +24,32 @@
   font-family: 'Clash Display', sans-serif !important;
 }
 
-/* The hero <h1>'s mobile text preset uses letter-spacing: -0.07em (tuned
-   for Space Grotesk); with Clash Display's tighter default spacing that
-   mashes the letters together. hero-blur-reveal.js wraps each word in its
-   own span, which inherits this from the h1. */
-@media (max-width: 809px) {
-  h1.framer-styles-preset-1hexgp2 {
-    --framer-letter-spacing: -0.01em !important;
-    letter-spacing: -0.01em !important;
-  }
+/* Title letter-spacing: Framer's presets and inline styles use negative
+   tracking tuned for Space Grotesk (-0.03em up to -0.09em / -5px). Clash
+   Display is already tightly spaced, so on it those values mash the
+   letters together. Bring every title back to the font's own spacing (0). */
+
+/* Hero <h1> (desktop -0.05em, mobile -0.07em). hero-blur-reveal.js wraps
+   each word in its own span, which inherits this from the h1. */
+h1.framer-styles-preset-1hexgp2 {
+  --framer-letter-spacing: 0 !important;
+  letter-spacing: 0 !important;
+}
+
+/* Section titles ("Un solo sistema...", "Automatiza cada...", "Resultados
+   que se notan", "Preguntas frecuentes", closing CTA): plain <p> with an
+   inline letter-spacing of -2px to -5px. scroll-fill-headings.js splits
+   them into per-letter spans, which inherit from the <p>. */
+p[style*="font-family:Space Grotesk"] {
+  letter-spacing: 0 !important;
+}
+
+/* Card titles: "Un solo sistema" tabs (Sitios web a medida, ...) and the
+   use-case cards (Agendamiento de citas, ...), plus the nav links and
+   "Empezar" buttons -- all -0.03em. */
+.framer-styles-preset-7375bn,
+.framer-styles-preset-1vb6z0m,
+.framer-styles-preset-1r6fd10 {
+  --framer-letter-spacing: 0 !important;
+  letter-spacing: 0 !important;
 }
