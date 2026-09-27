@@ -38,11 +38,15 @@
 
 Cal('init', '30min', { origin: 'https://cal.com' })
 
-Cal.ns['30min']('inline', {
-  elementOrSelector: '#automind-cal-inline',
-  calLink: 'automind-5oseyu/30min',
-  config: { layout: 'month_view' },
-})
+// Only pages that have the inline container (the index) mount the calendar;
+// others (precios.html) just use the popup buttons.
+if (document.getElementById('automind-cal-inline')) {
+  Cal.ns['30min']('inline', {
+    elementOrSelector: '#automind-cal-inline',
+    calLink: 'automind-5oseyu/30min',
+    config: { layout: 'month_view' },
+  })
+}
 
 Cal.ns['30min']('ui', {
   theme: 'light',

@@ -67,22 +67,19 @@ html.hbr-image-active header[data-framer-name="Hero Section"] [data-framer-name=
   height: 100%;
 }
 
-/* Same backdrop pattern used behind the "Conecta las herramientas..." image,
-   now behind the hero illustration too. It shows through the hero PNG's
-   transparent areas and through the pixel-reveal canvas' unpainted gaps. */
-header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] > div > div {
+/* Same dashed-grid pattern used behind the "Conecta las herramientas..." image.
+   The hero is now an opaque video, so the pattern is layered on top of it
+   (and of the pixel-reveal canvas) instead of behind; multiply keeps the
+   light-gray dashes from washing out the video underneath. */
+header[data-framer-name="Hero Section"] [data-framer-name="Image Wrap"] > div > div::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
   background-image: url('/images/img-14-6vpejmr5msvqv6ncvhhqm3rcvo.png');
   background-size: cover;
   background-position: center;
-}
-
-/* The hero video has an opaque white background (unlike the old
-   transparent hero image), which would cover the backdrop pattern above
-   with a flat rectangle. Multiply makes white drop out, so the pattern
-   shows through around the illustration just like before. Same for the
-   pixel-reveal canvas, which paints video frames while it plays. */
-.automind-hero-video,
-header[data-framer-name="Hero Section"] .hpr-canvas {
   mix-blend-mode: multiply;
 }
 
