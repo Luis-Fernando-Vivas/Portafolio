@@ -162,6 +162,11 @@
       return;
     }
 
+    if (/facebook\.com/.test(href)) {
+      track('facebook_click', { location: where });
+      return;
+    }
+
     if (/precios(\.html)?($|[#?])/.test(href) || /#contact$/.test(href)) {
       track('cta_click', {
         cta_text: linkText(el),

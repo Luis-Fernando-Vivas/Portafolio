@@ -148,6 +148,10 @@
   background: linear-gradient(135deg, #6a3bd0 0%, #d0368a 45%, #f5a623 100%);
 }
 
+.automind-footer__social a[aria-label="Facebook"] {
+  background: linear-gradient(135deg, #3b82f6, #1663d6);
+}
+
 .automind-footer__social a[aria-label="WhatsApp"] {
   background: linear-gradient(135deg, #2bd66b, #12a85a);
 }
