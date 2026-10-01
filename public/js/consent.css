@@ -1,0 +1,109 @@
+/* Banner de cookies (consent.js). Tarjeta oscura y translúcida como la
+   barra inferior del móvil; en escritorio flota abajo a la izquierda y en
+   móvil se apoya justo encima de esa barra para no taparla. */
+.am-consent {
+  position: fixed;
+  left: 24px;
+  bottom: 24px;
+  z-index: 900;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: min(400px, calc(100vw - 32px));
+  padding: 20px;
+  border-radius: 12px;
+  background: rgba(18, 18, 18, 0.88);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35), 0 2px 8px rgba(0, 0, 0, 0.25);
+  color: #d6d6d6;
+  font-family: 'Clash Display', sans-serif;
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.am-consent[hidden] {
+  display: none;
+}
+
+.am-consent.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.am-consent__text {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.am-consent__text a {
+  color: #24d3ef;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.am-consent__buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.am-consent__btn {
+  flex: 1 1 0;
+  padding: 11px 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  background: transparent;
+  color: #f5f5f5;
+  font: inherit;
+  font-size: 14px;
+  letter-spacing: -0.02em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.am-consent__btn:hover {
+  border-color: #ffffff;
+}
+
+.am-consent__btn--accept {
+  border-color: #f5f5f5;
+  background: #f5f5f5;
+  color: #0a0a0a;
+}
+
+.am-consent__btn--accept:hover {
+  background: #ffffff;
+}
+
+.am-consent__btn:focus-visible {
+  outline: 2px solid #24d3ef;
+  outline-offset: 2px;
+}
+
+/* Móvil: misma anchura que la barra inferior y encima de ella
+   (56px de alto + 12px de separación). */
+@media (max-width: 809.98px) {
+  .am-consent {
+    left: 16px;
+    right: 16px;
+    bottom: calc(12px + 56px + 12px + env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-width: 420px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  .am-consent__text {
+    font-size: 13px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-consent {
+    transition: none;
+  }
+}

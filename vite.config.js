@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: resolve(import.meta.dirname, 'index.html'),
         precios: resolve(import.meta.dirname, 'precios.html'),
+        privacidad: resolve(import.meta.dirname, 'privacidad.html'),
       },
     },
   },

@@ -8,9 +8,18 @@
    - En localhost no se envía nada, para no ensuciar los datos; añadir
      ?ga_debug=1 a la URL lo activa en modo debug (se ve en GA4 > DebugView).
    - window.amTrack(evento, parámetros) queda disponible para otros scripts
-     (cal-embed.js lo usa para las reservas). */
+     (cal-embed.js lo usa para las reservas).
+
+   Consentimiento (Ley 1581): hasta que el visitante acepta en el banner
+   (consent.js), GA4 y Clarity funcionan sin cookies — GA4 envía pings
+   anónimos (Consent Mode v2) y Clarity mide cada página por separado.
+   window.amConsent.set('granted' | 'denied') guarda la elección y la
+   aplica a las dos herramientas sin recargar. */
 (function () {
   var GA_ID = 'G-TDSLWGEYQ2';
+  var CLARITY_ID = 'yr00zjsiu0';
+  var CONSENT_KEY = 'am-consent';
+  var CONSENT_MAX_AGE = 365 * 24 * 60 * 60 * 1000;
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = window.gtag || function () { window.dataLayer.push(arguments); };
@@ -19,10 +28,61 @@
   var debug = /[?&]ga_debug=1\b/.test(location.search);
   if (isLocal && !debug) window['ga-disable-' + GA_ID] = true;
 
+  // Elección guardada: null si nunca respondió o pasó más de un año.
+  function storedConsent() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(CONSENT_KEY));
+      if (saved && Date.now() - saved.t < CONSENT_MAX_AGE) return saved.v;
+    } catch (e) {}
+    return null;
+  }
+
+  var consent = storedConsent();
+
+  // Debe ir antes de gtag('config'). Los permisos de anuncios quedan
+  // negados siempre: el sitio no hace remarketing (si se activa Meta Pixel
+  // o Google Ads, se revisan aquí).
+  gtag('consent', 'default', {
+    analytics_storage: consent === 'granted' ? 'granted' : 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+
+  if (CLARITY_ID && !(isLocal && !debug)) {
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments); };
+      t = l.createElement(r); t.async = 1; t.src = 'https://www.clarity.ms/tag/' + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, 'clarity', 'script', CLARITY_ID);
+  }
+
+  function applyConsent(state) {
+    var value = state === 'granted' ? 'granted' : 'denied';
+    gtag('consent', 'update', { analytics_storage: value });
+    if (window.clarity) window.clarity('consentv2', { analytics_Storage: value, ad_Storage: 'denied' });
+  }
+
+  // También sin elección: fuera de Europa Clarity usa cookies por defecto
+  // si no recibe la señal de "denied".
+  applyConsent(consent);
+
+  window.amConsent = {
+    get: function () { return consent; },
+    set: function (state) {
+      consent = state;
+      try {
+        localStorage.setItem(CONSENT_KEY, JSON.stringify({ v: state, t: Date.now() }));
+      } catch (e) {}
+      applyConsent(state);
+    }
+  };
+
   function contentGroup() {
     var path = location.pathname;
     if (path.indexOf('/blog') === 0) return 'blog';
     if (path.indexOf('/precios') === 0) return 'precios';
+    if (path.indexOf('/privacidad') === 0) return 'legal';
     if (path === '/' || path === '/index.html') return 'home';
     return 'otros';
   }

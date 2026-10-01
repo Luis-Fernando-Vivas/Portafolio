@@ -1,0 +1,113 @@
+/* Páginas legales (/privacidad.html): texto largo en una sola columna
+   dentro del marco de pricing.css, con la tipografía del sitio. */
+.am-legal {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 72px var(--am-pad) 96px;
+  color: var(--am-ink-2);
+  font-size: 16px;
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+}
+
+.am-legal h2 {
+  margin: 48px 0 12px;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  color: var(--am-ink);
+}
+
+.am-legal h2:first-child {
+  margin-top: 0;
+}
+
+.am-legal p,
+.am-legal ul {
+  margin: 0 0 16px;
+  color: var(--am-gray);
+}
+
+.am-legal ul {
+  padding-left: 20px;
+}
+
+.am-legal li + li {
+  margin-top: 6px;
+}
+
+.am-legal strong {
+  color: var(--am-ink-2);
+  font-weight: 500;
+}
+
+.am-legal a {
+  color: var(--am-brand);
+}
+
+.am-legal__table {
+  width: 100%;
+  margin: 8px 0 16px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.am-legal__table th,
+.am-legal__table td {
+  padding: 10px 12px 10px 0;
+  border-bottom: 1px solid var(--am-line);
+  text-align: left;
+  vertical-align: top;
+  color: var(--am-gray);
+}
+
+.am-legal__table th {
+  color: var(--am-ink-2);
+  font-weight: 500;
+}
+
+.am-legal__button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--am-brand);
+  font: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+@media (max-width: 809.98px) {
+  .am-legal {
+    padding-top: 48px;
+    padding-bottom: 120px;
+    font-size: 15px;
+  }
+
+  .am-legal h2 {
+    font-size: 20px;
+  }
+
+  /* La tabla de cookies no cabe en 4 columnas: cada fila pasa a ser un
+     bloque con sus datos uno debajo del otro. */
+  .am-legal__table thead {
+    display: none;
+  }
+
+  .am-legal__table tr {
+    display: block;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--am-line);
+  }
+
+  .am-legal__table td {
+    display: block;
+    padding: 2px 0;
+    border: 0;
+  }
+
+  .am-legal__table td:first-child {
+    color: var(--am-ink-2);
+    font-weight: 500;
+  }
+}
