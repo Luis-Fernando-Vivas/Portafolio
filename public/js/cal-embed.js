@@ -48,6 +48,15 @@ if (document.getElementById('automind-cal-inline')) {
   })
 }
 
+// Reserva confirmada (calendario en línea o popup): la conversión principal
+// en GA4. amTrack lo define analytics.js.
+Cal.ns['30min']('on', {
+  action: 'bookingSuccessfulV2',
+  callback: function () {
+    if (window.amTrack) window.amTrack('booking_completed', { method: 'cal.com' })
+  },
+})
+
 Cal.ns['30min']('ui', {
   theme: 'light',
   hideEventTypeDetails: false,
