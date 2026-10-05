@@ -20,8 +20,8 @@
     banner.setAttribute('role', 'region');
     banner.setAttribute('aria-label', 'Preferencias de cookies');
     banner.innerHTML =
-      '<p class="am-consent__text">Usamos cookies de analítica para entender cómo se usa el sitio y mejorarlo. ' +
-      'No las usamos para publicidad. <a href="/privacidad">Política de privacidad</a></p>' +
+      '<p class="am-consent__text">Usamos cookies de analítica y de Meta para entender cómo se usa el sitio, mejorarlo ' +
+      'y medir nuestros anuncios. <a href="/privacidad">Política de privacidad</a></p>' +
       '<div class="am-consent__buttons">' +
       '<button type="button" class="am-consent__btn" data-choice="denied">Rechazar</button>' +
       '<button type="button" class="am-consent__btn am-consent__btn--accept" data-choice="granted">Aceptar</button>' +

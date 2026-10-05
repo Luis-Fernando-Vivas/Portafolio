@@ -13,11 +13,14 @@
    Consentimiento (Ley 1581): hasta que el visitante acepta en el banner
    (consent.js), GA4 y Clarity funcionan sin cookies — GA4 envía pings
    anónimos (Consent Mode v2) y Clarity mide cada página por separado.
+   Meta Pixel se carga siempre pero retiene los eventos (fbq consent
+   revoke) hasta que el visitante acepta.
    window.amConsent.set('granted' | 'denied') guarda la elección y la
-   aplica a las dos herramientas sin recargar. */
+   aplica a las tres herramientas sin recargar. */
 (function () {
   var GA_ID = 'G-TDSLWGEYQ2';
   var CLARITY_ID = 'yr00zjsiu0';
+  var META_PIXEL_ID = '1344401088759615';
   var CONSENT_KEY = 'am-consent';
   var CONSENT_MAX_AGE = 365 * 24 * 60 * 60 * 1000;
 
@@ -39,9 +42,9 @@
 
   var consent = storedConsent();
 
-  // Debe ir antes de gtag('config'). Los permisos de anuncios quedan
-  // negados siempre: el sitio no hace remarketing (si se activa Meta Pixel
-  // o Google Ads, se revisan aquí).
+  // Debe ir antes de gtag('config'). Los permisos de anuncios de Google
+  // quedan negados siempre: el sitio no usa Google Ads (si se activa, se
+  // revisan aquí).
   gtag('consent', 'default', {
     analytics_storage: consent === 'granted' ? 'granted' : 'denied',
     ad_storage: 'denied',
@@ -57,10 +60,27 @@
     })(window, document, 'clarity', 'script', CLARITY_ID);
   }
 
+  // El consent revoke va antes del init: sin aceptación no se envía nada a
+  // Meta ni se crea la cookie _fbp.
+  if (META_PIXEL_ID && !(isLocal && !debug)) {
+    (function (f, b, e, v, n, t, s) {
+      if (f.fbq) return; n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+      n.queue = []; t = b.createElement(e); t.async = !0; t.src = v;
+      s = b.getElementsByTagName(e)[0]; s.parentNode.insertBefore(t, s);
+    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('consent', consent === 'granted' ? 'grant' : 'revoke');
+    fbq('init', META_PIXEL_ID);
+    fbq('track', 'PageView');
+  }
+
   function applyConsent(state) {
     var value = state === 'granted' ? 'granted' : 'denied';
     gtag('consent', 'update', { analytics_storage: value });
     if (window.clarity) window.clarity('consentv2', { analytics_Storage: value, ad_Storage: 'denied' });
+    if (window.fbq) window.fbq('consent', value === 'granted' ? 'grant' : 'revoke');
   }
 
   // También sin elección: fuera de Europa Clarity usa cookies por defecto
@@ -90,18 +110,34 @@
   var config = { content_group: contentGroup() };
   if (debug) config.debug_mode = true;
 
+  // Artículos del blog: la meta am-article (la escribe blog-plugin.js antes
+  // de este script) añade el artículo y su categoría a todos los eventos de
+  // la página, page_view incluido. Así un whatsapp_click o booking_open
+  // dice desde qué artículo llegó el contacto.
+  var article = document.querySelector('meta[name="am-article"]');
+  if (article) {
+    gtag('set', {
+      article_slug: article.getAttribute('content'),
+      article_category: article.getAttribute('data-category')
+    });
+  }
+
   gtag('js', new Date());
   gtag('config', GA_ID, config);
 
+  // Eventos estándar de Meta para las conversiones que importan en anuncios.
+  var META_EVENTS = { whatsapp_click: 'Contact', booking_open: 'Schedule' };
+
   function track(name, params) {
     gtag('event', name, params || {});
+    if (window.fbq && META_EVENTS[name]) window.fbq('track', META_EVENTS[name], params || {});
   }
   window.amTrack = track;
 
   // Sección de la página donde ocurrió el clic (hero, works, footer...),
   // para saber qué botón concreto convierte.
   function locationOf(el) {
-    var box = el.closest('section[id], header[id], footer[id], nav[id], [data-framer-name$=" Section"]');
+    var box = el.closest('section[id], article[id], header[id], footer[id], nav[id], [data-framer-name$=" Section"]');
     if (box) {
       return box.id || box.getAttribute('data-framer-name').replace(/ Section$/, '').toLowerCase().replace(/\s+/g, '_');
     }
@@ -195,9 +231,40 @@
     });
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', watchPricingCategories);
-  } else {
+  // Blog: article_read cuando el lector pasa del 75% del texto y lleva al
+  // menos 20 segundos en la página (descarta a quien solo baja rápido).
+  function watchArticleRead() {
+    var body = document.querySelector('[data-article]');
+    if (!body) return;
+    var start = Date.now();
+    var sent = false;
+
+    function check() {
+      if (sent) return;
+      var rect = body.getBoundingClientRect();
+      var seen = (window.innerHeight - rect.top) / rect.height;
+      if (seen >= 0.75 && Date.now() - start >= 20000) {
+        sent = true;
+        track('article_read', { read_seconds: Math.round((Date.now() - start) / 1000) });
+        window.removeEventListener('scroll', check);
+        clearInterval(timer);
+      }
+    }
+
+    // El intervalo cubre a quien llega al 75% antes de los 20 s y se queda
+    // leyendo sin volver a hacer scroll.
+    var timer = setInterval(check, 5000);
+    window.addEventListener('scroll', check, { passive: true });
+  }
+
+  function onReady() {
     watchPricingCategories();
+    watchArticleRead();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', onReady);
+  } else {
+    onReady();
   }
 })();

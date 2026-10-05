@@ -1,7 +1,7 @@
 (function () {
   // Real, distinct destinations in page order. Anything whose href isn't in
   // here, or that duplicates an href already kept, gets dropped.
-  var ORDER = ['#', '#works', '#feature', '#results', '#faq', '#contact']
+  var ORDER = ['#', '#works', '#feature', '#results', '#faq', '/blog', '#contact']
 
   function orderIndex(href) {
     var i = ORDER.indexOf(href)
