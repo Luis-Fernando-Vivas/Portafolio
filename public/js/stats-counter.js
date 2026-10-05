@@ -39,7 +39,8 @@
       var text = els[0].textContent.trim()
       var match = text.match(/^(\d+(?:\.\d+)?)(.*)$/)
       if (!match) return null
-      return { els: els, target: parseFloat(match[1]), suffix: match[2] }
+      var decimals = (match[1].split('.')[1] || '').length
+      return { els: els, target: parseFloat(match[1]), decimals: decimals, suffix: match[2] }
     })
     .filter(Boolean)
   if (!stats.length) return
@@ -48,7 +49,7 @@
   if (reduceMotion || !('IntersectionObserver' in window)) return
 
   function setText(stat, value) {
-    var text = Math.round(value) + stat.suffix
+    var text = value.toFixed(stat.decimals) + stat.suffix
     stat.els.forEach(function (el) {
       el.textContent = text
     })

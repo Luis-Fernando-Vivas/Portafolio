@@ -614,3 +614,28 @@ nav[name='Navber'] .framer-f63uq9 {
     padding: 25px 30px !important;
   }
 }
+
+/* ---------- Results: star rating ---------- */
+/* Two layers of the same five stars: grey underneath, gold on top clipped
+   to --rating (98% = 4.9 de 5). */
+.am-stars {
+  position: relative;
+  display: inline-block;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 3px;
+  color: rgb(224, 224, 224);
+  margin: 4px auto 6px;
+}
+.am-stars::before {
+  content: "★★★★★";
+}
+.am-stars::after {
+  content: "★★★★★";
+  position: absolute;
+  inset: 0;
+  width: var(--rating, 100%);
+  overflow: hidden;
+  white-space: nowrap;
+  color: #f5b301;
+}
