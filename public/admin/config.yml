@@ -63,6 +63,15 @@ collections:
         pattern: false
     preview_path: blog/{{slug}}
     fields:
+      # Primero, para que se vea al abrir la noticia. El botón "Publicar" de
+      # Decap solo guarda: lo que decide si sale en el sitio es este campo.
+      - label: "📝 Borrador (no se publica en el sitio)"
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+        i18n: duplicate
+        hint: "Actívalo y pulsa Publicar (arriba) para guardarla como borrador: la noticia desaparece del sitio pero sigue aquí en el panel. Desactívalo y pulsa Publicar para que salga en el blog."
       - label: Título
         name: title
         widget: string
@@ -101,13 +110,6 @@ collections:
         picker_utc: true
         required: false
         i18n: duplicate
-      - label: Borrador
-        name: draft
-        widget: boolean
-        default: false
-        required: false
-        i18n: duplicate
-        hint: Activado, la noticia no se publica en el sitio (solo se ve en local).
       - label: Contenido
         name: body
         widget: markdown
