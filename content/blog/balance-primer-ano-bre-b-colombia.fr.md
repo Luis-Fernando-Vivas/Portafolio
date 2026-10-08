@@ -1,9 +1,14 @@
 ---
-title: "Bre-B fête son premier anniversaire en Colombie : comment tirer parti de l'essor des paiements instantanés"
-description: "Bre-B a dépassé le milliard de paiements dès sa première année. Découvrez ce que cela implique pour votre entreprise et comment adapter vos ventes à l'écosystème des encaissements instantanés."
+title: "Bre-B fête son premier anniversaire en Colombie : comment tirer parti de
+  l'essor des paiements instantanés"
+description: Bre-B a dépassé le milliard de paiements dès sa première année.
+  Découvrez ce que cela implique pour votre entreprise et comment adapter vos
+  ventes à l'écosystème des encaissements instantanés.
+category: Paiements
 date: 2026-10-07
-category: "Paiements"
-draft: true
+cover: null
+updated: null
+draft: false
 ---
 
 Le 6 octobre 2026, la Banco de la República a présenté le bilan officiel de la première année d'activité de **Bre-B**, le système de paiements instantanés et interopérables de Colombie. Les chiffres démontrent que les habitudes d'achat des Colombiens ont changé pour de bon : le réseau dépasse déjà les **116 millions de clés enregistrées**, rassemble plus de **36 millions d'utilisateurs** et a traité plus d'**un milliard d'opérations**. Avec **245 établissements participants** (parmi lesquels des banques, des coopératives et des portefeuilles numériques), l'interopérabilité a été multipliée par 14 en seulement douze mois, transformant directement la façon dont les commerces et les entreprises encaissent leurs ventes de produits et services.

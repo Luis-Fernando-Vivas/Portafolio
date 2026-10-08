@@ -1,9 +1,12 @@
 ---
-title: "Bre-B cumple un año en Colombia: cómo aprovechar el auge de los pagos inmediatos"
-description: "Bre-B superó 1.000 millones de pagos en su primer año. Descubre qué significa para tu negocio y cómo adaptar tus ventas al ecosistema de cobros inmediatos."
+title: "Bre-B cumple un año en Colombia: cómo aprovechar el auge de los pagos
+  inmediatos"
+description: Bre-B superó 1.000 millones de pagos en su primer año. Descubre qué
+  significa para tu negocio y cómo adaptar tus ventas al ecosistema de cobros
+  inmediatos.
+category: Pagos
 date: 2026-10-07
-category: "Pagos"
-draft: true
+draft: false
 ---
 
 El Banco de la República presentó este 6 de octubre de 2026 el balance oficial del primer año de funcionamiento de **Bre-B**, el sistema de pagos inmediatos e interoperables de Colombia. Las cifras demuestran que el comportamiento de compra de los colombianos cambió para siempre: la red ya supera las **116 millones de llaves registradas**, reúne a más de **36 millones de usuarios** y ha procesado más de **mil millones de operaciones**. Con **245 entidades participantes** (entre bancos, cooperativas y billeteras digitales), la interoperabilidad creció 14 veces en apenas doce meses, impactando directamente la manera en que el comercio y las empresas cobran por sus productos y servicios.

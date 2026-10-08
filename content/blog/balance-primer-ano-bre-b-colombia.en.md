@@ -1,9 +1,13 @@
 ---
 title: "Bre-B Turns One in Colombia: How to Capitalize on the Instant Payments Boom"
-description: "Bre-B surpassed 1 billion payments in its first year. Discover what this means for your business and how to adapt your sales to the instant payment ecosystem."
+description: Bre-B surpassed 1 billion payments in its first year. Discover what
+  this means for your business and how to adapt your sales to the instant
+  payment ecosystem.
+category: Payments
 date: 2026-10-07
-category: "Payments"
-draft: true
+cover: null
+updated: null
+draft: false
 ---
 
 On October 6, 2026, Banco de la República (Colombia's central bank) released the official results from the first year of **Bre-B**, Colombia's instant and interoperable payments system. The figures show that Colombian shopping habits have changed for good: the network already exceeds **116 million registered keys (llaves)**, connects more than **36 million users**, and has processed over **one billion transactions**. With **245 participating financial entities** (including banks, credit unions, and digital wallets), interoperability grew 14-fold in just twelve months, directly transforming how merchants and companies collect payments for their products and services.
