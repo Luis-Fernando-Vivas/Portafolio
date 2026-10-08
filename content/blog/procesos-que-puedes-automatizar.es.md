@@ -1,10 +1,12 @@
 ---
 title: 5 procesos que puedes automatizar en tu negocio esta semana
-description: Respuestas en WhatsApp, agenda, cobros, seguimiento de clientes y reportes. Qué automatizar primero y cómo empezar sin cambiar todas tus herramientas.
-date: 2026-10-01
+description: Respuestas en WhatsApp, agenda, cobros, seguimiento de clientes y
+  reportes. Qué automatizar primero y cómo empezar sin cambiar todas tus
+  herramientas.
 category: Automatización
+date: 2026-10-01
 cover: /images/blog/procesos-que-puedes-automatizar.webp
-draft: true
+draft: false
 ---
 
 Si tu día se va en contestar las mismas preguntas, copiar datos de un lado a otro y perseguir pagos, no te falta tiempo: te sobran tareas repetitivas. La buena noticia es que la mayoría se pueden automatizar con las herramientas que ya usas.
