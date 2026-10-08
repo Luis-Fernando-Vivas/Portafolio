@@ -64,11 +64,11 @@ export function parseFrontmatter(source, file) {
   return { data: parseYaml(match[1]) || {}, body: match[2] }
 }
 
+// null si el archivo no tiene título o descripción: el panel crea los .en.md
+// y .fr.md con solo la fecha y la portada cuando la traducción está vacía.
 function readLocale(file, name) {
   const { data, body } = parseFrontmatter(fs.readFileSync(file, 'utf8'), name)
-  for (const field of ['title', 'description']) {
-    if (!data[field]) throw new Error(`${name}: falta "${field}" en el encabezado`)
-  }
+  if (!data.title || !data.description) return null
   const words = body.split(/\s+/).filter(Boolean).length
   return {
     data,
@@ -91,16 +91,24 @@ export function readPosts(dir, { includeDrafts }) {
       const slug = match[1]
       const lang = match[2] || 'es'
       if (!bySlug.has(slug)) bySlug.set(slug, {})
-      bySlug.get(slug)[lang] = readLocale(path.join(dir, name), name)
+      const locale = readLocale(path.join(dir, name), name)
+      if (locale) bySlug.get(slug)[lang] = locale
+      else if (lang !== 'es') console.warn(`[blog] ${name}: sin título o descripción, esa traducción no se publica`)
     })
 
+  // Un artículo incompleto se salta (con aviso en el log) en vez de detener
+  // la construcción de todo el sitio.
+  const skip = (message) => {
+    console.warn(`[blog] ${message}: el artículo no se publica`)
+    return null
+  }
   return [...bySlug]
     .map(([slug, locales]) => {
       const es = locales.es
-      if (!es) throw new Error(`${slug}: falta la versión en español (${slug}.es.md)`)
-      if (!es.category) throw new Error(`${slug}.es.md: falta "category" en el encabezado`)
+      if (!es) return skip(`${slug}: falta la versión en español con título y descripción (${slug}.es.md)`)
+      if (!es.category) return skip(`${slug}.es.md: falta "category" en el encabezado`)
       const date = isoDate(es.data.date)
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error(`${slug}.es.md: "date" debe ser AAAA-MM-DD`)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return skip(`${slug}.es.md: "date" debe ser AAAA-MM-DD`)
       // Una traducción sin categoría usa la del español.
       LANGS.forEach((lang) => {
         if (locales[lang] && !locales[lang].category) locales[lang].category = es.category
@@ -117,7 +125,7 @@ export function readPosts(dir, { includeDrafts }) {
         draft: es.data.draft === true || es.data.draft === 'true',
       }
     })
-    .filter((post) => includeDrafts || !post.draft)
+    .filter((post) => post && (includeDrafts || !post.draft))
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 

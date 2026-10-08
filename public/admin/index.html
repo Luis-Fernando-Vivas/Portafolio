@@ -57,6 +57,52 @@
     })()
   </script>
 
+  <!-- Etiqueta de estado en las tarjetas de la lista. El resumen de cada
+       noticia (summary en config.yml) empieza con "📝 BORRADOR · " o "✅ ";
+       aquí se quita ese prefijo del texto y se muestra como etiqueta con
+       CSS. Solo se cambia el texto, no se agregan nodos, para no
+       interferir con React. -->
+  <style>
+    [data-am-status]::before{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle}
+    [data-am-status=draft]::before{content:'Borrador';background:#fff4d6;color:#8a5a00;border:1px solid #f0d58a}
+    [data-am-status=published]::before{content:'Publicada';background:#e3f6ec;color:#16794a;border:1px solid #b5e3c9}
+  </style>
+  <script>
+    ;(function () {
+      var PREFIXES = [['📝 BORRADOR · ', 'draft'], ['✅ ', 'published']]
+
+      function mark(node) {
+        var text = node.nodeValue
+        for (var i = 0; i < PREFIXES.length; i++) {
+          if (text.indexOf(PREFIXES[i][0]) !== 0) continue
+          node.parentNode.setAttribute('data-am-status', PREFIXES[i][1])
+          node.nodeValue = text.slice(PREFIXES[i][0].length)
+          return
+        }
+      }
+
+      function scan(root) {
+        var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+        var node
+        while ((node = walker.nextNode())) {
+          if (node.parentNode && node.parentNode.nodeType === 1) mark(node)
+        }
+      }
+
+      new MutationObserver(function (records) {
+        for (var i = 0; i < records.length; i++) {
+          var record = records[i]
+          if (record.type === 'characterData') mark(record.target)
+          else for (var j = 0; j < record.addedNodes.length; j++) {
+            var added = record.addedNodes[j]
+            if (added.nodeType === 3 && added.parentNode) mark(added)
+            else if (added.nodeType === 1) scan(added)
+          }
+        }
+      }).observe(document.body, { childList: true, subtree: true, characterData: true })
+    })()
+  </script>
+
   <!-- Botón "IA": redacta noticias y traduce las existentes con Gemini
        (api/blog-ai.js). Todo lo que genera queda como borrador para
        revisarlo en el panel antes de publicar. -->
