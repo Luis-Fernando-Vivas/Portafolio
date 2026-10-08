@@ -118,9 +118,10 @@ function parseAttrs(source) {
   return attrs
 }
 
+// Valor del atributo; '' si está sin valor (<article data-i18n-skip>), null si no está.
 function attr(attrs, name) {
   const found = attrs.find((a) => a.name.toLowerCase() === name)
-  return found ? found.value : null
+  return found ? (found.value ?? '') : null
 }
 
 function buildTag(name, attrs, closing) {
@@ -242,10 +243,13 @@ export function finalizePage(html, { lang, group, routes, dict }) {
           const translated = lookup(a.value)
           if (translated !== null) set(a, translated)
         }
-        // Un enlace a otra versión de esta misma página ("Read in English")
-        // es un cambio de idioma explícito: se deja tal cual.
+        // En el texto ya escrito en un idioma (artículos, landing pages), un
+        // enlace a otra versión de esta misma página ("Read in English") es
+        // un cambio de idioma explícito: se deja tal cual. En el menú y el
+        // resto de la plantilla, todos los enlaces van al idioma de la página.
         if (key === 'href' && (name === 'a' || name === 'area') && a.value.startsWith('/') && !a.value.startsWith('//')) {
-          if (routes.find(a.value.match(/^[^?#]*/)[0] || '/') !== group) set(a, routes.localize(a.value, lang))
+          const self = routes.find(a.value.match(/^[^?#]*/)[0] || '/') === group
+          if (!(skipped && self)) set(a, routes.localize(a.value, lang))
         }
       }
       if (name === 'meta' && translate) {
