@@ -4,6 +4,7 @@ description: Le système de paiements instantanés de la banque centrale colombi
 date: 2026-09-29
 category: Paiements
 cover: /images/blog/bre-b-cobros-automaticos.webp
+draft: false
 ---
 
 **Bre-B**, le système de paiements instantanés géré par la banque centrale colombienne (Banco de la República), s'apprête à fêter sa première année avec des chiffres que peu attendaient : plus de **34 millions d'utilisateurs** au cours de ses six premiers mois et plus de **111 millions de clés enregistrées** en août 2026. Il ajoute maintenant une fonction qui change la donne pour tous ceux qui facturent chaque mois : les **prélèvements automatiques**.

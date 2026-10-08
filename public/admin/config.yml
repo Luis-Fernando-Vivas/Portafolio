@@ -50,12 +50,17 @@ collections:
     extension: md
     format: frontmatter
     i18n: true
-    summary: '{{title}} · {{date}}'
-    sortable_fields: [date, title]
+    # Cada tarjeta muestra su estado: las noticias con "Borrador" activado
+    # no salen en el sitio publicado.
+    summary: "{{draft | ternary('📝 BORRADOR · ', '✅ ')}}{{title}} · {{date}}"
+    sortable_fields: [date, title, draft]
     view_filters:
-      - label: Borradores
+      - label: Solo borradores
         field: draft
         pattern: true
+      - label: Solo publicadas
+        field: draft
+        pattern: false
     preview_path: blog/{{slug}}
     fields:
       - label: Título

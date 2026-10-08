@@ -4,6 +4,7 @@ description: Since January 15, 2026, Meta no longer allows ChatGPT-style assista
 date: 2026-09-22
 category: Artificial intelligence
 cover: /images/blog/whatsapp-prohibe-chatbots-ia-generalistas.webp
+draft: false
 ---
 
 Meta changed the rules of the **WhatsApp Business API**: since **January 15, 2026**, "general-purpose" artificial intelligence chatbots are no longer allowed. That means assistants that answer any question on any topic, like ChatGPT, Perplexity or Luzia. For new accounts, the rule has applied since October 15, 2025.

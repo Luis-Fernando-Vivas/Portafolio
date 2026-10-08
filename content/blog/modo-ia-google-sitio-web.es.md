@@ -4,6 +4,7 @@ description: Google responde cada vez más búsquedas con IA y cita a sus fuente
 date: 2026-10-06
 category: Sitios web
 cover: /images/blog/modo-ia-google-sitio-web.webp
+draft: false
 ---
 
 Desde septiembre de 2025, el **Modo IA de Google** está disponible en español en Colombia y el resto de América Latina. Es una pestaña dentro del buscador donde, en lugar de una lista de enlaces, **Gemini redacta una respuesta completa con fuentes citadas** y te deja seguir preguntando como en un chat. También acepta preguntas por voz o con una foto.

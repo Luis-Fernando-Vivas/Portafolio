@@ -4,6 +4,7 @@ description: Google répond de plus en plus aux recherches avec l'IA et cite ses
 date: 2026-10-06
 category: Sites web
 cover: /images/blog/modo-ia-google-sitio-web.webp
+draft: false
 ---
 
 Depuis septembre 2025, le **mode IA de Google** est disponible en espagnol en Colombie et dans le reste de l'Amérique latine. C'est un onglet du moteur de recherche où, au lieu d'une liste de liens, **Gemini rédige une réponse complète avec des sources citées** et vous laisse poser d'autres questions comme dans un chat. Il accepte aussi les questions à la voix ou par photo.

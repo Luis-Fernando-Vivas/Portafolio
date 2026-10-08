@@ -4,6 +4,7 @@ description: Google answers more and more searches with AI and cites its sources
 date: 2026-10-06
 category: Websites
 cover: /images/blog/modo-ia-google-sitio-web.webp
+draft: false
 ---
 
 Since September 2025, **Google's AI Mode** has been available in Spanish in Colombia and the rest of Latin America. It is a tab inside the search engine where, instead of a list of links, **Gemini writes a complete answer with cited sources** and lets you keep asking questions like in a chat. It also accepts questions by voice or with a photo.

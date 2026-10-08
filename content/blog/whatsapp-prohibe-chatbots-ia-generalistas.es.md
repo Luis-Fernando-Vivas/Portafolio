@@ -4,6 +4,7 @@ description: Desde el 15 de enero de 2026 Meta no permite asistentes tipo ChatGP
 date: 2026-09-22
 category: Inteligencia artificial
 cover: /images/blog/whatsapp-prohibe-chatbots-ia-generalistas.webp
+draft: false
 ---
 
 Meta cambió las reglas de la **API de WhatsApp Business**: desde el **15 de enero de 2026** ya no se permiten los chatbots de inteligencia artificial "de propósito general", es decir, asistentes que responden cualquier pregunta sobre cualquier tema, al estilo de ChatGPT, Perplexity o Luzia. Para las cuentas nuevas la norma rige desde el 15 de octubre de 2025.

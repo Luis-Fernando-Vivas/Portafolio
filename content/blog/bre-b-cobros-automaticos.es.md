@@ -4,6 +4,7 @@ description: El sistema de pagos inmediatos del Banco de la República habilitó
 date: 2026-09-29
 category: Pagos
 cover: /images/blog/bre-b-cobros-automaticos.webp
+draft: false
 ---
 
 **Bre-B**, el sistema de pagos inmediatos que administra el Banco de la República, está a punto de cumplir su primer año de operación con números que pocos esperaban: más de **34 millones de usuarios** en sus primeros seis meses y más de **111 millones de llaves registradas** a agosto de 2026. Y ahora suma una función que cambia las reglas para quien cobra cada mes: los **débitos automáticos**.
