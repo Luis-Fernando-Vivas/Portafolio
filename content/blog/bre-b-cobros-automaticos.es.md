@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Bre-B ya permite cobros automáticos: la oportunidad para los negocios en
   Colombia"
 description: El sistema de pagos inmediatos del Banco de la República habilitó

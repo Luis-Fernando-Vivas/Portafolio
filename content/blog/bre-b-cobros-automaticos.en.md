@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Bre-B now supports automatic billing: the opportunity for businesses in
   Colombia"
 description: The instant payment system run by Colombia's central bank now

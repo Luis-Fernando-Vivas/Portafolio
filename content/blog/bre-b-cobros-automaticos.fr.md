@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Bre-B permet désormais les prélèvements automatiques : une opportunité
   pour les entreprises en Colombie"
 description: Le système de paiements instantanés de la banque centrale
