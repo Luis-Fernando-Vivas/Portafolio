@@ -1,10 +1,14 @@
 ---
-title: "Bre-B now supports automatic billing: the opportunity for businesses in Colombia"
-description: The instant payment system run by Colombia's central bank now enables recurring debits through keys. Here is how to use it to collect monthly fees and subscriptions without chasing anyone.
-date: 2026-09-29
+draft: true
+title: "Bre-B now supports automatic billing: the opportunity for businesses in
+  Colombia"
+description: The instant payment system run by Colombia's central bank now
+  enables recurring debits through keys. Here is how to use it to collect
+  monthly fees and subscriptions without chasing anyone.
 category: Payments
+date: 2026-09-29
 cover: /images/blog/bre-b-cobros-automaticos.webp
-draft: false
+updated: null
 ---
 
 **Bre-B**, the instant payment system run by Colombia's central bank (Banco de la República), is about to turn one year old with numbers few expected: more than **34 million users** in its first six months and over **111 million registered keys** as of August 2026. Now it adds a feature that changes the game for anyone who bills monthly: **automatic debits**.

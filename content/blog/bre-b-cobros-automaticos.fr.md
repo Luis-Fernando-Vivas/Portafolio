@@ -1,10 +1,14 @@
 ---
-title: "Bre-B permet désormais les prélèvements automatiques : une opportunité pour les entreprises en Colombie"
-description: Le système de paiements instantanés de la banque centrale colombienne a activé les prélèvements récurrents par clés. Voici comment l'utiliser pour encaisser mensualités et abonnements sans relancer personne.
-date: 2026-09-29
+draft: true
+title: "Bre-B permet désormais les prélèvements automatiques : une opportunité
+  pour les entreprises en Colombie"
+description: Le système de paiements instantanés de la banque centrale
+  colombienne a activé les prélèvements récurrents par clés. Voici comment
+  l'utiliser pour encaisser mensualités et abonnements sans relancer personne.
 category: Paiements
+date: 2026-09-29
 cover: /images/blog/bre-b-cobros-automaticos.webp
-draft: false
+updated: null
 ---
 
 **Bre-B**, le système de paiements instantanés géré par la banque centrale colombienne (Banco de la República), s'apprête à fêter sa première année avec des chiffres que peu attendaient : plus de **34 millions d'utilisateurs** au cours de ses six premiers mois et plus de **111 millions de clés enregistrées** en août 2026. Il ajoute maintenant une fonction qui change la donne pour tous ceux qui facturent chaque mois : les **prélèvements automatiques**.

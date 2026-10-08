@@ -1,10 +1,13 @@
 ---
-title: "Bre-B ya permite cobros automáticos: la oportunidad para los negocios en Colombia"
-description: El sistema de pagos inmediatos del Banco de la República habilitó los débitos recurrentes con llaves. Así puedes usarlo para cobrar mensualidades y suscripciones sin perseguir a nadie.
-date: 2026-09-29
+draft: true
+title: "Bre-B ya permite cobros automáticos: la oportunidad para los negocios en
+  Colombia"
+description: El sistema de pagos inmediatos del Banco de la República habilitó
+  los débitos recurrentes con llaves. Así puedes usarlo para cobrar
+  mensualidades y suscripciones sin perseguir a nadie.
 category: Pagos
+date: 2026-09-29
 cover: /images/blog/bre-b-cobros-automaticos.webp
-draft: false
 ---
 
 **Bre-B**, el sistema de pagos inmediatos que administra el Banco de la República, está a punto de cumplir su primer año de operación con números que pocos esperaban: más de **34 millones de usuarios** en sus primeros seis meses y más de **111 millones de llaves registradas** a agosto de 2026. Y ahora suma una función que cambia las reglas para quien cobra cada mes: los **débitos automáticos**.
