@@ -10,6 +10,15 @@
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
   <!-- Tablero de noticias (resumen, filtros, idiomas): ver dashboard.js. -->
   <link href="/admin/dashboard.css" rel="stylesheet">
+  <!-- Sin la marca de Decap en las pantallas de ingreso: el logo de
+       Decap abajo del botón y el que pone cuando no hay logo propio. -->
+  <style>
+    .exus10f2, /* NetlifyCreditIcon */
+    .exus10f3, /* DecapLogoIcon */
+    .e141mjkc1 /* PageLogoIcon */ {
+      display: none !important;
+    }
+  </style>
 </head>
 <body>
   <!-- Decap CMS: lee config.yml de esta misma carpeta. -->
