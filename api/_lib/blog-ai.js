@@ -158,7 +158,11 @@ export async function listPosts(store) {
       const data = Object.fromEntries(locales)[DEFAULT_LOCALE]
       post.langs = locales.filter(([lang, meta]) => lang === DEFAULT_LOCALE || (meta.title && meta.description)).map(([lang]) => lang)
       post.title = String(data.title || post.slug)
+      post.description = data.description ? String(data.description) : ''
+      post.category = data.category ? String(data.category) : ''
+      post.cover = data.cover ? String(data.cover) : ''
       post.date = isoDate(data.date)
+      post.updated = data.updated ? isoDate(data.updated) : ''
       post.draft = data.draft === true || data.draft === 'true'
       delete post.files
     }),

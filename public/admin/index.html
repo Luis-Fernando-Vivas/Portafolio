@@ -8,6 +8,8 @@
   <link href="/favicon.svg" rel="icon" type="image/svg+xml">
   <!-- Ruta absoluta: la página puede servirse como /admin o /admin/. -->
   <link href="/admin/config.yml" type="text/yaml" rel="cms-config-url">
+  <!-- Tablero de noticias (resumen, filtros, idiomas): ver dashboard.js. -->
+  <link href="/admin/dashboard.css" rel="stylesheet">
 </head>
 <body>
   <!-- Decap CMS: lee config.yml de esta misma carpeta. -->
@@ -245,7 +247,7 @@
         return '<a href="/admin/#/collections/blog/entries/' + encodeURIComponent(slug) + '" data-reload>Abrir en el panel</a>'
       }
 
-      function selectTab(name) {
+      function selectTab(name, slug) {
         tab = name
         overlay.querySelectorAll('[role=tab]').forEach(function (button) {
           button.setAttribute('aria-selected', String(button.dataset.tab === name))
@@ -258,12 +260,13 @@
           setStatus('', '')
           submit.disabled = false
         }
-        if (name === 'translate') loadPosts()
+        if (name === 'translate') loadPosts(slug)
       }
 
-      function loadPosts() {
+      // slug: noticia a dejar elegida (si le falta algún idioma).
+      function loadPosts(slug) {
         select.innerHTML = '<option>Cargando…</option>'
-        api({ action: 'list' }).then(function (data) {
+        return api({ action: 'list' }).then(function (data) {
           // Solo las noticias a las que les falta inglés o francés.
           posts = data.posts.filter(function (post) {
             return ['en', 'fr'].some(function (lang) { return post.langs.indexOf(lang) === -1 })
@@ -272,6 +275,7 @@
             var missing = ['en', 'fr'].filter(function (lang) { return post.langs.indexOf(lang) === -1 })
             return '<option value="' + escapeHtml(post.slug) + '">' + escapeHtml(post.title) + ' — falta ' + missing.join(', ').toUpperCase() + '</option>'
           }).join('')
+          if (slug && posts.some(function (post) { return post.slug === slug })) select.value = slug
           // Sin pisar el aviso de una traducción recién guardada.
           if (!posts.length && !status.innerHTML) setStatus('ok', 'Todas las noticias ya están traducidas al inglés y al francés.')
           if (tab === 'translate' && !busy) submit.disabled = !posts.length
@@ -288,16 +292,19 @@
         langBoxes.forEach(function (box) { box.checked = !!post && post.langs.indexOf(box.value) === -1 })
       }
 
-      function open() {
+      // tab y slug opcionales: el tablero abre "Traducir" con una noticia elegida.
+      function open(name, slug) {
         overlay.setAttribute('data-open', '')
-        if (tab === 'translate') loadPosts()
+        if (typeof name === 'string') selectTab(name, slug)
+        else if (tab === 'translate') loadPosts()
       }
 
       function close() {
         if (!busy) overlay.removeAttribute('data-open')
       }
 
-      fab.addEventListener('click', open)
+      fab.addEventListener('click', function () { open() })
+      window.amAI = { open: open, api: api, session: session }
       overlay.querySelector('.am-ai-cancel').addEventListener('click', close)
       overlay.addEventListener('click', function (event) {
         if (event.target === overlay) close()
@@ -331,6 +338,7 @@
           var done = tab === 'generate'
             ? 'Borrador creado: <strong>' + escapeHtml(data.title) + '</strong> (' + data.langs.join(', ').toUpperCase() + '). '
             : 'Traducción guardada (' + data.langs.join(', ').toUpperCase() + '). '
+          window.dispatchEvent(new CustomEvent('am-posts-changed'))
           setStatus('ok', done + 'Revísala, agrégale una portada y desmarca “Borrador” para publicarla. ' + entryLink(data.slug))
           if (tab === 'generate') document.getElementById('am-ai-topic').value = ''
           else loadPosts()
@@ -343,5 +351,6 @@
       })
     })()
   </script>
+  <script src="/admin/dashboard.js"></script>
 </body>
 </html>

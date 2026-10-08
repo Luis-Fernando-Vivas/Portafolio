@@ -1,7 +1,8 @@
 /* Noticias con IA para el panel /admin (botón "IA" de public/admin/index.html).
 
    POST /api/blog-ai con JSON:
-   - { action: "list" }: noticias y sus idiomas, para elegir cuál traducir.
+   - { action: "list" }: noticias con sus idiomas, estado, categoría, fechas y
+     portada (tablero del panel y lista para traducir).
    - { action: "generate", topic? }: Gemini busca una noticia (del tema, o la
      más relevante de los últimos días), la redacta en español, la traduce
      a inglés y francés y guarda los tres archivos como borrador.
