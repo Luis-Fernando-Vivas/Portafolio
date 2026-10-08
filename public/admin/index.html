@@ -17,6 +17,31 @@
     // En localhost el ingreso con Google usa las funciones locales (npm run
     // dev + .env) en vez de las del sitio publicado. Con `npm run cms`
     // corriendo, en cambio, Decap usa el backend local y no pide ingreso.
+    // "Publicar" confunde: el botón solo guarda, y lo que decide si la
+    // noticia sale en el sitio es el interruptor "Borrador". Se cambian esos
+    // textos del español de Decap (por nombre de clave, donde estén).
+    ;(function () {
+      var RENAME = {
+        publish: 'Guardar',
+        publishing: 'Guardando…',
+        published: 'Guardado',
+        publishNow: 'Guardar ahora',
+        publishAndCreateNew: 'Guardar y crear otra',
+        publishAndDuplicate: 'Guardar y duplicar',
+        entryPublished: 'Noticia guardada',
+      }
+      function rename(node) {
+        Object.keys(node).forEach(function (key) {
+          var value = node[key]
+          if (value && typeof value === 'object') rename(value)
+          else if (typeof value === 'string' && Object.prototype.hasOwnProperty.call(RENAME, key)) node[key] = RENAME[key]
+        })
+        return node
+      }
+      var es = CMS.getLocale && CMS.getLocale('es')
+      if (es) CMS.registerLocale('es', rename(JSON.parse(JSON.stringify(es))))
+    })()
+
     var isLocal = /^(localhost|127\.0\.0\.1)$/.test(location.hostname)
     CMS.init(isLocal ? { config: { backend: { base_url: location.origin } } } : {})
 
