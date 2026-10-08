@@ -63,7 +63,10 @@
        CSS. Solo se cambia el texto, no se agregan nodos, para no
        interferir con React. -->
   <style>
-    [data-am-status]::before{display:inline-block;margin-right:8px;padding:2px 8px;border-radius:999px;font:600 11px/1.6 system-ui,sans-serif;letter-spacing:.04em;text-transform:uppercase;vertical-align:middle}
+    /* El título de la tarjeta de Decap es flex con space-between: se alinea
+       a la izquierda y la etiqueta no se estira. */
+    [data-am-status]{justify-content:flex-start!important;align-items:flex-start!important;gap:10px}
+    [data-am-status]::before{flex:none;align-self:flex-start;margin-top:2px;padding:3px 9px;border-radius:999px;font:600 10.5px/1.4 system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;white-space:nowrap}
     [data-am-status=draft]::before{content:'Borrador';background:#fff4d6;color:#8a5a00;border:1px solid #f0d58a}
     [data-am-status=published]::before{content:'Publicada';background:#e3f6ec;color:#16794a;border:1px solid #b5e3c9}
   </style>
