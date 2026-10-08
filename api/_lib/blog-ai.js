@@ -137,6 +137,8 @@ function postName(slug, lang) {
 }
 
 // Noticias agrupadas por slug, con los idiomas que tienen y el título en español.
+// Un idioma cuenta solo si su archivo tiene título y descripción: al guardar,
+// el panel crea .en.md y .fr.md con solo la fecha y la portada.
 export async function listPosts(store) {
   const names = await store.list()
   const bySlug = new Map()
@@ -144,19 +146,21 @@ export async function listPosts(store) {
     const match = name.match(/^(.+?)(?:\.(es|en|fr))?\.md$/)
     if (!match) continue
     const [, slug, lang = DEFAULT_LOCALE] = match
-    if (!bySlug.has(slug)) bySlug.set(slug, { slug, langs: [], file: null })
-    const post = bySlug.get(slug)
-    post.langs.push(lang)
-    if (lang === DEFAULT_LOCALE) post.file = name
+    if (!bySlug.has(slug)) bySlug.set(slug, { slug, langs: [], files: {} })
+    bySlug.get(slug).files[lang] = name
   }
-  const posts = [...bySlug.values()].filter((post) => post.file)
+  const posts = [...bySlug.values()].filter((post) => post.files[DEFAULT_LOCALE])
   await Promise.all(
     posts.map(async (post) => {
-      const { data } = parseFrontmatter(await store.read(post.file))
+      const locales = await Promise.all(
+        Object.entries(post.files).map(async ([lang, name]) => [lang, parseFrontmatter(await store.read(name)).data]),
+      )
+      const data = Object.fromEntries(locales)[DEFAULT_LOCALE]
+      post.langs = locales.filter(([lang, meta]) => lang === DEFAULT_LOCALE || (meta.title && meta.description)).map(([lang]) => lang)
       post.title = String(data.title || post.slug)
       post.date = isoDate(data.date)
       post.draft = data.draft === true || data.draft === 'true'
-      delete post.file
+      delete post.files
     }),
   )
   return posts.sort((a, b) => b.date.localeCompare(a.date))

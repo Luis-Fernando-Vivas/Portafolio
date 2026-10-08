@@ -229,19 +229,27 @@
           panel.hidden = panel.dataset.panel !== name
         })
         submit.textContent = name === 'generate' ? 'Generar' : 'Traducir'
-        if (!busy) setStatus('', '')
+        if (!busy) {
+          setStatus('', '')
+          submit.disabled = false
+        }
         if (name === 'translate') loadPosts()
       }
 
       function loadPosts() {
         select.innerHTML = '<option>Cargando…</option>'
         api({ action: 'list' }).then(function (data) {
-          posts = data.posts
+          // Solo las noticias a las que les falta inglés o francés.
+          posts = data.posts.filter(function (post) {
+            return ['en', 'fr'].some(function (lang) { return post.langs.indexOf(lang) === -1 })
+          })
           select.innerHTML = posts.map(function (post) {
             var missing = ['en', 'fr'].filter(function (lang) { return post.langs.indexOf(lang) === -1 })
-            var note = missing.length ? ' — falta ' + missing.join(', ').toUpperCase() : ' — completa'
-            return '<option value="' + escapeHtml(post.slug) + '">' + escapeHtml(post.title) + note + '</option>'
+            return '<option value="' + escapeHtml(post.slug) + '">' + escapeHtml(post.title) + ' — falta ' + missing.join(', ').toUpperCase() + '</option>'
           }).join('')
+          // Sin pisar el aviso de una traducción recién guardada.
+          if (!posts.length && !status.innerHTML) setStatus('ok', 'Todas las noticias ya están traducidas al inglés y al francés.')
+          if (tab === 'translate' && !busy) submit.disabled = !posts.length
           syncLangs()
         }).catch(function (error) {
           select.innerHTML = ''
