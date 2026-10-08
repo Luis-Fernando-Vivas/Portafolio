@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "functions": {
     "api/blog-ai.js": {
-      "maxDuration": 300
+      "maxDuration": 60
     }
   }
 }
