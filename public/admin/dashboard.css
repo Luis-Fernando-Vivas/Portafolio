@@ -12,6 +12,52 @@
   padding-left: 0 !important;
 }
 
+/* Header (Contenido, Medios, Añadir rápido, enlace, usuario) alineado con
+   el tablero en vez de los 1440px de Decap. */
+.e1rbzf6g5 { /* AppHeaderContent */
+  max-width: 1080px !important;
+  padding: 0 20px;
+  box-sizing: border-box;
+}
+
+@media (min-width: 800px) {
+  .e1rbzf6g5 {
+    padding: 0;
+  }
+}
+
+/* Tarjeta "Noticias" (título, descripción y "+ Noticia"): todo el ancho y
+   el mismo estilo que el tablero. */
+.am-dash-on .ei8nkzc4 { /* CollectionTopContainer */
+  width: auto !important;
+  max-width: none !important;
+  box-sizing: border-box;
+  padding: 22px 24px !important;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(68, 74, 87, 0.06);
+}
+
+.am-dash-on .ei8nkzc3 { /* CollectionTopRow */
+  align-items: center;
+}
+
+.am-dash-on .ei8nkzc2 { /* CollectionTopHeading */
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.am-dash-on .ei8nkzc1 { /* CollectionTopNewButton */
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 8px;
+}
+
+.am-dash-on .ei8nkzc0 { /* CollectionTopDescription */
+  max-width: 640px;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
 /* La lista y los controles de Decap: el tablero los reemplaza. */
 .am-dash-on .e1sogrfi2 .emfmed70,
 .am-dash-on .e1sogrfi2 .etq0ss02 {
@@ -24,7 +70,7 @@
   --dash-gray: #798291;
   --dash-line: #e4e6ec;
   --dash-blue: #3a69c7;
-  margin: 20px 0 48px;
+  margin: 0 0 48px;
   color: var(--dash-ink);
   font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
 }
