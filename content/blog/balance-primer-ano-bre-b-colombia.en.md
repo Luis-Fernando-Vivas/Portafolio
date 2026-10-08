@@ -7,7 +7,7 @@ category: Payments
 date: 2026-10-07
 cover: null
 updated: null
-draft: false
+draft: true
 ---
 
 On October 6, 2026, Banco de la República (Colombia's central bank) released the official results from the first year of **Bre-B**, Colombia's instant and interoperable payments system. The figures show that Colombian shopping habits have changed for good: the network already exceeds **116 million registered keys (llaves)**, connects more than **36 million users**, and has processed over **one billion transactions**. With **245 participating financial entities** (including banks, credit unions, and digital wallets), interoperability grew 14-fold in just twelve months, directly transforming how merchants and companies collect payments for their products and services.
