@@ -7,6 +7,24 @@
   var fillImg = overlay.querySelector('.automind-loading-logo-fill')
   var percentEl = overlay.querySelector('.automind-loading-percent')
 
+  // La pantalla de carga solo se muestra en la primera visita de la sesión.
+  // Al volver a la home desde el blog (u otra página) se quita al instante
+  // para que la transición entre páginas se sienta continua.
+  var seen = false
+  try {
+    seen = sessionStorage.getItem('automind:loaded') === '1'
+    sessionStorage.setItem('automind:loaded', '1')
+  } catch (e) {}
+  if (!seen && document.referrer) {
+    try {
+      seen = new URL(document.referrer).origin === location.origin
+    } catch (e) {}
+  }
+  if (seen) {
+    overlay.remove()
+    return
+  }
+
   document.documentElement.style.overflow = 'hidden'
 
   function setProgress(p) {

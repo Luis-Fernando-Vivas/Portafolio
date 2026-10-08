@@ -1,0 +1,351 @@
+/* Selector flotante de idioma (i18n.js). Píldora oscura y translúcida como
+   la barra inferior del móvil, con un anillo de degradado de marca que gira
+   despacio para llamar la atención sin estorbar. Abajo a la derecha en
+   escritorio; en móvil, justo encima de la barra inferior. */
+@property --am-lang-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.am-lang {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 950;
+  font-family: 'Clash Display', 'Geist', system-ui, sans-serif;
+  opacity: 0;
+  transform: translateY(16px) scale(0.92);
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1), transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.am-lang.is-ready {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Botón ---------- */
+.am-lang__toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 16px 0 7px;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(18, 18, 18, 0.78);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow:
+    0 12px 32px -6px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14);
+  color: #f5f5f5;
+  font: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: transform 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.4), box-shadow 0.3s ease;
+}
+
+.am-lang__toggle:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 16px 36px -8px rgba(0, 143, 177, 0.55),
+    0 2px 8px rgba(0, 0, 0, 0.25),
+    inset 0 0.5px 0 rgba(255, 255, 255, 0.14);
+}
+
+.am-lang__toggle:active {
+  transform: scale(0.96);
+}
+
+.am-lang__toggle:focus-visible,
+.am-lang__option:focus-visible {
+  outline: 2px solid #24d3ef;
+  outline-offset: 3px;
+}
+
+/* Anillo: un borde de 1.5px pintado con un degradado cónico que gira. */
+.am-lang__ring {
+  position: absolute;
+  inset: 0;
+  padding: 1.5px;
+  border-radius: inherit;
+  background: conic-gradient(
+    from var(--am-lang-angle),
+    rgba(255, 255, 255, 0.12) 0deg,
+    rgba(255, 255, 255, 0.12) 160deg,
+    #24d3ef 250deg,
+    #008fb1 320deg,
+    rgba(255, 255, 255, 0.12) 360deg
+  );
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+  animation: am-lang-spin 4.5s linear infinite;
+}
+
+@keyframes am-lang-spin {
+  to {
+    --am-lang-angle: 360deg;
+  }
+}
+
+.am-lang__globe {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #24d3ef, #008fb1);
+  box-shadow: 0 4px 14px -2px rgba(36, 211, 239, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+/* Halo que late suave alrededor del globo. */
+.am-lang__globe::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: 0 0 0 0 rgba(36, 211, 239, 0.55);
+  animation: am-lang-pulse 2.8s ease-out infinite;
+}
+
+@keyframes am-lang-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(36, 211, 239, 0.5);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 10px rgba(36, 211, 239, 0);
+  }
+}
+
+.am-lang__globe svg {
+  width: 20px;
+  height: 20px;
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.am-lang__toggle:hover .am-lang__globe svg,
+.am-lang.is-open .am-lang__globe svg {
+  transform: rotate(-30deg);
+}
+
+.am-lang__code {
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+}
+
+.am-lang__chevron {
+  width: 7px;
+  height: 7px;
+  margin: -3px 2px 0 -2px;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  opacity: 0.7;
+  transform: rotate(-135deg) translate(-2px, -2px);
+  transition: transform 0.3s ease;
+}
+
+.am-lang.is-open .am-lang__chevron {
+  transform: rotate(45deg);
+}
+
+/* ---------- Menú ---------- */
+.am-lang__menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 12px);
+  min-width: 210px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  border-radius: 18px;
+  background: rgba(18, 18, 18, 0.88);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  border: 0.5px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 44px -10px rgba(0, 0, 0, 0.5), 0 2px 8px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.96);
+  transform-origin: bottom right;
+  transition:
+    opacity 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    visibility 0s linear 0.28s;
+}
+
+.am-lang.is-open .am-lang__menu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition-delay: 0s;
+}
+
+.am-lang__option {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 8px 12px 8px 8px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: #d6d6d6;
+  font: inherit;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.am-lang__option:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #ffffff;
+}
+
+.am-lang__badge {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 28px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f5f5f5;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  transition: background 0.2s ease;
+}
+
+.am-lang__name {
+  flex: 1;
+}
+
+.am-lang__check {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  color: #24d3ef;
+  opacity: 0;
+}
+
+.am-lang__check svg {
+  width: 100%;
+  height: 100%;
+}
+
+.am-lang__option.is-active {
+  color: #ffffff;
+}
+
+.am-lang__option.is-active .am-lang__badge {
+  background: linear-gradient(135deg, #24d3ef, #008fb1);
+  color: #ffffff;
+}
+
+.am-lang__option.is-active .am-lang__check {
+  opacity: 1;
+}
+
+/* Las opciones entran escalonadas al abrir. */
+.am-lang__menu li {
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.am-lang.is-open .am-lang__menu li {
+  opacity: 1;
+  transform: none;
+}
+
+.am-lang.is-open .am-lang__menu li:nth-child(2) {
+  transition-delay: 0.04s;
+}
+
+.am-lang.is-open .am-lang__menu li:nth-child(3) {
+  transition-delay: 0.08s;
+}
+
+/* ---------- Transición al cambiar de idioma ---------- */
+.am-lang-veil {
+  position: fixed;
+  inset: 0;
+  z-index: 10001;
+  display: grid;
+  place-items: center;
+  background: #ffffff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.am-lang-veil.is-visible {
+  opacity: 1;
+}
+
+.am-lang-veil__label {
+  font-family: 'Clash Display', 'Geist', system-ui, sans-serif;
+  font-size: clamp(32px, 6vw, 56px);
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  background: linear-gradient(135deg, #24d3ef, #008fb1);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  transform: translateY(8px);
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.am-lang-veil.is-visible .am-lang-veil__label {
+  transform: none;
+}
+
+/* ---------- Móvil: encima de la barra inferior (56px + 12px) ---------- */
+@media (max-width: 809.98px) {
+  .am-lang {
+    right: 16px;
+    bottom: calc(12px + 56px + 12px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .am-lang__toggle {
+    height: 46px;
+    gap: 8px;
+    padding: 0 13px 0 5px;
+  }
+
+  .am-lang__globe {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* El banner de cookies ocupa ese mismo espacio mientras está abierto. */
+  html:has(.am-consent.is-visible) .am-lang {
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(12px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .am-lang,
+  .am-lang__menu,
+  .am-lang__menu li,
+  .am-lang-veil {
+    transition: none;
+  }
+
+  .am-lang__ring,
+  .am-lang__globe::after {
+    animation: none;
+  }
+}

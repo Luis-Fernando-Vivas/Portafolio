@@ -3,8 +3,10 @@
   // plus a duplicate screen-reader-only span, so its textContent ends up as
   // "Resultados que se notanResultados que se notan" — match with indexOf,
   // not an exact-equality check.
-  var heading = Array.prototype.slice.call(document.querySelectorAll('p')).find(function (p) {
-    return p.textContent.indexOf('Resultados que se notan') !== -1
+  // In the visitor's language: i18n.js translates the page before this runs.
+  var headingText = window.amT ? window.amT('Resultados que se notan') : 'Resultados que se notan'
+  var heading = Array.prototype.slice.call(document.querySelectorAll('p, h2')).find(function (p) {
+    return p.textContent.indexOf(headingText) !== -1
   })
   if (!heading) return
 

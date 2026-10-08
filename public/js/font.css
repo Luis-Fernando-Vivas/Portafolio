@@ -40,7 +40,7 @@ h1.framer-styles-preset-1hexgp2 {
    que se notan", "Preguntas frecuentes", closing CTA): plain <p> with an
    inline letter-spacing of -2px to -5px. scroll-fill-headings.js splits
    them into per-letter spans, which inherit from the <p>. */
-p[style*="font-family:Space Grotesk"] {
+:is(p, h2)[style*="font-family:Space Grotesk"] {
   letter-spacing: 0 !important;
 }
 

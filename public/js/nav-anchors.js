@@ -7,7 +7,7 @@
   // (matches the same "*Section" / "Content" naming reveal.js already
   // relies on), then tag that with the id.
   function findSectionFor(headingText) {
-    var heading = Array.prototype.slice.call(document.querySelectorAll('p')).find(function (p) {
+    var heading = Array.prototype.slice.call(document.querySelectorAll('p, h2')).find(function (p) {
       return p.textContent.indexOf(headingText) !== -1
     })
     if (!heading) return null
@@ -20,10 +20,13 @@
     return null
   }
 
+  // Headings are matched in the visitor's language (i18n.js translates the
+  // page before this runs); amT falls back to the Spanish text.
+  var t = window.amT || function (text) { return text }
   var idMap = {
-    results: 'Resultados que se notan',
-    faq: 'Preguntas frecuentes',
-    contact: '¿Listo para que tu negocio trabaje',
+    results: t('Resultados que se notan'),
+    faq: t('Preguntas frecuentes'),
+    contact: t('¿Listo para que tu negocio trabaje de forma más inteligente?'),
   }
   Object.keys(idMap).forEach(function (id) {
     if (document.getElementById(id)) return

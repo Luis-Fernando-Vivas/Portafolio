@@ -199,7 +199,13 @@
     startCycle()
   }
 
+  // Only user picks land here (autoplay goes through goNext), so this is
+  // what gets reported to analytics.
   function activate(index) {
+    if (index !== activeIndex && window.amTrack) {
+      var title = cards[index].querySelector('.framer-1orppa9')
+      window.amTrack('feature_tab_select', { tab: title ? title.textContent.trim().slice(0, 80) : String(index + 1) })
+    }
     setActive(index)
     startCycle()
   }

@@ -1,0 +1,109 @@
+# Panel de administración del blog (Decap CMS), en /admin.
+#
+# - En producción inicia sesión con Google (api/auth.js y api/callback.js):
+#   solo entran los correos de ADMIN_EMAILS, y el panel guarda con el
+#   GITHUB_TOKEN configurado en Vercel.
+#   Cada noticia que guardes es un commit en main: Vercel la publica sola
+#   en uno o dos minutos.
+# - En local: `npm run cms` en una terminal y `npm run dev` en otra, y abre
+#   http://localhost:5173/admin/ — los cambios se escriben directo en
+#   content/blog sin pasar por GitHub.
+backend:
+  name: github
+  repo: Luis-Fernando-Vivas/Portafolio
+  branch: main
+  base_url: https://www.automindco.com
+  auth_endpoint: api/auth
+  commit_messages:
+    create: 'Blog: nueva noticia "{{slug}}"'
+    update: 'Blog: actualiza "{{slug}}"'
+    delete: 'Blog: elimina "{{slug}}"'
+    uploadMedia: 'Blog: sube imagen "{{path}}"'
+    deleteMedia: 'Blog: elimina imagen "{{path}}"'
+
+local_backend: true
+
+locale: es
+site_url: https://www.automindco.com
+display_url: https://www.automindco.com/blog
+logo_url: /automind_logo_final_10_1.webp
+
+media_folder: public/images/blog
+public_folder: /images/blog
+
+# Cada noticia se guarda como content/blog/<slug>.<idioma>.md. El español es
+# obligatorio; inglés y francés son opcionales (si faltan, se muestra el
+# español). Ver scripts/blog-plugin.js.
+i18n:
+  structure: multiple_files
+  locales: [es, en, fr]
+  default_locale: es
+
+collections:
+  - name: blog
+    label: Noticias
+    label_singular: Noticia
+    description: Artículos y noticias del blog (/blog). Escribe primero en español y luego, si quieres, las versiones en inglés y francés.
+    folder: content/blog
+    create: true
+    slug: '{{slug}}'
+    extension: md
+    format: frontmatter
+    i18n: true
+    summary: '{{title}} · {{date}}'
+    sortable_fields: [date, title]
+    view_filters:
+      - label: Borradores
+        field: draft
+        pattern: true
+    preview_path: blog/{{slug}}
+    fields:
+      - label: Título
+        name: title
+        widget: string
+        i18n: true
+      - label: Descripción
+        name: description
+        widget: text
+        i18n: true
+        hint: Una o dos frases. Se muestra en la tarjeta del blog, en Google y al compartir en redes.
+      - label: Categoría
+        name: category
+        widget: string
+        i18n: true
+        default: Automatización
+        hint: Ej. Automatización, Sitios web, Inteligencia artificial, Marketing digital, Pagos.
+      - label: Fecha de publicación
+        name: date
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        picker_utc: true
+        i18n: duplicate
+      - label: Imagen de portada
+        name: cover
+        widget: image
+        required: false
+        i18n: duplicate
+        hint: Opcional. Horizontal (16:9), idealmente .webp de menos de 300 KB.
+      - label: Última actualización
+        name: updated
+        widget: datetime
+        format: YYYY-MM-DD
+        date_format: YYYY-MM-DD
+        time_format: false
+        picker_utc: true
+        required: false
+        i18n: duplicate
+      - label: Borrador
+        name: draft
+        widget: boolean
+        default: false
+        required: false
+        i18n: duplicate
+        hint: Activado, la noticia no se publica en el sitio (solo se ve en local).
+      - label: Contenido
+        name: body
+        widget: markdown
+        i18n: true

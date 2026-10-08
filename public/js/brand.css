@@ -446,7 +446,7 @@
      -- scroll-fill-headings.js targets that exact inline-style signature to
      wrap them for its letter-color animation, which is how this selector
      stays scoped to just these titles. Match the hero's mobile size. */
-  p[style*="font-family:Space Grotesk"] {
+  :is(p, h2)[style*="font-family:Space Grotesk"] {
     font-size: 30px !important;
     line-height: 1.05 !important;
     letter-spacing: 0 !important;

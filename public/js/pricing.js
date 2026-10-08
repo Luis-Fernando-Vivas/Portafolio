@@ -11,6 +11,23 @@
     window.addEventListener('scroll', onScroll, { passive: true });
   }
 
+  // Enlaces internos (#seccion): con Lenis activo se deslizan con él,
+  // descontando el header fijo; sin Lenis, el navegador usa scroll-behavior.
+  document.addEventListener('click', function (event) {
+    var link = event.target.closest && event.target.closest('a[href^="#"]');
+    if (!link || !window.lenis || link.hasAttribute('data-cal-link')) return;
+    var id = decodeURIComponent(link.getAttribute('href').slice(1));
+    var target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    event.preventDefault();
+    // Se pasa la posición (no el elemento) para que el margen sea uno solo:
+    // el scroll-margin-top del CSS si lo hay, o el alto del header + 24px.
+    var margin = parseFloat(getComputedStyle(target).scrollMarginTop) || (header ? header.offsetHeight : 0) + 24;
+    var top = target.getBoundingClientRect().top + window.scrollY - margin;
+    window.lenis.scrollTo(Math.max(0, top), { duration: 1.2 });
+    history.pushState(null, '', '#' + id);
+  });
+
   // Los botones de agendar apuntan a /#contact como respaldo; si Cal.com
   // cargó, se quedan en esta página y Cal abre su popup.
   document.querySelectorAll('[data-cal-link]').forEach(function (link) {

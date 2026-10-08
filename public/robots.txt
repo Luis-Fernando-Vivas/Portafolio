@@ -1,4 +1,28 @@
+# Todo el sitio es público salvo el panel del blog y las funciones internas.
+# Los buscadores y asistentes de IA (ChatGPT, Claude, Perplexity, Gemini,
+# Copilot, Apple) tienen permiso explícito: queremos que citen a Automind.
+
 User-agent: *
 Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Buscadores con IA y asistentes que citan fuentes
+User-agent: OAI-SearchBot
+User-agent: ChatGPT-User
+User-agent: GPTBot
+User-agent: Claude-SearchBot
+User-agent: Claude-User
+User-agent: ClaudeBot
+User-agent: PerplexityBot
+User-agent: Perplexity-User
+User-agent: Google-Extended
+User-agent: Applebot-Extended
+User-agent: Bingbot
+User-agent: DuckAssistBot
+User-agent: meta-externalagent
+Allow: /
+Disallow: /admin/
+Disallow: /api/
 
 Sitemap: https://www.automindco.com/sitemap.xml

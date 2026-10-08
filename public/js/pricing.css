@@ -24,6 +24,24 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Scroll suave con Lenis (smooth-scroll.js), igual que en el index. */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
 body {
   margin: 0;
   background: #ffffff;
@@ -81,7 +99,7 @@ img {
   color: var(--am-brand);
   font-size: 16px;
   line-height: 1.4;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-title {
@@ -89,7 +107,7 @@ img {
   font-size: 56px;
   font-weight: 500;
   line-height: 1.07;
-  letter-spacing: -0.036em;
+  letter-spacing: normal;
   color: var(--am-ink-2);
 }
 
@@ -104,7 +122,7 @@ img {
   color: var(--am-gray);
   font-size: 16px;
   line-height: 1.4;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 /* ---------- Botones (mismo estilo y efecto rolling del index) ---------- */
@@ -117,7 +135,7 @@ img {
   border: 1px solid var(--am-ink);
   font-size: 14px;
   line-height: 1.4;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   text-decoration: none;
   cursor: pointer;
   transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
@@ -169,11 +187,17 @@ img {
   }
 }
 
-/* ---------- Header (réplica del Navber del index) ---------- */
+/* ---------- Header (réplica del Navber del index) ----------
+   Mismas medidas que el Navber exportado de Framer: 79px de alto, logo de
+   190px, enlaces centrados entre el logo y "Empezar" (space-between) y,
+   en tablet, el menú hamburguesa de mobile-menu.css/js. */
 .am-header {
   position: sticky;
   top: 0;
   z-index: 500;
+  /* El Navber del index no pasa de 1440px y queda centrado. */
+  max-width: 1440px;
+  margin: 0 auto;
   background: var(--am-ink);
   transition: box-shadow 0.4s ease, background-color 0.4s ease;
 }
@@ -207,9 +231,9 @@ img {
 .am-header__inner {
   position: relative;
   max-width: var(--am-frame);
-  height: 73px;
+  height: 79px;
   margin: 0 auto;
-  padding: 0 20px 0 50px;
+  padding: 0 19px 0 18px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -219,15 +243,11 @@ img {
 
 .am-header__logo img {
   display: block;
-  width: 110px;
+  width: 190px;
   height: auto;
 }
 
 .am-header__nav {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
   display: flex;
   gap: 24px;
 }
@@ -238,7 +258,7 @@ img {
   color: rgb(214, 214, 214);
   font-size: 14px;
   line-height: 1.7;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   text-decoration: none;
   transition: color 0.25s ease;
 }
@@ -274,10 +294,23 @@ img {
   border-radius: 4px;
   background: #ffffff;
   color: var(--am-ink);
-  font-size: 14px;
-  line-height: 1.1;
-  letter-spacing: -0.03em;
+  font-size: 12px;
+  line-height: 15px;
+  letter-spacing: normal;
   text-decoration: none;
+}
+
+/* Tablet: como el index, solo logo + hamburguesa (mobile-menu.css). */
+@media (min-width: 810px) and (max-width: 1023.98px) {
+  .am-header__inner {
+    margin: 0 28px;
+    padding-left: 22px;
+  }
+
+  .am-header__nav,
+  .am-header__cta {
+    display: none;
+  }
 }
 
 /* ---------- Hero ---------- */
@@ -290,7 +323,7 @@ img {
   max-width: 820px;
   margin: 0 auto;
   font-size: 56px;
-  letter-spacing: -0.05em;
+  letter-spacing: normal;
   line-height: 1.02;
   color: var(--am-ink);
 }
@@ -328,7 +361,7 @@ img {
   font-size: 20px;
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   color: var(--am-ink-2);
 }
 
@@ -337,7 +370,7 @@ img {
   color: var(--am-gray);
   font-size: 15px;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-notice__num {
@@ -381,7 +414,7 @@ img {
   padding: 18px 0;
   color: var(--am-gray-light);
   font-size: 15px;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   text-decoration: none;
   white-space: nowrap;
   transition: color 0.25s ease;
@@ -487,7 +520,7 @@ img {
   font-size: 24px;
   font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   color: var(--am-ink-2);
 }
 
@@ -497,7 +530,7 @@ img {
   color: var(--am-gray);
   font-size: 15px;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-price {
@@ -518,7 +551,7 @@ img {
   font-size: 48px;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
   color: #000000;
 }
 
@@ -533,7 +566,7 @@ img {
   margin: 10px 0 0;
   color: var(--am-gray);
   font-size: 14px;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-plan__meta {
@@ -551,14 +584,14 @@ img {
   border-radius: 4px;
   color: var(--am-ink-2);
   font-size: 13px;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-plan__label {
   margin: 28px 0 14px;
   color: var(--am-brand);
   font-size: 14px;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 .am-list {
@@ -577,7 +610,7 @@ img {
   color: var(--am-ink-2);
   font-size: 15px;
   line-height: 1.45;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 /* Marcador "+" como los del marco del sitio */
@@ -615,7 +648,7 @@ img {
   margin: 0 0 4px;
   font-size: 20px;
   font-weight: 500;
-  letter-spacing: -0.03em;
+  letter-spacing: normal;
   color: var(--am-ink-2);
 }
 
@@ -654,7 +687,7 @@ img {
   color: var(--am-brand);
   font-size: 16px;
   font-weight: 500;
-  letter-spacing: -0.02em;
+  letter-spacing: normal;
   text-decoration: none;
 }
 
@@ -692,7 +725,7 @@ img {
   color: var(--am-gray);
   font-size: 15px;
   line-height: 1.5;
-  letter-spacing: -0.01em;
+  letter-spacing: normal;
 }
 
 /* ---------- CTA final ---------- */
@@ -750,10 +783,6 @@ img {
     font-size: 46px;
   }
 
-  .am-header__nav {
-    gap: 18px;
-  }
-
   .am-terms {
     grid-template-columns: 1fr;
   }
@@ -800,7 +829,7 @@ img {
   .am-title,
   .am-hero .am-title {
     font-size: 32px;
-    letter-spacing: -0.03em;
+    letter-spacing: normal;
     line-height: 1.1;
   }
 

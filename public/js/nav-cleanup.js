@@ -1,7 +1,7 @@
 (function () {
   // Real, distinct destinations in page order. Anything whose href isn't in
   // here, or that duplicates an href already kept, gets dropped.
-  var ORDER = ['#', '#works', '#feature', '#results', '#faq', '#contact']
+  var ORDER = ['#', '#works', '#feature', '#results', '#faq', '/blog', '#contact']
 
   function orderIndex(href) {
     var i = ORDER.indexOf(href)
@@ -12,6 +12,11 @@
   // into page order. When two items share a target, the generic "Empezar"
   // CTA label loses to a more specific one (e.g. "Contacto") pointing at the
   // same place. Dropped wrappers are removed from the DOM outright.
+  // Labels and footer blurb are matched in the visitor's language (i18n.js
+  // translates the page before this runs); amT falls back to the Spanish.
+  var t = window.amT || function (text) { return text }
+  var START = t('Empezar')
+
   function dedupeAndSort(items) {
     var kept = {}
     items.forEach(function (item) {
@@ -22,7 +27,7 @@
         return
       }
       var existingLabel = (existing.wrapper.textContent || '').trim()
-      if (existingLabel === 'Empezar' && label !== 'Empezar') {
+      if (existingLabel === START && label !== START) {
         existing.wrapper.remove()
         kept[item.href] = item
       } else {
@@ -58,8 +63,9 @@
   // --- Footer: two "Nav Menu" columns share the same class as the header's,
   // so scope the search to the footer itself (found via its unique blurb
   // text) instead of querying by class name alone. ---
+  var blurbText = t('Diseño, automatización y marketing digital para negocios que quieren crecer sin depender de procesos manuales.')
   var blurb = Array.prototype.slice.call(document.querySelectorAll('p')).find(function (p) {
-    return p.textContent.indexOf('Diseño, automatización y marketing digital') !== -1
+    return p.textContent.indexOf(blurbText) !== -1
   })
   if (blurb) {
     var footerRoot = blurb

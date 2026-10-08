@@ -42,6 +42,9 @@
         answer.style.opacity = '1'
         row.setAttribute('aria-expanded', 'true')
         row.classList.add('automind-faq-open')
+        if (window.amTrack) {
+          window.amTrack('faq_open', { question: (children[0].textContent || '').trim().slice(0, 100) })
+        }
       }
     })
   })

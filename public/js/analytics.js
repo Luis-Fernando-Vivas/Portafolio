@@ -115,29 +115,43 @@
   // la página, page_view incluido. Así un whatsapp_click o booking_open
   // dice desde qué artículo llegó el contacto.
   var article = document.querySelector('meta[name="am-article"]');
+  var articleParams = null;
   if (article) {
-    gtag('set', {
+    articleParams = {
       article_slug: article.getAttribute('content'),
       article_category: article.getAttribute('data-category')
-    });
+    };
+    gtag('set', articleParams);
   }
 
   gtag('js', new Date());
   gtag('config', GA_ID, config);
 
-  // Eventos estándar de Meta para las conversiones que importan en anuncios.
-  var META_EVENTS = { whatsapp_click: 'Contact', booking_open: 'Schedule' };
+  // Eventos estándar de Meta para las conversiones que importan en anuncios;
+  // el resto llega a Meta como evento personalizado (trackCustom) con el
+  // mismo nombre que en GA4.
+  var META_EVENTS = { whatsapp_click: 'Contact', booking_open: 'Schedule', article_read: 'ViewContent' };
 
   function track(name, params) {
-    gtag('event', name, params || {});
-    if (window.fbq && META_EVENTS[name]) window.fbq('track', META_EVENTS[name], params || {});
+    params = params || {};
+    gtag('event', name, params);
+    if (window.fbq) {
+      // gtag('set') no llega a Meta: el artículo se añade a mano.
+      var metaParams = {};
+      var key;
+      for (key in articleParams) metaParams[key] = articleParams[key];
+      for (key in params) metaParams[key] = params[key];
+      if (META_EVENTS[name]) window.fbq('track', META_EVENTS[name], metaParams);
+      else window.fbq('trackCustom', name, metaParams);
+    }
+    if (window.clarity) window.clarity('event', name);
   }
   window.amTrack = track;
 
   // Sección de la página donde ocurrió el clic (hero, works, footer...),
   // para saber qué botón concreto convierte.
   function locationOf(el) {
-    var box = el.closest('section[id], article[id], header[id], footer[id], nav[id], [data-framer-name$=" Section"]');
+    var box = el.closest('section[id], article[id], header[id], footer[id], nav[id], aside[id], [data-framer-name$=" Section"]');
     if (box) {
       return box.id || box.getAttribute('data-framer-name').replace(/ Section$/, '').toLowerCase().replace(/\s+/g, '_');
     }
@@ -169,17 +183,31 @@
     return (el.textContent || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 80);
   }
 
+  // Botones que registra su propio script (filtros y copiar enlace del blog,
+  // idioma) o que no aportan nada medirlos (banner de cookies).
+  var SELF_TRACKED = '.am-filter, [data-copy], .am-lang__toggle, .am-lang__option, [data-choice], [data-consent-open]';
+
   // Delegación en document: cubre también los botones que se crean después
   // por JS (menú móvil, barra inferior) y no depende de que el DOM esté listo.
+  // Todo enlace o botón deja un evento: los que no encajan en uno concreto
+  // caen en nav_click, outbound_click o button_click.
   document.addEventListener('click', function (event) {
-    var el = event.target.closest && event.target.closest('a, [data-cal-link]');
-    if (!el) return;
+    var el = event.target.closest && event.target.closest('a, button, [data-cal-link]');
+    if (!el || el.matches(SELF_TRACKED)) return;
 
-    var href = el.getAttribute('href') || '';
+    // data-scroll-target: botones de Framer que bajan a una sección (hero).
+    var href = el.getAttribute('href') || el.getAttribute('data-scroll-target') || '';
     var where = locationOf(el);
 
     if (el.hasAttribute('data-cal-link')) {
       track('booking_open', { location: where });
+      return;
+    }
+
+    // Compartir del blog: va antes que WhatsApp y Facebook para no contarlo
+    // como contacto (wa.me/?text=...) ni como visita al perfil.
+    if (el.closest('[data-share-url]')) {
+      track('share', { method: el.getAttribute('data-share') || linkText(el), location: where });
       return;
     }
 
@@ -203,13 +231,45 @@
       return;
     }
 
+    if (/^mailto:/.test(href)) {
+      track('email_click', { location: where });
+      return;
+    }
+
     if (/precios(\.html)?($|[#?])/.test(href) || /#contact$/.test(href)) {
       track('cta_click', {
         cta_text: linkText(el),
         destination: href,
         location: where
       });
+      return;
     }
+
+    // Enlaces a un artículo: tarjetas del índice, "Sigue leyendo" y lateral.
+    var post = href.match(/^(?:https?:\/\/[^/]+)?\/blog\/([^/?#.]+)/);
+    if (post) {
+      track('article_click', { article_target: post[1], location: where });
+      return;
+    }
+
+    if (el.id === 'automind-hamburger') {
+      if (el.getAttribute('aria-expanded') !== 'true') track('menu_open', { location: where });
+      return;
+    }
+
+    if (!href) {
+      if (el.tagName === 'BUTTON') track('button_click', { button_text: linkText(el), location: where });
+      return;
+    }
+    if (href === '#') return;
+
+    if (el.host && el.host !== location.host) {
+      track('outbound_click', { link_url: el.href, link_text: linkText(el), location: where });
+      return;
+    }
+
+    // Navegación interna: anclas (#works, #faq...), /blog, /privacidad...
+    track('nav_click', { link_text: linkText(el), destination: href, location: where });
   }, true);
 
   // Precios: qué categorías llegan a ver (una vez por categoría y visita).

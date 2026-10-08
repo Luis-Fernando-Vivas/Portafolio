@@ -4,7 +4,7 @@
   var BAND = 0.12 // fraction of the scroll range each letter takes to change color
 
   var paragraphs = Array.prototype.slice.call(
-    document.querySelectorAll('p[style*="font-family:Space Grotesk"], [data-scroll-fill]')
+    document.querySelectorAll(':is(p, h2)[style*="font-family:Space Grotesk"], [data-scroll-fill]')
   )
   if (!paragraphs.length) return
 

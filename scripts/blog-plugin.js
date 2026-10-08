@@ -1,7 +1,13 @@
-/* Blog generado desde Markdown.
+/* Blog generado desde Markdown (lo conecta scripts/site-plugin.js).
 
-   Cada archivo content/blog/<slug>.md es un artículo publicado en
-   /blog/<slug>; el índice vive en /blog. Encabezado del archivo:
+   Cada artículo vive en content/blog/<slug>.<idioma>.md (es, en, fr) y se
+   publica en /blog/<slug>, /en/blog/<slug> y /fr/blog/<slug>; el índice
+   vive en /blog, /en/blog y /fr/blog. El español es obligatorio; el inglés
+   y el francés son opcionales y, si faltan, esa versión del artículo no se
+   publica (el índice en ese idioma lo muestra en español). Los archivos
+   los crea y edita el panel /admin (Decap CMS, ver
+   public/admin/config.yml), pero también se pueden escribir a mano.
+   Encabezado del archivo (YAML):
 
      ---
      title: Título del artículo
@@ -13,27 +19,26 @@
      draft: true                         (opcional: solo se ve en local)
      ---
 
-   - En `npm run dev` las páginas se generan en cada visita (los borradores
-     también, marcados como tal) y el navegador se recarga al guardar un .md.
-   - En `npm run build` se escriben dist/blog.html y dist/blog/<slug>.html
-     (Vercel las sirve sin .html por cleanUrls) y se regenera sitemap.xml
-     con las páginas fijas + los artículos publicados.
+   date, cover, updated y draft se toman del archivo en español.
+
+   Cada página se escribe ya en su idioma: los textos del artículo salen del
+   .md de ese idioma (marcados data-i18n-skip) y los fijos de la plantilla
+   ("Leer artículo", el header, el footer…) los traduce finalizePage() con
+   public/js/i18n-dict.js (ver scripts/i18n-build.js).
 
    El header, el footer y la barra móvil se copian de privacidad.html, así
-   que cualquier cambio en ellos llega solo al blog. */
+   que cualquier cambio en ellos llega solo al blog y a las landing pages. */
 import fs from 'node:fs'
 import path from 'node:path'
 import { marked } from 'marked'
+import { parse as parseYaml } from 'yaml'
+import { DATE_LOCALES, LANGS, SITE } from './i18n-build.js'
 
-const SITE = 'https://www.automindco.com'
-const GA_ID = 'G-TDSLWGEYQ2'
-const STATIC_PAGES = ['/', '/precios', '/privacidad']
-const WHATSAPP = 'https://wa.me/573014315587'
-const CAL_ATTRS = 'data-cal-namespace="30min" data-cal-link="automind-5oseyu/30min" data-cal-config=\'{"layout":"month_view"}\''
+export const GA_ID = 'G-TDSLWGEYQ2'
+export const WHATSAPP = 'https://wa.me/573014315587'
+export const CAL_ATTRS = 'data-cal-namespace="30min" data-cal-link="automind-5oseyu/30min" data-cal-config=\'{"layout":"month_view"}\''
 
-const MONTHS = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-
-function escape(text) {
+export function escape(text) {
   return String(text)
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -41,72 +46,123 @@ function escape(text) {
     .replace(/"/g, '&quot;')
 }
 
-function formatDate(iso) {
-  const [year, month, day] = iso.split('-').map(Number)
-  return `${day} de ${MONTHS[month - 1]} de ${year}`
+function formatDate(iso, lang) {
+  const format = new Intl.DateTimeFormat(DATE_LOCALES[lang], { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' })
+  return format.format(new Date(`${iso}T00:00:00Z`))
 }
 
-// Encabezado "clave: valor" entre dos líneas ---. No hace falta YAML
-// completo para estos campos.
-function parseFrontmatter(source, file) {
+// YAML da Date si la fecha va sin comillas en algunos esquemas, o string;
+// se normaliza siempre a AAAA-MM-DD.
+export function isoDate(value) {
+  if (value instanceof Date) return value.toISOString().slice(0, 10)
+  return value == null ? '' : String(value).trim().slice(0, 10)
+}
+
+export function parseFrontmatter(source, file) {
   const match = source.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?([\s\S]*)$/)
   if (!match) throw new Error(`${file}: falta el encabezado --- al inicio`)
-  const data = {}
-  match[1].split(/\r?\n/).forEach((line) => {
-    const pair = line.match(/^(\w+):\s*(.*)$/)
-    if (pair) data[pair[1]] = pair[2].trim().replace(/^(['"])(.*)\1$/, '$2')
-  })
-  return { data, body: match[2] }
+  return { data: parseYaml(match[1]) || {}, body: match[2] }
 }
 
-function readPosts(dir, { includeDrafts }) {
+function readLocale(file, name) {
+  const { data, body } = parseFrontmatter(fs.readFileSync(file, 'utf8'), name)
+  for (const field of ['title', 'description']) {
+    if (!data[field]) throw new Error(`${name}: falta "${field}" en el encabezado`)
+  }
+  const words = body.split(/\s+/).filter(Boolean).length
+  return {
+    data,
+    title: String(data.title),
+    description: String(data.description),
+    category: data.category ? String(data.category) : '',
+    html: marked.parse(body),
+    minutes: Math.max(1, Math.round(words / 200)),
+  }
+}
+
+export function readPosts(dir, { includeDrafts }) {
   if (!fs.existsSync(dir)) return []
-  return fs
-    .readdirSync(dir)
+  const bySlug = new Map()
+  fs.readdirSync(dir)
     .filter((name) => name.endsWith('.md'))
-    .map((name) => {
-      const file = path.join(dir, name)
-      const { data, body } = parseFrontmatter(fs.readFileSync(file, 'utf8'), name)
-      for (const field of ['title', 'description', 'date', 'category']) {
-        if (!data[field]) throw new Error(`${name}: falta "${field}" en el encabezado`)
-      }
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(data.date)) throw new Error(`${name}: "date" debe ser AAAA-MM-DD`)
-      const words = body.split(/\s+/).filter(Boolean).length
+    .forEach((name) => {
+      // <slug>.<idioma>.md; un <slug>.md sin idioma cuenta como español.
+      const match = name.match(/^(.+?)(?:\.(es|en|fr))?\.md$/)
+      const slug = match[1]
+      const lang = match[2] || 'es'
+      if (!bySlug.has(slug)) bySlug.set(slug, {})
+      bySlug.get(slug)[lang] = readLocale(path.join(dir, name), name)
+    })
+
+  return [...bySlug]
+    .map(([slug, locales]) => {
+      const es = locales.es
+      if (!es) throw new Error(`${slug}: falta la versión en español (${slug}.es.md)`)
+      if (!es.category) throw new Error(`${slug}.es.md: falta "category" en el encabezado`)
+      const date = isoDate(es.data.date)
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error(`${slug}.es.md: "date" debe ser AAAA-MM-DD`)
+      // Una traducción sin categoría usa la del español.
+      LANGS.forEach((lang) => {
+        if (locales[lang] && !locales[lang].category) locales[lang].category = es.category
+      })
       return {
-        ...data,
-        slug: name.replace(/\.md$/, ''),
-        draft: data.draft === 'true',
-        html: marked.parse(body),
-        minutes: Math.max(1, Math.round(words / 200)),
+        slug,
+        locales,
+        title: es.title,
+        description: es.description,
+        category: es.category,
+        date,
+        updated: es.data.updated ? isoDate(es.data.updated) : '',
+        cover: es.data.cover ? String(es.data.cover) : '',
+        draft: es.data.draft === true || es.data.draft === 'true',
       }
     })
     .filter((post) => includeDrafts || !post.draft)
     .sort((a, b) => b.date.localeCompare(a.date))
 }
 
+// Idiomas en los que se publica el artículo.
+export function postLangs(post) {
+  return LANGS.filter((lang) => post.locales[lang])
+}
+
+// Textos del artículo en `lang` (o en español si no hay traducción),
+// marcados para que el diccionario no los toque.
+function text(post, lang, render, tag = 'span') {
+  const own = post.locales[lang]
+  const locale = own || post.locales.es
+  const mark = !own && lang !== 'es' ? ' lang="es"' : ''
+  return `<${tag} data-i18n-skip${mark}>${render(locale)}</${tag}>`
+}
+
 // Header y footer (con la barra móvil y los scripts del final) de la página
 // de privacidad, que no marca ningún enlace del menú como activo.
-function readShell(root) {
+export function readShell(root, current = '') {
   const html = fs.readFileSync(path.join(root, 'privacidad.html'), 'utf8')
   const bodyStart = html.indexOf('<body>') + '<body>'.length
+  const header = html.slice(bodyStart, html.indexOf('<main>'))
   return {
-    header: html.slice(bodyStart, html.indexOf('<main>')).replace('<a href="/blog">', '<a href="/blog" aria-current="page">'),
+    header: current ? header.replace(`<a href="${current}">`, `<a href="${current}" aria-current="page">`) : header,
     footer: html.slice(html.indexOf('</main>') + '</main>'.length, html.indexOf('</body>')),
   }
 }
 
-function head({ title, description, url, image, type, extra = '' }) {
+export function head({ title, description, url, image, type, extra = '', css = [] }) {
   return `<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="/js/i18n.js"></script>
 ${extra}  <!-- Google tag (gtag.js); la configuración y los eventos están en analytics.js -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=${GA_ID}"></script>
   <script src="/js/analytics.js"></script>
+  <script src="/js/i18n-dict.js" defer></script>
   <script src="/js/consent.js" defer></script>
+  <script src="/js/blog.js" defer></script>
   <title>${escape(title)}</title>
   <meta name="description" content="${escape(description)}">
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
   <link href="/favicon.svg" rel="icon" type="image/svg+xml">
   <link rel="canonical" href="${url}">
   <meta property="og:type" content="${type}">
@@ -117,151 +173,339 @@ ${extra}  <!-- Google tag (gtag.js); la configuración y los eventos están en a
   <meta property="og:description" content="${escape(description)}">
   <meta property="og:image" content="${image}">
   <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${escape(title)}">
+  <meta name="twitter:description" content="${escape(description)}">
   <meta name="twitter:image" content="${image}">
   <link rel="alternate" type="application/rss+xml" title="Blog de Automind" href="${SITE}/blog/rss.xml">
   <link rel="preload" href="/fonts/ClashDisplay-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="/js/page-transition.css">
   <link rel="stylesheet" href="/js/footer.css">
   <link rel="stylesheet" href="/js/bottom-nav.css">
   <link rel="stylesheet" href="/js/pricing.css">
+  <link rel="stylesheet" href="/js/mobile-menu.css">
   <link rel="stylesheet" href="/js/font.css">
   <link rel="stylesheet" href="/js/blog.css">
-</head>
+${css.map((href) => `  <link rel="stylesheet" href="${href}">\n`).join('')}</head>
 <body>
 `
 }
 
-function absolute(src) {
+export function jsonLd(data) {
+  return `  <script type="application/ld+json">${JSON.stringify(data).replace(/</g, '\\u003c')}</script>\n`
+}
+
+export function absolute(src) {
   return src.startsWith('http') ? src : SITE + src
 }
 
-function card(post) {
-  const cover = post.cover
-    ? `<img class="am-post-card__cover" src="${escape(post.cover)}" alt="" loading="lazy">`
-    : ''
-  return `<a class="am-post-card am-reveal" href="/blog/${post.slug}">
-        ${cover}<div class="am-post-card__body">
-          <p class="am-post-meta">${escape(post.category)} · ${formatDate(post.date)}${post.draft ? ' · <span class="am-draft">Borrador</span>' : ''}</p>
-          <h2>${escape(post.title)}</h2>
-          <p>${escape(post.description)}</p>
-          <span class="am-post-card__more">Leer artículo <span aria-hidden="true">→</span></span>
+function dateTag(iso, lang) {
+  return `<time datetime="${iso}">${formatDate(iso, lang)}</time>`
+}
+
+const MINUTES = { es: 'min de lectura', en: 'min read', fr: 'min de lecture' }
+
+function minutesTag(post, lang) {
+  const locale = post.locales[lang] || post.locales.es
+  return `<span data-i18n-skip>${locale.minutes} ${MINUTES[lang]}</span>`
+}
+
+// Identificador de la categoría (en español), para los filtros del índice.
+function categorySlug(post) {
+  return post.category
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+}
+
+export const ARROW = '<svg class="am-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>'
+
+function cover(post, lang, className, attrs = 'loading="lazy"') {
+  if (!post.cover) return `<div class="${className} am-cover--empty" aria-hidden="true"></div>`
+  const locale = post.locales[lang] || post.locales.es
+  return `<img class="${className}" src="${escape(post.cover)}" alt="${escape(locale.title)}" width="1600" height="900" ${attrs} data-i18n-skip>`
+}
+
+function card(post, lang) {
+  const draft = post.draft ? '<span class="am-draft">Borrador</span>' : ''
+  return `<a class="am-card" href="/blog/${post.slug}" data-cat="${categorySlug(post)}">
+        <div class="am-card__media">
+          ${cover(post, lang, 'am-card__img')}
+          <span class="am-chip am-chip--glass">${text(post, lang, (t) => escape(t.category))}</span>${draft}
+        </div>
+        <div class="am-card__body">
+          <p class="am-meta">${dateTag(post.date, lang)}<span class="am-meta__sep" aria-hidden="true"></span>${minutesTag(post, lang)}</p>
+          <h3 class="am-card__title">${text(post, lang, (t) => escape(t.title))}</h3>
+          <p class="am-card__desc">${text(post, lang, (t) => escape(t.description))}</p>
+          <span class="am-more">Leer artículo ${ARROW}</span>
         </div>
       </a>`
 }
 
-function renderIndex(posts, shell) {
-  const title = 'Blog — Automind'
-  const description = 'Ideas prácticas sobre automatización, sitios web e inteligencia artificial para que tu negocio trabaje solo.'
-  const list = posts.length
-    ? `<div class="am-post-grid">\n      ${posts.map(card).join('\n      ')}\n    </div>`
-    : '<p class="am-blog-empty">Pronto publicaremos nuestros primeros artículos.</p>'
+function featured(post, lang) {
+  const draft = post.draft ? ' <span class="am-draft">Borrador</span>' : ''
+  return `<a class="am-feature" href="/blog/${post.slug}" data-cat="${categorySlug(post)}">
+        <div class="am-feature__media">${cover(post, lang, 'am-feature__img', 'fetchpriority="high"')}</div>
+        <div class="am-feature__body">
+          <div class="am-feature__tags">
+            <span class="am-chip am-chip--brand"><span class="am-chip__dot" aria-hidden="true"></span>Más reciente</span>
+            <span class="am-chip">${text(post, lang, (t) => escape(t.category))}</span>${draft}
+          </div>
+          <h2 class="am-feature__title">${text(post, lang, (t) => escape(t.title))}</h2>
+          <p class="am-feature__desc">${text(post, lang, (t) => escape(t.description))}</p>
+          <p class="am-meta">${dateTag(post.date, lang)}<span class="am-meta__sep" aria-hidden="true"></span>${minutesTag(post, lang)}</p>
+          <span class="am-more am-more--button">Leer artículo ${ARROW}</span>
+        </div>
+      </a>`
+}
 
-  return `${head({ title, description, url: `${SITE}/blog`, image: `${SITE}/images/og-image.png`, type: 'website' })}${shell.header}<main>
+// Filtros por categoría: una pastilla por cada categoría, con su nombre en
+// el idioma de la página tomado de los propios artículos.
+function filters(posts, lang) {
+  const seen = new Map()
+  posts.forEach((post) => {
+    const slug = categorySlug(post)
+    if (!seen.has(slug)) seen.set(slug, post)
+  })
+  if (seen.size < 2) return ''
+  const chips = [...seen].map(
+    ([slug, post]) => `<button type="button" class="am-filter" data-filter="${slug}" aria-pressed="false">${text(post, lang, (t) => escape(t.category))}</button>`
+  )
+  return `<div class="am-filters" role="group" aria-label="Filtrar por categoría">
+      <button type="button" class="am-filter" data-filter="" aria-pressed="true">Todas</button>
+      ${chips.join('\n      ')}
+    </div>`
+}
+
+const WHATSAPP_TEXT = {
+  es: 'Hola Automind, leí su blog y quiero saber más',
+  en: 'Hi Automind, I read your blog and I would like to know more',
+  fr: 'Bonjour Automind, j’ai lu votre blog et j’aimerais en savoir plus',
+}
+
+export function ctaBand(whatsappText, {
+  title = '<span class="am-accent">¿Quieres aplicarlo</span> en tu negocio?',
+  lead = 'Agenda una llamada de diagnóstico sin costo y te decimos qué se puede automatizar en tu caso.',
+  book = 'Agendar llamada',
+  write = 'Escríbenos',
+} = {}) {
+  return `<section class="am-band" id="cta-blog">
+      <div class="am-band__bg" aria-hidden="true"></div>
+      <div class="am-band__content">
+        <h2 class="am-band__title">${title}</h2>
+        <p class="am-band__lead">${lead}</p>
+        <div class="am-band__buttons">
+          <a href="/#contact" class="am-btn am-btn--glow" ${CAL_ATTRS}><span class="am-roll"><span>${book}</span><span aria-hidden="true">${book}</span></span></a>
+          <a href="${WHATSAPP}?text=${encodeURIComponent(whatsappText)}" class="am-btn am-btn--ghost" target="_blank" rel="noopener noreferrer"><span class="am-roll"><span>${write}</span><span aria-hidden="true">${write}</span></span></a>
+        </div>
+      </div>
+    </section>`
+}
+
+// El índice usa textos del diccionario: finalizePage() los traduce.
+export function renderIndex(posts, shell, lang) {
+  const title = 'Blog de automatización, IA y sitios web — Automind'
+  const description = 'Ideas prácticas sobre automatización, sitios web e inteligencia artificial para que tu negocio trabaje solo.'
+  const url = `${SITE}/blog`
+  const [first, ...rest] = posts
+  const list = posts.length
+    ? `${filters(posts, lang)}
+    ${featured(first, lang)}
+    ${rest.length ? `<div class="am-grid">\n      ${rest.map((post) => card(post, lang)).join('\n      ')}\n    </div>` : ''}
+    <p class="am-blog-empty" hidden>No hay artículos en esta categoría.</p>`
+    : '<p class="am-blog-empty">Pronto publicaremos nuestros primeros artículos.</p>'
+  const data = {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${url}#blog`,
+    name: 'Blog de Automind',
+    url,
+    description,
+    inLanguage: 'es',
+    publisher: { '@id': `${SITE}/#organization` },
+  }
+
+  return `${head({ title, description, url, image: absolute(first?.cover || '/images/og-image.png'), type: 'website', extra: jsonLd(data) })}${shell.header}<main class="am-blog">
   <div class="am-frame">
 
-    <section class="am-hero">
-      <p class="am-eyebrow">Blog</p>
-      <h1 class="am-title">Ideas para que tu negocio trabaje solo</h1>
-      <p class="am-lead">${description}</p>
+    <section class="am-blog-hero">
+      <div class="am-blog-hero__bg" aria-hidden="true"></div>
+      <p class="am-pill"><span class="am-pill__dot" aria-hidden="true"></span>Blog</p>
+      <h1 class="am-blog-hero__title"><span class="am-accent">Ideas para que</span> tu negocio trabaje solo</h1>
+      <p class="am-blog-hero__lead">${description}</p>
     </section>
 
     <div class="am-divider"></div>
-    <section class="am-section">
+    <section class="am-blog-list" id="articulos">
     ${list}
     </section>
+
+    <div class="am-divider"></div>
+    ${ctaBand(WHATSAPP_TEXT[lang])}
   </div>
 </main>${shell.footer}</body>
 </html>
 `
 }
 
-function renderPost(post, posts, shell) {
-  const url = `${SITE}/blog/${post.slug}`
+const SHARE_ICONS = {
+  whatsapp: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.2-.4.2-.4.7-1.2.1-.2 0-.3 0-.4l-.8-1.9c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6a2.7 2.7 0 0 0 1.8-1.2 2.2 2.2 0 0 0 .2-1.3c-.1-.1-.2-.2-.5-.3z"/></svg>',
+  linkedin: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5zM3 9.5h4V21H3V9.5zm6.5 0h3.8v1.6h.1c.5-1 1.8-2 3.8-2 4 0 4.8 2.6 4.8 6V21h-4v-5.2c0-1.2 0-2.8-1.7-2.8s-2 1.3-2 2.7V21h-4V9.5z"/></svg>',
+  facebook: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13.5 21.95V14h2.65l.4-3.1H13.5V8.92c0-.9.25-1.5 1.54-1.5h1.64V4.65a22 22 0 0 0-2.39-.12c-2.37 0-3.99 1.45-3.99 4.1v2.27H7.63V14h2.67v7.95"/></svg>',
+  link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/><path d="M14 10a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>',
+}
+
+function shareButtons(url) {
+  const u = encodeURIComponent(url)
+  return `<div class="am-share" data-share-url="${url}">
+          <a class="am-share__btn" href="https://wa.me/?text=${u}" target="_blank" rel="noopener noreferrer" aria-label="Compartir en WhatsApp" data-share="whatsapp">${SHARE_ICONS.whatsapp}</a>
+          <a class="am-share__btn" href="https://www.linkedin.com/sharing/share-offsite/?url=${u}" target="_blank" rel="noopener noreferrer" aria-label="Compartir en LinkedIn" data-share="linkedin">${SHARE_ICONS.linkedin}</a>
+          <a class="am-share__btn" href="https://www.facebook.com/sharer/sharer.php?u=${u}" target="_blank" rel="noopener noreferrer" aria-label="Compartir en Facebook" data-share="facebook">${SHARE_ICONS.facebook}</a>
+          <button class="am-share__btn" type="button" aria-label="Copiar enlace" data-copy>${SHARE_ICONS.link}</button>
+          <span class="am-share__toast" role="status" aria-live="polite"></span>
+        </div>`
+}
+
+// El último párrafo "Fuentes:" / "Sources:" de cada artículo va como nota.
+function decorateProse(html) {
+  return html.replace(/<p><strong>(Fuentes|Sources)(\s*:)<\/strong>/g, '<p class="am-sources"><strong>$1$2</strong>')
+}
+
+// Lateral del artículo: primero los de la misma categoría y luego los más
+// recientes (posts ya viene ordenado por fecha).
+function sidePosts(post, posts, lang) {
+  const others = posts.filter((other) => other.slug !== post.slug)
+  const related = others.filter((other) => other.category === post.category)
+  const picks = [...related, ...others.filter((other) => other.category !== post.category)].slice(0, 4)
+  if (!picks.length) return ''
+  const items = picks.map((other) => `<li>
+            <a class="am-side-post" href="/blog/${other.slug}">
+              ${cover(other, lang, 'am-side-post__img')}
+              <span class="am-side-post__body">
+                <span class="am-side-post__cat">${text(other, lang, (t) => escape(t.category))}</span>
+                <span class="am-side-post__title">${text(other, lang, (t) => escape(t.title))}</span>
+                <span class="am-side-post__meta">${dateTag(other.date, lang)}</span>
+              </span>
+            </a>
+          </li>`)
+  return `<nav class="am-side-posts" aria-label="Más artículos">
+          <p class="am-aside-label">Más artículos</p>
+          <ul class="am-side-posts__list">
+          ${items.join('\n          ')}
+          </ul>
+        </nav>`
+}
+
+const ARTICLE_WHATSAPP = {
+  es: (title) => `Hola Automind, leí el artículo "${title}" y quiero saber más`,
+  en: (title) => `Hi Automind, I read the article "${title}" and I would like to know more`,
+  fr: (title) => `Bonjour Automind, j’ai lu l’article « ${title} » et j’aimerais en savoir plus`,
+}
+
+// `url` es la dirección pública del artículo en `lang`.
+export function renderPost(post, posts, shell, lang, url) {
+  const locale = post.locales[lang]
   const image = absolute(post.cover || '/images/og-image.png')
-  const jsonLd = {
+  const data = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    description: post.description,
-    image,
-    datePublished: post.date,
-    dateModified: post.updated || post.date,
-    mainEntityOfPage: url,
-    author: { '@type': 'Organization', name: 'Automind', url: `${SITE}/` },
-    publisher: {
-      '@type': 'Organization',
-      name: 'Automind',
-      logo: { '@type': 'ImageObject', url: `${SITE}/automind_logo_final_10_1.webp` },
-    },
+    '@graph': [
+      {
+        '@type': 'BlogPosting',
+        '@id': `${url}#article`,
+        headline: locale.title,
+        description: locale.description,
+        image,
+        inLanguage: lang,
+        datePublished: post.date,
+        dateModified: post.updated || post.date,
+        articleSection: locale.category,
+        wordCount: locale.minutes * 200,
+        mainEntityOfPage: url,
+        author: { '@id': `${SITE}/#organization` },
+        publisher: { '@id': `${SITE}/#organization` },
+        isPartOf: { '@id': `${SITE}/blog#blog` },
+      },
+      {
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Automind', item: `${SITE}/` },
+          { '@type': 'ListItem', position: 2, name: 'Blog', item: `${SITE}/blog` },
+          { '@type': 'ListItem', position: 3, name: locale.title, item: url },
+        ],
+      },
+    ],
   }
   // analytics.js lee estas metas para etiquetar cada evento con el artículo.
   const extra = `  <meta name="am-article" content="${escape(post.slug)}" data-category="${escape(post.category)}">
   <meta property="article:published_time" content="${post.date}">
-  <script type="application/ld+json">${JSON.stringify(jsonLd).replace(/</g, '\\u003c')}</script>
-`
-  const cover = post.cover
-    ? `\n    <img class="am-article__cover" src="${escape(post.cover)}" alt="" fetchpriority="high">\n`
-    : ''
-  const whatsappText = encodeURIComponent(`Hola Automind, leí el artículo "${post.title}" y quiero saber más`)
+  <meta property="article:modified_time" content="${post.updated || post.date}">
+  <meta property="article:section" content="${escape(locale.category)}">
+${jsonLd(data)}`
   const more = posts.filter((other) => other.slug !== post.slug).slice(0, 3)
   const moreSection = more.length
     ? `
     <div class="am-divider"></div>
-    <section class="am-section" id="mas-articulos">
-      <h2 class="am-title am-blog-more__title"><span class="am-accent">Sigue leyendo</span></h2>
-      <div class="am-post-grid">
-      ${more.map(card).join('\n      ')}
+    <section class="am-blog-list" id="mas-articulos">
+      <div class="am-section-head">
+        <p class="am-pill"><span class="am-pill__dot" aria-hidden="true"></span>Blog</p>
+        <h2 class="am-section-head__title">Sigue leyendo</h2>
+      </div>
+      <div class="am-grid">
+      ${more.map((other) => card(other, lang)).join('\n      ')}
       </div>
     </section>`
     : ''
 
-  return `${head({ title: `${post.title} — Automind`, description: post.description, url, image, type: 'article', extra })}${shell.header}<main>
+  return `${head({ title: `${locale.title} — Automind`, description: locale.description, url, image, type: 'article', extra })}${shell.header}<div class="am-progress" aria-hidden="true"><span></span></div>
+<main class="am-blog">
   <div class="am-frame">
 
-    <header class="am-hero am-article__hero">
-      <a class="am-article__back" href="/blog"><span aria-hidden="true">←</span> Blog</a>
-      <p class="am-eyebrow">${escape(post.category)}${post.draft ? ' · <span class="am-draft">Borrador</span>' : ''}</p>
-      <h1 class="am-title">${escape(post.title)}</h1>
-      <p class="am-lead">${escape(post.description)}</p>
-      <p class="am-post-meta"><time datetime="${post.date}">${formatDate(post.date)}</time> · ${post.minutes} min de lectura</p>
+    <header class="am-post-hero" id="cabecera">
+      <div class="am-blog-hero__bg" aria-hidden="true"></div>
+      <div class="am-post-hero__grid">
+        <div class="am-post-hero__text">
+          <div class="am-post-hero__top">
+            <a class="am-back" href="/blog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>Volver al blog</a>
+            <div class="am-post-hero__tags">
+              <span class="am-chip am-chip--brand"><span class="am-chip__dot" aria-hidden="true"></span>${text(post, lang, (t) => escape(t.category))}</span>${post.draft ? '<span class="am-draft">Borrador</span>' : ''}
+            </div>
+          </div>
+          <h1 class="am-post-hero__title">${text(post, lang, (t) => escape(t.title))}</h1>
+          <p class="am-post-hero__lead">${text(post, lang, (t) => escape(t.description))}</p>
+          <div class="am-byline">
+            <span class="am-byline__avatar" aria-hidden="true"><img src="/favicon.svg" alt="" width="22" height="22"></span>
+            <span class="am-byline__text"><strong>Automind</strong><span class="am-meta">${dateTag(post.date, lang)}<span class="am-meta__sep" aria-hidden="true"></span>${minutesTag(post, lang)}</span></span>
+          </div>
+        </div>
+        <figure class="am-post-cover">${cover(post, lang, 'am-post-cover__img', 'fetchpriority="high"')}</figure>
+      </div>
     </header>
-${cover}
-    <div class="am-divider"></div>
-    <article class="am-prose" id="articulo" data-article>
-${post.html}
-    </article>
 
     <div class="am-divider"></div>
-    <section class="am-cta" id="cta-articulo">
-      <h2 class="am-title"><span class="am-accent">¿Quieres aplicarlo</span> en tu negocio?</h2>
-      <p class="am-lead">Agenda una llamada de diagnóstico sin costo y te decimos qué se puede automatizar en tu caso.</p>
-      <div class="am-hero__buttons">
-        <a href="/#contact" class="am-btn am-btn--dark" ${CAL_ATTRS}><span class="am-roll"><span>Agendar llamada</span><span aria-hidden="true">Agendar llamada</span></span></a>
-        <a href="${WHATSAPP}?text=${whatsappText}" class="am-btn am-btn--light" target="_blank" rel="noopener noreferrer"><span class="am-roll"><span>Escríbenos</span><span aria-hidden="true">Escríbenos</span></span></a>
-      </div>
-    </section>${moreSection}
+
+    <div class="am-post-layout">
+      <aside class="am-post-aside" id="lateral">
+${sidePosts(post, posts, lang)}
+        <div class="am-aside-share">
+          <p class="am-aside-label">Compartir</p>
+          ${shareButtons(url)}
+        </div>
+      </aside>
+
+      <article class="am-prose" id="articulo" data-article>
+${text(post, lang, (t) => `\n${decorateProse(t.html)}`, 'div')}
+      </article>
+    </div>
+
+    ${ctaBand(ARTICLE_WHATSAPP[lang](locale.title))}${moreSection}
   </div>
 </main>${shell.footer}</body>
 </html>
 `
 }
 
-function renderSitemap(posts) {
-  const urls = STATIC_PAGES.map((page) => `  <url>\n    <loc>${SITE}${page}</loc>\n  </url>`)
-  const lastPost = posts[0]
-  urls.push(`  <url>\n    <loc>${SITE}/blog</loc>${lastPost ? `\n    <lastmod>${lastPost.updated || lastPost.date}</lastmod>` : ''}\n  </url>`)
-  posts.forEach((post) => {
-    urls.push(`  <url>\n    <loc>${SITE}/blog/${post.slug}</loc>\n    <lastmod>${post.updated || post.date}</lastmod>\n  </url>`)
-  })
-  return `<?xml version="1.0" encoding="UTF-8"?>
-<!-- Generado por scripts/blog-plugin.js: para agregar una página fija,
-     súmala a STATIC_PAGES allí; los artículos se agregan solos. -->
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('\n')}
-</urlset>
-`
-}
-
-function renderRss(posts) {
+export function renderRss(posts) {
   const items = posts.map((post) => `    <item>
       <title>${escape(post.title)}</title>
       <link>${SITE}/blog/${post.slug}</link>
@@ -281,64 +525,4 @@ ${items.join('\n')}
   </channel>
 </rss>
 `
-}
-
-export default function blogPlugin() {
-  let root
-  let contentDir
-
-  return {
-    name: 'automind-blog',
-
-    configResolved(config) {
-      root = config.root
-      contentDir = path.join(root, 'content', 'blog')
-    },
-
-    configureServer(server) {
-      server.watcher.add(contentDir)
-      server.watcher.on('change', (file) => {
-        if (file.endsWith('.md') && file.startsWith(contentDir)) server.ws.send({ type: 'full-reload' })
-      })
-
-      server.middlewares.use((req, res, next) => {
-        const pathname = req.url.split(/[?#]/)[0].replace(/\.html$/, '').replace(/\/$/, '')
-        let html
-        try {
-          const posts = readPosts(contentDir, { includeDrafts: true })
-          const shell = readShell(root)
-          if (pathname === '/blog') {
-            html = renderIndex(posts, shell)
-          } else if (pathname === '/blog/rss.xml') {
-            res.setHeader('Content-Type', 'application/xml; charset=utf-8')
-            res.end(renderRss(posts))
-            return
-          } else if (pathname.startsWith('/blog/')) {
-            const post = posts.find((p) => p.slug === pathname.slice('/blog/'.length))
-            if (post) html = renderPost(post, posts, shell)
-          }
-        } catch (error) {
-          next(error)
-          return
-        }
-        if (!html) {
-          next()
-          return
-        }
-        res.setHeader('Content-Type', 'text/html; charset=utf-8')
-        res.end(html)
-      })
-    },
-
-    generateBundle() {
-      const posts = readPosts(contentDir, { includeDrafts: false })
-      const shell = readShell(root)
-      this.emitFile({ type: 'asset', fileName: 'blog.html', source: renderIndex(posts, shell) })
-      posts.forEach((post) => {
-        this.emitFile({ type: 'asset', fileName: `blog/${post.slug}.html`, source: renderPost(post, posts, shell) })
-      })
-      this.emitFile({ type: 'asset', fileName: 'blog/rss.xml', source: renderRss(posts) })
-      this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: renderSitemap(posts) })
-    },
-  }
 }

@@ -31,18 +31,19 @@
     linear-gradient(160deg, var(--pain-blue) 0%, #0079a0 55%, var(--pain-blue-deep) 100%);
 }
 
-/* Faint 80px grid echoing the site's lined layout, fading toward the edges. */
+/* Same isometric dashed grid as the hero video, lightened so it reads as a
+   soft white pattern over the blue, fading toward the edges. */
 .automind-pain__bg::after {
   content: '';
   position: absolute;
   inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.07) 1px, transparent 1px);
-  background-size: 80px 80px;
+  background-image: url('/images/img-14-6vpejmr5msvqv6ncvhhqm3rcvo.png');
+  background-size: cover;
   background-position: center;
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
-  mask-image: radial-gradient(ellipse at center, #000 20%, transparent 75%);
+  filter: brightness(1.2);
+  opacity: 0.16;
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
+  mask-image: radial-gradient(ellipse at center, #000 35%, transparent 85%);
 }
 
 .automind-pain__container {
@@ -123,19 +124,12 @@
   font-size: 15px;
   text-decoration: none;
   cursor: pointer;
-  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease,
-    border-color 0.25s ease;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .automind-pain__btn--primary {
   background: #fff;
   color: #0a0a0a;
-}
-
-.automind-pain__btn--primary:hover {
-  background: #0a0a0a;
-  color: #fff;
-  transform: translateY(-2px);
 }
 
 .automind-pain__btn--ghost {

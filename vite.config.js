@@ -1,11 +1,12 @@
 import react from '@vitejs/plugin-react'
 import { resolve } from 'node:path'
 import { defineConfig } from 'vite'
-import blogPlugin from './scripts/blog-plugin.js'
+import apiDevPlugin from './scripts/api-dev-plugin.js'
+import sitePlugin from './scripts/site-plugin.js'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(), blogPlugin()],
+  plugins: [react(), sitePlugin(), apiDevPlugin()],
   build: {
     rollupOptions: {
       input: {
