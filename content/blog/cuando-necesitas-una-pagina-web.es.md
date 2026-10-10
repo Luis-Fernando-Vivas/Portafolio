@@ -1,11 +1,13 @@
 ---
-title: "¿Cuándo necesita tu negocio una página web? Las señales clave para dar el salto"
-description: "Descubre las señales que indican que tu empresa ya superó las ventas por chat y necesita un sitio web propio para crecer, generar confianza y automatizar cobros."
-date: 2026-10-10
-category: "Sitios web"
 draft: true
+title: ¿Cuándo necesita tu negocio una página web? Las señales clave para dar el salto
+description: Descubre las señales que indican que tu empresa ya superó las
+  ventas por chat y necesita un sitio web propio para crecer, generar confianza
+  y automatizar cobros.
+category: Sitios web
+date: 2026-10-10
+cover: /images/blog/diseño-web-futurista-con-móvil-y-código.png
 ---
-
 En Colombia, miles de empresas y emprendimientos crecen impulsados por redes sociales y aplicaciones de mensajería. De hecho, estudios recientes sobre el entorno empresarial del país muestran que el 87 % de las mipymes utiliza WhatsApp como su canal comercial habitual y más de la mitad mantiene presencia activa en redes; no obstante, al 51 % se le dificulta convertir esa visibilidad en ventas efectivas. Al mismo tiempo, reportes de la Cámara Colombiana de Comercio Electrónico (CCCE) revelan que el comercio digital superó los 145 billones de pesos en ventas anuales, lo que confirma que los consumidores compran por internet con mayor frecuencia, pero priorizan canales formales, ágiles y seguros. La gran pregunta para tu negocio no es si debes tener presencia en línea, sino cuándo llega el momento exacto en el que operar únicamente por chats se queda corto.
 
 ## 1. Cuando responder mensajes se convierte en tu mayor cuello de botella
@@ -26,10 +28,10 @@ Tener un dominio propio brinda respaldo institucional, protege la reputación de
 
 No todos los negocios requieren una página web desde el primer día, pero existen momentos puntuales donde no contar con ella te hace perder oportunidades comerciales:
 
-- **Prestas servicios y necesitas gestionar citas:** si inviertes tiempo valioso cuadrando horarios de reunión, asesorías o consultas por mensajes cruzados, un portal con reservas integradas automatiza toda la agenda.
-- **Pierdes clientes fuera del horario comercial:** si los prospectos escriben de noche o los fines de semana y se enfrían antes de que alcances a contestar al día siguiente.
-- **Quieres facilitar pagos en línea:** incorporar botones y pasarelas de pago para recibir tarjetas, transferencias o sistemas interoperables sin pedir fotos de comprobantes agiliza el flujo de ingresos.
-- **Quieres aparecer en búsquedas locales:** cuando un usuario busca proveedores de tu sector en Google, una página optimizada te sitúa frente a personas con una intención de compra real y lista para cerrar.
+* **Prestas servicios y necesitas gestionar citas:** si inviertes tiempo valioso cuadrando horarios de reunión, asesorías o consultas por mensajes cruzados, un portal con reservas integradas automatiza toda la agenda.
+* **Pierdes clientes fuera del horario comercial:** si los prospectos escriben de noche o los fines de semana y se enfrían antes de que alcances a contestar al día siguiente.
+* **Quieres facilitar pagos en línea:** incorporar botones y pasarelas de pago para recibir tarjetas, transferencias o sistemas interoperables sin pedir fotos de comprobantes agiliza el flujo de ingresos.
+* **Quieres aparecer en búsquedas locales:** cuando un usuario busca proveedores de tu sector en Google, una página optimizada te sitúa frente a personas con una intención de compra real y lista para cerrar.
 
 ## Qué puedes hacer hoy para dar el paso
 

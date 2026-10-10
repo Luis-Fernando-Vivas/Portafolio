@@ -1,9 +1,14 @@
 ---
-title: "Quand votre entreprise a-t-elle besoin d'un site web ? Les signes clés pour franchir le pas"
-description: "Découvrez les signes indiquant que votre entreprise a dépassé le stade des ventes par messagerie et a besoin de son propre site web pour grandir, inspirer confiance et automatiser ses encaissements."
-date: 2026-10-10
-category: "Sites web"
 draft: true
+title: Quand votre entreprise a-t-elle besoin d'un site web ? Les signes clés
+  pour franchir le pas
+description: Découvrez les signes indiquant que votre entreprise a dépassé le
+  stade des ventes par messagerie et a besoin de son propre site web pour
+  grandir, inspirer confiance et automatiser ses encaissements.
+category: Sites web
+date: 2026-10-10
+cover: /images/blog/diseño-web-futurista-con-móvil-y-código.png
+updated: null
 ---
 
 En Colombie, des milliers d'entreprises et de projets entrepreneuriaux se développent grâce aux réseaux sociaux et aux applications de messagerie. En fait, des études récentes sur l'environnement entrepreneurial du pays montrent que 87 % des MPME utilisent WhatsApp comme canal commercial habituel et que plus de la moitié maintiennent une présence active sur les réseaux ; néanmoins, 51 % d'entre elles ont du mal à transformer cette visibilité en ventes effectives. Parallèlement, des rapports de la Chambre Colombienne de Commerce Électronique (CCCE) révèlent que le commerce digital a dépassé les 145 billions de pesos de ventes annuelles, confirmant ainsi que les consommateurs achètent en ligne de plus en plus fréquemment, mais privilégient des canaux formels, fluides et sécurisés. La vraie question pour votre entreprise n'est pas de savoir si vous devez avoir une présence en ligne, mais quand arrive le moment précis où opérer uniquement par chat ne suffit plus.

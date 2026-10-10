@@ -1,9 +1,13 @@
 ---
-title: "When Does Your Business Need a Website? Key Signs It’s Time to Take the Leap"
-description: "Discover the signs indicating your business has outgrown selling solely via chat and needs its own website to grow, build trust, and automate payments."
-date: 2026-10-10
-category: "Websites"
 draft: true
+title: When Does Your Business Need a Website? Key Signs It’s Time to Take the Leap
+description: Discover the signs indicating your business has outgrown selling
+  solely via chat and needs its own website to grow, build trust, and automate
+  payments.
+category: Websites
+date: 2026-10-10
+cover: /images/blog/diseño-web-futurista-con-móvil-y-código.png
+updated: null
 ---
 
 In Colombia, thousands of companies and startups are growing fueled by social media and messaging apps. In fact, recent studies on the country's business landscape show that 87% of MSMEs use WhatsApp as their regular sales channel, and more than half maintain an active presence on social media; however, 51% struggle to turn that visibility into actual sales. At the same time, reports from the Colombian Chamber of Electronic Commerce (CCCE, by its Spanish acronym) reveal that digital commerce surpassed 145 trillion Colombian pesos in annual sales, confirming that consumers shop online more frequently, but prioritize formal, agile, and secure channels. The big question for your business isn't whether you should have an online presence, but rather when the exact moment arrives when operating solely through chat apps falls short.
