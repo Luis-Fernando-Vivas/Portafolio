@@ -421,6 +421,8 @@
     ['Pronto publicaremos nuestros primeros artículos.', 'We will publish our first articles soon.', 'Nous publierons bientôt nos premiers articles.'],
     ['Leer artículo', 'Read article', 'Lire l’article'],
     ['Sigue leyendo', 'Keep reading', 'À lire aussi'],
+    ['Últimas noticias', 'Latest news', 'Dernières nouvelles'],
+    ['Ver todo el blog', 'View the whole blog', 'Voir tout le blog'],
     ['¿Quieres aplicarlo', 'Want to apply it', 'Envie de l’appliquer'],
     ['en tu negocio?', 'to your business?', 'à votre entreprise ?'],
     ['Agenda una llamada de diagnóstico sin costo y te decimos qué se puede automatizar en tu caso.', 'Book a free discovery call and we’ll tell you what can be automated in your case.', 'Réservez un appel de diagnostic gratuit et nous vous dirons ce qui peut être automatisé dans votre cas.'],

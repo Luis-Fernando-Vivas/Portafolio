@@ -108,7 +108,8 @@
   max-width: 720px !important;
 }
 
-.framer-13egh6p-container p {
+.framer-13egh6p-container p,
+.framer-13egh6p-container h2 {
   text-align: center !important;
 }
 
@@ -320,7 +321,8 @@
     align-items: center !important;
   }
 
-  .framer-1b3l8tz p {
+  .framer-1b3l8tz p,
+  .framer-1b3l8tz h2 {
     text-align: center !important;
   }
 

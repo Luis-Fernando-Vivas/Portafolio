@@ -17,7 +17,7 @@
    cleanUrls). */
 import fs from 'node:fs'
 import path from 'node:path'
-import { postLangs, readPosts, readShell, renderIndex, renderPost, renderRss } from './blog-plugin.js'
+import { HOME_LATEST, postLangs, readPosts, readShell, renderHomeLatest, renderIndex, renderPost, renderRss } from './blog-plugin.js'
 import { finalizePage, LANGS, loadDictionaries, prefixed, Routes, SITE } from './i18n-build.js'
 import { landingPath, readLandings, renderLanding } from './landing-pages.js'
 
@@ -124,9 +124,11 @@ export default function sitePlugin() {
 
   const shells = () => ({ blog: readShell(root, '/blog'), plain: readShell(root) })
 
-  // HTML final de una página en `lang`.
-  function finalize(page, html, lang, routes) {
-    return finalizePage(html, { lang, group: page.group, routes, dict: lang === 'es' ? null : dicts[lang] })
+  // HTML final de una página en `lang`. En la home, el marcador de las
+  // últimas noticias se cambia por las tarjetas antes de traducir.
+  function finalize(page, html, lang, site) {
+    if (html.includes(HOME_LATEST)) html = html.replace(HOME_LATEST, renderHomeLatest(site.posts, lang))
+    return finalizePage(html, { lang, group: page.group, routes: site.routes, dict: lang === 'es' ? null : dicts[lang] })
   }
 
   // Idiomas en los que se escribe cada entrada.
@@ -208,7 +210,7 @@ export default function sitePlugin() {
             html = page.render(lang, shells())
           }
           res.setHeader('Content-Type', 'text/html; charset=utf-8')
-          res.end(finalize(page, html, lang, site.routes))
+          res.end(finalize(page, html, lang, site))
         } catch (error) {
           next(error)
         }
@@ -232,11 +234,11 @@ export default function sitePlugin() {
           langsOf(page).forEach((lang) => {
             const fileName = fileFor(page.group.paths[lang])
             if (page.static) {
-              const html = finalize(page, source, lang, site.routes)
+              const html = finalize(page, source, lang, site)
               if (lang === 'es') asset.source = html
               else emit(fileName, html)
             } else {
-              emit(fileName, finalize(page, page.render(lang, shell), lang, site.routes))
+              emit(fileName, finalize(page, page.render(lang, shell), lang, site))
             }
           })
         })

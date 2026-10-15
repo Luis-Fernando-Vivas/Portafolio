@@ -251,6 +251,32 @@ function card(post, lang) {
       </a>`
 }
 
+// Sección "Últimas noticias" de la home: index.html trae el marcador
+// HOME_LATEST dentro de su <section> y site-plugin.js lo cambia por las
+// tres tarjetas más recientes en cada idioma (estilos en home-blog.css).
+export const HOME_LATEST = '<!--am:ultimas-noticias-->'
+
+export function renderHomeLatest(posts, lang) {
+  return posts
+    .slice(0, 3)
+    .map((post, index) => {
+      const draft = post.draft ? '<span class="automind-news__draft">Borrador</span>' : ''
+      // La primera es la destacada: imagen a sangre y el texto encima.
+      const featured = index === 0
+      const latest = featured ? '<span class="automind-news__latest"><span class="automind-news__dot" aria-hidden="true"></span>Más reciente</span>' : ''
+      return `<li class="automind-news__item${featured ? ' automind-news__item--featured' : ''}"><a class="automind-news__card" href="/blog/${post.slug}">
+<div class="automind-news__media">${cover(post, lang, 'automind-news__img')}<span class="automind-news__chip">${text(post, lang, (t) => escape(t.category))}</span>${draft}</div>
+<div class="automind-news__body">
+${latest}<p class="automind-news__meta">${dateTag(post.date, lang)}<span class="automind-news__sep" aria-hidden="true"></span>${minutesTag(post, lang)}</p>
+<h3 class="automind-news__title">${text(post, lang, (t) => escape(t.title))}</h3>
+<p class="automind-news__desc">${text(post, lang, (t) => escape(t.description))}</p>
+<span class="automind-news__more">Leer artículo ${ARROW}</span>
+</div>
+</a></li>`
+    })
+    .join('\n')
+}
+
 function featured(post, lang) {
   const draft = post.draft ? ' <span class="am-draft">Borrador</span>' : ''
   return `<a class="am-feature" href="/blog/${post.slug}" data-cat="${categorySlug(post)}">
