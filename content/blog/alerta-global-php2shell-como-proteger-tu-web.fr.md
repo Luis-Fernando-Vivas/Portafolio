@@ -1,9 +1,14 @@
 ---
-title: "Alerte mondiale PHP2Shell : ce qui s'est passé et comment protéger votre site web"
-description: "Deux failles critiques dans PHP ont déclenché des millions de tentatives d'attaque sur le web. Découvrez leur impact sur votre entreprise et les mesures à prendre aujourd'hui."
-date: 2026-10-24
-category: "Sites web"
 draft: true
+title: "Alerte mondiale PHP2Shell : ce qui s'est passé et comment protéger votre
+  site web"
+description: Deux failles critiques dans PHP ont déclenché des millions de
+  tentatives d'attaque sur le web. Découvrez leur impact sur votre entreprise et
+  les mesures à prendre aujourd'hui.
+category: Sites web
+date: 2026-10-24
+cover: /images/blog/alerta-cibernética-en-paneles-de-vidrio.png
+updated: 2026-10-24
 ---
 
 Le 21 octobre 2026, la Fondation PHP a déployé des mises à jour d'urgence pour corriger deux vulnérabilités critiques d'exécution de code à distance, regroupées sous le nom de **PHP2Shell** (référencées sous les codes CVE-2026-109618 et CVE-2026-109619). La situation a rapidement pris de l'ampleur en raison de la fuite des détails techniques avant la divulgation coordonnée, provoquant des millions de tentatives d'exploitation automatisées en seulement quelques heures. L'impact a été si soudain que des organismes publics au Royaume-Uni, aux Pays-Bas et en Finlande, ainsi que des hôpitaux et des entreprises privées à travers le monde, ont dû déconnecter préventivement leurs services et portails pour installer les correctifs avant de subir une attaque.

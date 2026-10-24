@@ -1,9 +1,12 @@
 ---
-title: "Alerta global por PHP2Shell: qué pasó y cómo proteger tu página web"
-description: "Dos fallas críticas en PHP desataron millones de intentos de ataque en la web. Te explicamos cómo impacta a tu empresa y qué debes hacer hoy."
-date: 2026-10-24
-category: "Sitios web"
 draft: true
+title: "Alerta global por PHP2Shell: qué pasó y cómo proteger tu página web"
+description: Dos fallas críticas en PHP desataron millones de intentos de ataque
+  en la web. Te explicamos cómo impacta a tu empresa y qué debes hacer hoy.
+category: Sitios web
+date: 2026-10-24
+cover: /images/blog/alerta-cibernética-en-paneles-de-vidrio.png
+updated: 2026-10-24
 ---
 
 El pasado 21 de octubre de 2026, la Fundación PHP lanzó actualizaciones de emergencia para corregir dos vulnerabilidades críticas de ejecución remota de código, conocidas colectivamente como **PHP2Shell** (registradas como CVE-2026-109618 y CVE-2026-109619). La situación escaló con rapidez porque los detalles técnicos se filtraron antes de la divulgación coordinada, desatando millones de intentos de explotación automatizados en cuestión de horas. El impacto fue tan inmediato que entidades gubernamentales en el Reino Unido, Países Bajos y Finlandia, junto con hospitales y empresas privadas de todo el mundo, tuvieron que desconectar servicios y portales de manera preventiva para aplicar los parches antes de sufrir un ataque.

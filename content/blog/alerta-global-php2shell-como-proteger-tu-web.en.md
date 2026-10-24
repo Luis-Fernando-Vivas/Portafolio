@@ -1,9 +1,13 @@
 ---
-title: "Global Alert Over PHP2Shell: What Happened and How to Protect Your Website"
-description: "Two critical PHP vulnerabilities triggered millions of attack attempts across the web. Here is how it impacts your business and what you need to do today."
-date: 2026-10-24
-category: "Websites"
 draft: true
+title: "Global Alert Over PHP2Shell: What Happened and How to Protect Your Website"
+description: Two critical PHP vulnerabilities triggered millions of attack
+  attempts across the web. Here is how it impacts your business and what you
+  need to do today.
+category: Websites
+date: 2026-10-24
+cover: /images/blog/alerta-cibernética-en-paneles-de-vidrio.png
+updated: 2026-10-24
 ---
 
 On October 21, 2026, the PHP Foundation rolled out emergency updates to patch two critical remote code execution vulnerabilities, collectively known as **PHP2Shell** (tracked as CVE-2026-109618 and CVE-2026-109619). The situation escalated rapidly as technical details leaked prior to coordinated disclosure, triggering millions of automated exploitation attempts within hours. The impact was immediate: government agencies in the United Kingdom, the Netherlands, and Finland, alongside hospitals and private companies worldwide, proactively took services and portals offline to apply patches before attackers could strike.
