@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Global Alert Over PHP2Shell: What Happened and How to Protect Your Website"
 description: Two critical PHP vulnerabilities triggered millions of attack
   attempts across the web. Here is how it impacts your business and what you

@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Alerta global por PHP2Shell: qué pasó y cómo proteger tu página web"
 description: Dos fallas críticas en PHP desataron millones de intentos de ataque
   en la web. Te explicamos cómo impacta a tu empresa y qué debes hacer hoy.

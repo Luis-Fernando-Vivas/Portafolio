@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Alerte mondiale PHP2Shell : ce qui s'est passé et comment protéger votre
   site web"
 description: Deux failles critiques dans PHP ont déclenché des millions de
