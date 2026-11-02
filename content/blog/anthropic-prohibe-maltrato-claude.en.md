@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Anthropic Bans Mistreating Claude: What It Means for Your Business"
 description: Anthropic updated its usage policies to ban sustained mistreatment
   of Claude. Learn what's changing and how it affects AI operations in your

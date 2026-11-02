@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Anthropic prohíbe tratar mal a Claude: qué significa para tu empresa"
 description: Anthropic actualizó sus políticas y prohíbe el maltrato reiterado a
   Claude. Conoce qué cambia y cómo afecta las operaciones con IA en tu empresa.

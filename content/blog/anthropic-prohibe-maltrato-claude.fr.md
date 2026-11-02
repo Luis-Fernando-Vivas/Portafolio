@@ -1,5 +1,5 @@
 ---
-draft: true
+draft: false
 title: "Anthropic interdit de maltraiter Claude : ce que cela implique pour
   votre entreprise"
 description: Anthropic a mis à jour ses règles d'utilisation et interdit la
