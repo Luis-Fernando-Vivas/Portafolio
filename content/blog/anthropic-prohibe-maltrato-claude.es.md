@@ -1,9 +1,11 @@
 ---
-title: "Anthropic prohíbe tratar mal a Claude: qué significa para tu empresa"
-description: "Anthropic actualizó sus políticas y prohíbe el maltrato reiterado a Claude. Conoce qué cambia y cómo afecta las operaciones con IA en tu empresa."
-date: 2026-11-01
-category: "Inteligencia artificial"
 draft: true
+title: "Anthropic prohíbe tratar mal a Claude: qué significa para tu empresa"
+description: Anthropic actualizó sus políticas y prohíbe el maltrato reiterado a
+  Claude. Conoce qué cambia y cómo afecta las operaciones con IA en tu empresa.
+category: Inteligencia artificial
+date: 2026-11-01
+cover: /images/blog/gemini_generated_image_fuxkv2fuxkv2fuxk.png
 ---
 
 El pasado 8 de octubre de 2026, Anthropic presentó una actualización en sus políticas de uso que tomó por sorpresa al sector tecnológico y que entra a regir el próximo 12 de noviembre. Por primera vez en la industria, una empresa de inteligencia artificial prohíbe explícitamente conductas de abuso o crueldad reiterada y sin justificación dirigidas directamente hacia sus propios modelos, como Claude. Esta medida aplica a usuarios individuales, desarrolladores de API y empresas que integran el asistente en sus flujos diarios, estableciendo como sanción principal que el propio modelo pueda cortar la conversación de inmediato e, incluso, la suspensión definitiva de cuentas en casos extremos.

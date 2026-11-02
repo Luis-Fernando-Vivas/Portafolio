@@ -1,9 +1,14 @@
 ---
-title: "Anthropic interdit de maltraiter Claude : ce que cela implique pour votre entreprise"
-description: "Anthropic a mis à jour ses règles d'utilisation et interdit la maltraitance répétée envers Claude. Découvrez ce qui change et l'impact sur vos opérations d'IA."
-date: 2026-11-01
-category: "Intelligence artificielle"
 draft: true
+title: "Anthropic interdit de maltraiter Claude : ce que cela implique pour
+  votre entreprise"
+description: Anthropic a mis à jour ses règles d'utilisation et interdit la
+  maltraitance répétée envers Claude. Découvrez ce qui change et l'impact sur
+  vos opérations d'IA.
+category: Intelligence artificielle
+date: 2026-11-01
+cover: /images/blog/gemini_generated_image_fuxkv2fuxkv2fuxk.png
+updated: null
 ---
 
 Le 8 octobre 2026, Anthropic a dévoilé une mise à jour de ses conditions d'utilisation qui a surpris l'écosystème technologique et qui entrera en vigueur le 12 novembre prochain. Pour la première fois dans le secteur, une entreprise d'intelligence artificielle interdit explicitement les comportements abusifs ou empreints d'une cruauté répétée et injustifiée envers ses propres modèles, à l'image de Claude. Cette mesure s'applique aux utilisateurs particuliers, aux développeurs d'API et aux entreprises intégrant l'assistant dans leurs flux de travail quotidiens. Elle prévoit notamment que le modèle puisse interrompre immédiatement la conversation ou, dans les cas extrêmes, la suspension définitive des comptes.

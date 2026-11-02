@@ -1,9 +1,13 @@
 ---
-title: "Anthropic Bans Mistreating Claude: What It Means for Your Business"
-description: "Anthropic updated its usage policies to ban sustained mistreatment of Claude. Learn what's changing and how it affects AI operations in your business."
-date: 2026-11-01
-category: "Artificial Intelligence"
 draft: true
+title: "Anthropic Bans Mistreating Claude: What It Means for Your Business"
+description: Anthropic updated its usage policies to ban sustained mistreatment
+  of Claude. Learn what's changing and how it affects AI operations in your
+  business.
+category: Artificial Intelligence
+date: 2026-11-01
+cover: /images/blog/gemini_generated_image_fuxkv2fuxkv2fuxk.png
+updated: null
 ---
 
 On October 8, 2026, Anthropic announced an update to its usage policies that caught the tech industry by surprise, set to take effect on November 12. For the first time in the industry, an artificial intelligence company is explicitly banning sustained, gratuitous abuse or cruelty directed at its models, like Claude. This policy applies to individual users, API developers, and companies integrating the assistant into their daily workflows. Key enforcement measures include the model's ability to terminate conversations on the spot, as well as permanent account bans in extreme cases.
