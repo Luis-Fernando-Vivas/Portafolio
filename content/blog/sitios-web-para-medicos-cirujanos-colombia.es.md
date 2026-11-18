@@ -1,9 +1,13 @@
 ---
+draft: false
 title: "Sitios web para cirujanos en Colombia: reputación médica y cumplimiento legal"
-description: "Descubre cómo un sitio web profesional y ajustado a la norma protege tu práctica médica, genera confianza en los pacientes y optimiza tus consultas."
+description: Descubre cómo un sitio web profesional y ajustado a la norma
+  protege tu práctica médica, genera confianza en los pacientes y optimiza tus
+  consultas.
+category: Sitios web
 date: 2026-11-18
-category: "Sitios web"
-draft: true
+cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+updated: 2026-11-18
 ---
 
 En Colombia, la Superintendencia de Industria y Comercio (SIC), los Tribunales de Ética Médica y las autoridades de salud han intensificado la supervisión sobre la publicidad en servicios de salud, especialmente en procedimientos quirúrgicos y estéticos. En medio del auge del país como destino internacional de procedimientos médicos y el endurecimiento de normativas para frenar el intrusismo profesional, los médicos cirujanos enfrentan un escenario decisivo: la presencia digital ya no puede basarse únicamente en publicaciones informales en redes sociales. Para los especialistas y sus clínicas, contar con un sitio web oficial, transparente y técnicamente blindado se ha convertido en una exigencia jurídica y en la principal garantía de confianza para los pacientes.

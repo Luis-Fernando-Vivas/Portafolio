@@ -1,9 +1,12 @@
 ---
+draft: false
 title: "Websites for Surgeons in Colombia: Medical Reputation and Legal Compliance"
-description: "Discover how a professional, compliant website protects your medical practice, builds patient trust, and streamlines consultations."
+description: Discover how a professional, compliant website protects your
+  medical practice, builds patient trust, and streamlines consultations.
+category: Websites
 date: 2026-11-18
-category: "Websites"
-draft: true
+cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+updated: 2026-11-18
 ---
 
 In Colombia, the Superintendence of Industry and Commerce (SIC), Medical Ethics Tribunals, and health authorities have intensified oversight of healthcare advertising, particularly regarding surgical and aesthetic procedures. Amid the country's rise as a premier destination for medical tourism and stricter regulations to curb unqualified practice, surgeons face a decisive turning point: a digital presence can no longer rely solely on informal social media posts. For specialists and clinics, having an official, transparent, and technically sound website has become both a legal obligation and the primary trust signal for patients.

@@ -1,9 +1,14 @@
 ---
-title: "Sites web pour chirurgiens en Colombie : réputation médicale et conformité légale"
-description: "Découvrez comment un site web professionnel et conforme aux normes protège votre pratique médicale, inspire confiance aux patients et optimise vos consultations."
+draft: false
+title: "Sites web pour chirurgiens en Colombie : réputation médicale et
+  conformité légale"
+description: Découvrez comment un site web professionnel et conforme aux normes
+  protège votre pratique médicale, inspire confiance aux patients et optimise
+  vos consultations.
+category: Sites web
 date: 2026-11-18
-category: "Sites web"
-draft: true
+cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+updated: 2026-11-18
 ---
 
 En Colombie, la Superintendencia de Industria y Comercio (SIC — l'autorité de protection des consommateurs), les tribunaux d'éthique médicale et les autorités de santé ont renforcé leur contrôle sur la publicité liée aux services de santé, en particulier pour les interventions chirurgicales et esthétiques. Alors que le pays s'impose comme une destination internationale prisée pour le tourisme médical et que les réglementations se durcissent pour contrer l'exercice illégal de la médecine, les chirurgiens font face à un tournant décisif : la présence en ligne ne peut plus reposer sur de simples publications informelles sur les réseaux sociaux. Pour les spécialistes et leurs cliniques, disposer d'un site web officiel, transparent et juridiquement irréprochable est devenu à la fois une exigence légale et le premier gage de confiance pour les patients.
