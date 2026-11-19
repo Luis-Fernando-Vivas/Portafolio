@@ -361,47 +361,105 @@
   }
 }
 
+/* Tablet y móvil: tarjetas apiladas. Cada una muestra la captura limpia
+   arriba (sin texto encima) y la historia abajo, sobre el color del caso.
+   Al bajar, cada tarjeta se queda fija bajo el header y la siguiente se
+   apila encima con un pequeño desfase (position: sticky). La sección usa
+   overflow: clip para que sticky funcione. */
 @media (max-width: 1023.98px) {
+  .automind-cases {
+    overflow: clip;
+  }
+
   .automind-cases__head {
     flex-direction: column;
     align-items: flex-start;
   }
 
-  /* Tarjetas deslizables, todas abiertas */
   .automind-cases__panels {
+    flex-direction: column;
+    gap: 18px;
     height: auto;
-    margin: 0 -30px;
-    padding: 0 30px 8px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 0 30px;
-    scrollbar-width: none;
-  }
-
-  .automind-cases__panels::-webkit-scrollbar {
-    display: none;
   }
 
   .automind-cases__panel,
   .automind-cases__panel.is-open {
-    flex: 0 0 min(78vw, 420px);
-    height: 520px;
-    scroll-snap-align: start;
+    position: sticky;
+    top: calc(96px + var(--stack, 0) * 14px);
+    flex: none;
+    height: auto;
+    border-radius: 18px;
+    box-shadow: 0 -18px 40px -24px rgba(3, 18, 26, 0.55);
   }
 
-  .automind-cases__panel .automind-cases__img {
+  .automind-cases__panel:nth-child(2) {
+    --stack: 1;
+  }
+
+  .automind-cases__panel:nth-child(3) {
+    --stack: 2;
+  }
+
+  .automind-cases__link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+  }
+
+  .automind-cases__img,
+  .automind-cases__panel:is(.is-open, :hover, :focus-within) .automind-cases__img {
+    position: relative;
+    inset: auto;
+    height: auto;
+    aspect-ratio: 16 / 10;
+    border-radius: 10px;
+    object-position: top;
     transform: none;
     filter: none;
   }
 
-  .automind-cases__panel .automind-cases__content,
-  .automind-cases__panels .automind-cases__panel.is-open .automind-cases__content {
-    opacity: 1;
-    transform: none;
-  }
-
+  .automind-cases__shade,
   .automind-cases__spine {
     display: none;
+  }
+
+  .automind-cases__num {
+    top: 24px;
+    left: 24px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: var(--case-deep);
+    font-size: 12px;
+  }
+
+  .automind-cases__status {
+    top: 22px;
+    right: 22px;
+  }
+
+  .automind-cases__content,
+  .automind-cases__panel .automind-cases__content,
+  .automind-cases__panels .automind-cases__panel.is-open .automind-cases__content {
+    position: static;
+    width: 100%;
+    padding: 18px 10px 10px;
+    gap: 8px;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+
+  .automind-cases__name {
+    font-size: 30px;
+  }
+
+  .automind-cases__hook {
+    font-size: 18px;
+  }
+
+  .automind-cases__go {
+    margin-top: 6px;
   }
 }
 
@@ -421,27 +479,32 @@
     justify-content: center;
   }
 
-  .automind-cases__panels {
-    margin: 0 -12px;
-    padding: 0 12px 8px;
-    scroll-padding: 0 12px;
-  }
-
   .automind-cases__panel,
   .automind-cases__panel.is-open {
-    flex-basis: 84vw;
-    height: 480px;
+    top: calc(88px + var(--stack, 0) * 12px);
   }
 
-  .automind-cases__content {
-    padding: 22px;
+  .automind-cases__link {
+    padding: 10px;
   }
 
   .automind-cases__name {
-    font-size: 30px;
+    font-size: 26px;
   }
 
   .automind-cases__hook {
-    font-size: 17px;
+    font-size: 16px;
+  }
+
+  .automind-cases__what {
+    font-size: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @media (max-width: 1023.98px) {
+    .automind-cases.reveal-on-scroll .automind-cases__panel {
+      transition: opacity 0.8s ease, transform 0.9s var(--cases-ease);
+    }
   }
 }

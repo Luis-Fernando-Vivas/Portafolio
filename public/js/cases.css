@@ -292,37 +292,6 @@
   box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.4);
 }
 
-/* Franja de sectores */
-.cs-sectors {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-}
-
-.cs-sectors__item {
-  padding: 28px var(--am-pad);
-  border-right: 1px solid var(--am-line);
-}
-
-.cs-sectors__item:last-child {
-  border-right: 0;
-}
-
-.cs-sectors__value {
-  display: block;
-  color: var(--am-ink-2);
-  font-size: 40px;
-  font-weight: 600;
-  line-height: 1;
-}
-
-.cs-sectors__label {
-  display: block;
-  margin-top: 10px;
-  color: var(--am-gray);
-  font-size: 15px;
-  line-height: 1.4;
-}
-
 /* ---------- Caso ---------- */
 .cs-case {
   position: relative;
@@ -1378,18 +1347,6 @@
     margin-right: auto;
   }
 
-  .cs-sectors {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .cs-sectors__item:nth-child(2) {
-    border-right: 0;
-  }
-
-  .cs-sectors__item:nth-child(-n + 2) {
-    border-bottom: 1px solid var(--am-line);
-  }
-
   .cs-cover {
     grid-template-columns: 1fr;
   }
@@ -1489,14 +1446,6 @@
 
   .cs-index {
     margin-top: 36px;
-  }
-
-  .cs-sectors__item {
-    padding: 20px var(--am-pad);
-  }
-
-  .cs-sectors__value {
-    font-size: 30px;
   }
 
   .cs-case {
