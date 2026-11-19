@@ -41,6 +41,7 @@
 - [Home (English)](https://www.automindco.com/en/)
 - [Home (French)](https://www.automindco.com/fr/)
 - [Pricing](https://www.automindco.com/precios) · [English](https://www.automindco.com/en/precios) · [French](https://www.automindco.com/fr/precios)
+- [Success stories](https://www.automindco.com/casos-de-exito) · [English](https://www.automindco.com/en/casos-de-exito) · [French](https://www.automindco.com/fr/casos-de-exito): Bloom Beauty Skin (spa in the Bronx, New York: online booking with Square deposits, digital consent forms, client and admin dashboards), Element Multiservices (tax, ITIN and paperwork office in the Bronx: bilingual site, intake form with e-signature, private client document portal) and Notaría Primera de Neiva (AI deed-drafting assistant that fills the office's own templates from the transaction documents; in progress)
 - [Blog](https://www.automindco.com/blog) · [English](https://www.automindco.com/en/blog) · [French](https://www.automindco.com/fr/blog)
 
 ## Services by location

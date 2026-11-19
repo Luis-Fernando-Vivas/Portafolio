@@ -24,6 +24,7 @@ import { landingPath, readLandings, renderLanding } from './landing-pages.js'
 const STATIC_PAGES = [
   { path: '/', file: 'index.html', priority: '1.0' },
   { path: '/precios', file: 'precios.html', priority: '0.9' },
+  { path: '/casos-de-exito', file: 'casos-de-exito.html', priority: '0.8' },
   { path: '/privacidad', file: 'privacidad.html', priority: '0.2' },
 ]
 
