@@ -7,7 +7,7 @@ description: Découvrez comment un site web professionnel et conforme aux normes
   vos consultations.
 category: Sites web
 date: 2026-11-18
-cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+cover: /images/blog/perfil-medico-y-cumplimiento-legal.webp
 updated: 2026-11-18
 ---
 

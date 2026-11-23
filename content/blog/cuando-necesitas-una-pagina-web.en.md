@@ -6,7 +6,7 @@ description: Discover the signs indicating your business has outgrown selling
   payments.
 category: Websites
 date: 2026-10-10
-cover: /images/blog/diseño-web-futurista-con-móvil-y-código.png
+cover: /images/blog/diseno-web-futurista-con-movil-y-codigo.png
 updated: null
 ---
 

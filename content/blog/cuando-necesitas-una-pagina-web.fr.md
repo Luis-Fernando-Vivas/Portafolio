@@ -7,7 +7,7 @@ description: Découvrez les signes indiquant que votre entreprise a dépassé le
   grandir, inspirer confiance et automatiser ses encaissements.
 category: Sites web
 date: 2026-10-10
-cover: /images/blog/diseño-web-futurista-con-móvil-y-código.png
+cover: /images/blog/diseno-web-futurista-con-movil-y-codigo.png
 updated: null
 ---
 

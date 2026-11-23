@@ -5,7 +5,7 @@ description: Dos fallas críticas en PHP desataron millones de intentos de ataqu
   en la web. Te explicamos cómo impacta a tu empresa y qué debes hacer hoy.
 category: Sitios web
 date: 2026-10-24
-cover: /images/blog/alerta-cibernética-en-paneles-de-vidrio.png
+cover: /images/blog/alerta-cibernetica-en-paneles-de-vidrio.png
 updated: 2026-10-24
 ---
 

@@ -6,7 +6,7 @@ description: Descubre cómo un sitio web profesional y ajustado a la norma
   consultas.
 category: Sitios web
 date: 2026-11-18
-cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+cover: /images/blog/perfil-medico-y-cumplimiento-legal.webp
 updated: 2026-11-18
 ---
 

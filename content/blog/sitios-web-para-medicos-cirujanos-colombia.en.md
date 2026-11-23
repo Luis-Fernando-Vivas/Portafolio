@@ -5,7 +5,7 @@ description: Discover how a professional, compliant website protects your
   medical practice, builds patient trust, and streamlines consultations.
 category: Websites
 date: 2026-11-18
-cover: /images/blog/perfil-médico-y-cumplimiento-legal.webp
+cover: /images/blog/perfil-medico-y-cumplimiento-legal.webp
 updated: 2026-11-18
 ---
 
