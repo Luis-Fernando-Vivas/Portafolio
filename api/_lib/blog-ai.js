@@ -284,12 +284,11 @@ Hoy es ${today()}. Responde SOLO con un objeto JSON, sin texto antes ni después
     date: today(),
     draft: true,
   }
-  const files = { [postName(slug, DEFAULT_LOCALE)]: toMarkdown(meta, body) }
-  const translated = await translateAll(meta, body, Object.keys(TRANSLATIONS))
-  for (const [lang, version] of Object.entries(translated)) files[postName(slug, lang)] = toMarkdown({ ...meta, ...version }, version.body)
-
-  await store.write(files, `Blog: nueva noticia con IA "${slug}"`)
-  return { slug, title: meta.title, langs: [DEFAULT_LOCALE, ...Object.keys(translated)] }
+  // Solo el español: buscar, redactar y además traducir en la misma llamada
+  // pasaba del límite de 60 s de Vercel. El panel pide las traducciones
+  // después con translatePost.
+  await store.write({ [postName(slug, DEFAULT_LOCALE)]: toMarkdown(meta, body) }, `Blog: nueva noticia con IA "${slug}"`)
+  return { slug, title: meta.title, langs: [DEFAULT_LOCALE] }
 }
 
 async function translate(meta, body, lang) {

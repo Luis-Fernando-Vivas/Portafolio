@@ -236,7 +236,11 @@
         if (user.token && user.backendName !== 'proxy') headers.Authorization = 'Bearer ' + user.token
         return fetch('/api/blog-ai', { method: 'POST', headers: headers, body: JSON.stringify(body) }).then(function (response) {
           return response.json().catch(function () { return {} }).then(function (data) {
-            if (!response.ok) throw new Error(data.error || 'Error ' + response.status)
+            // Sin JSON, la respuesta es de Vercel y no de la función: su código
+            // (x-vercel-error) y su id ayudan a buscarla en los registros.
+            var code = response.headers.get('x-vercel-error')
+            var id = response.headers.get('x-vercel-id')
+            if (!response.ok) throw new Error(data.error || 'Error ' + response.status + (code ? ' (' + code + ')' : '') + (id ? ' · ' + id : ''))
             return data
           })
         })
@@ -334,7 +338,7 @@
         var request
         if (tab === 'generate') {
           request = { action: 'generate', topic: document.getElementById('am-ai-topic').value }
-          setStatus('busy', 'Buscando la noticia, redactándola y traduciéndola… Puede tardar uno o dos minutos.')
+          setStatus('busy', 'Buscando la noticia y redactándola… Puede tardar un minuto.')
         } else {
           var langs = [].filter.call(langBoxes, function (box) { return box.checked }).map(function (box) { return box.value })
           if (!select.value || !langs.length) return setStatus('error', 'Elige una noticia y al menos un idioma.')
@@ -343,16 +347,34 @@
         }
         busy = true
         submit.disabled = true
-        api(request).then(function (data) {
-          var done = tab === 'generate'
-            ? 'Borrador creado: <strong>' + escapeHtml(data.title) + '</strong> (' + data.langs.join(', ').toUpperCase() + '). '
+        // Generar guarda solo el español; las traducciones van en una segunda
+        // llamada para no pasar del límite de 60 s de Vercel. Si fallan, el
+        // borrador ya está guardado y se puede traducir desde "Traducir".
+        var generating = tab === 'generate'
+        var title = ''
+        var chain = api(request)
+        if (generating) {
+          chain = chain.then(function (data) {
+            title = data.title
+            setStatus('busy', 'Borrador en español guardado. Traduciendo al inglés y al francés…')
+            return api({ action: 'translate', slug: data.slug, langs: ['en', 'fr'] }).then(function (translated) {
+              return { slug: data.slug, langs: data.langs.concat(translated.langs) }
+            }, function (error) {
+              throw new Error('Borrador en español guardado: <strong>' + escapeHtml(title) + '</strong>, pero falló la traducción (' + escapeHtml(error.message) + '). Tradúcelo desde la pestaña Traducir. ' + entryLink(data.slug), { cause: 'html' })
+            })
+          })
+        }
+        chain.then(function (data) {
+          var done = generating
+            ? 'Borrador creado: <strong>' + escapeHtml(title) + '</strong> (' + data.langs.join(', ').toUpperCase() + '). '
             : 'Traducción guardada (' + data.langs.join(', ').toUpperCase() + '). '
           window.dispatchEvent(new CustomEvent('am-posts-changed'))
           setStatus('ok', done + 'Revísala, agrégale una portada y desmarca “Borrador” para publicarla. ' + entryLink(data.slug))
-          if (tab === 'generate') document.getElementById('am-ai-topic').value = ''
+          if (generating) document.getElementById('am-ai-topic').value = ''
           else loadPosts()
         }).catch(function (error) {
-          setStatus('error', escapeHtml(error.message))
+          if (error.cause === 'html') window.dispatchEvent(new CustomEvent('am-posts-changed'))
+          setStatus('error', error.cause === 'html' ? error.message : escapeHtml(error.message))
         }).then(function () {
           busy = false
           submit.disabled = false

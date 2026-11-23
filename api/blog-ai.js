@@ -4,8 +4,9 @@
    - { action: "list" }: noticias con sus idiomas, estado, categoría, fechas y
      portada (tablero del panel y lista para traducir).
    - { action: "generate", topic? }: Gemini busca una noticia (del tema, o la
-     más relevante de los últimos días), la redacta en español, la traduce
-     a inglés y francés y guarda los tres archivos como borrador.
+     más relevante de los últimos días), la redacta en español y la guarda
+     como borrador. El panel pide luego "translate" para inglés y francés:
+     todo en una sola llamada pasaba del límite de 60 s de Vercel.
    - { action: "translate", slug, langs }: traduce una noticia existente.
 
    Solo responde a quien entró al panel (ver resolveTarget en _lib/blog-ai.js).
